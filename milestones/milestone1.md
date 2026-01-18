@@ -52,3 +52,5 @@ One factor of particular interest is the bill’s sponsor and the sources of the
 3. Rather than analyzing both chambers of the Illinois General Assembly, would focusing on just one (House or Senate) be a useful way to simplify the project if needed?
 4. Do you have an initial recommendation on how many years of legislative sessions to analyze? There's a likely tradeoff between a richer analysis with more data and the  complexity of additional data collection and cleaning.
 5. Any recommendations on using Legiscan vs. Plural/OpenStates for data on legislation?
+6. What is the most optimal way to perform data storage and persistance when looking at API request limitations? Do we need to be refreshing our data periodically?
+7. What explanatory variables should we be looking at to help identify patterns and reduce noise?
