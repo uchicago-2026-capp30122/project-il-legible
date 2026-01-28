@@ -1,5 +1,5 @@
 # {IL-legible}
-Team Members: Max, 
+Team Members: Max, Luke Friedman, 
 
 ## Abstract
 
