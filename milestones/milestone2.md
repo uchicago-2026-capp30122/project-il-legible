@@ -1,5 +1,5 @@
 # {IL-legible}
-Team Members: [ADD YOUR NAME HERE WITH A BRANCH/MERGE]
+Team Members: Max, 
 
 ## Abstract
 
