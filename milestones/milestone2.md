@@ -1,5 +1,9 @@
 # IL-legible
-Team Members: Max, Luke Friedman, Eliana Nowlis, Brock Sauvage
+Team Members: 
+- Brock Sauvage <bsauvage@uchicago.edu>
+- Elie Nowlis <enowlis@uchicago.edu>
+- Max Manalang <manalang@uchicago.edu>
+- Luke Friedman <lukef@uchicago.edu>
 
 ## Abstract
 
@@ -14,7 +18,7 @@ We are particularly interested in the following factors:
 
 | Data Source | Source URL | Type | Approx. Number of Records | Approx. Number of Attributes | Current Status | Challenges |
 | --- | --- | --- | --- | --- | --- | --- |
-| Open States | https://docs.openstates.org/api-v3/  | API/Bulk Data | Approx. Number of Records | Approx. Number of Attributes | Data Exploration via API and Bulk Data Download | Internal IDs might not reconcile well with other data sources |
+| Open States | https://docs.openstates.org/api-v3/  | API/Bulk Data | ~13,000 bills per session (many are type `resolution` which aren't relevant to us) | 100+ for bills with full nested attributes | Data Exploration via API and Bulk Data Download | Internal IDs might not reconcile well with other data sources |
 | Illinois Sunshine | https://illinoissunshine.org/ | Scraped/API -- will need to access hidden APIs to download CSVs of each committee individually  | ~ 100 donations x 300 politicians   | 31  | The data have been explored and specific committees have been scraped. The next step is to isolate the committees we need from the Open States data and write a code to download information from each related API.  | We are still unsure how we will identify donations from corporations versus individuas.  |
 
 ## Data Reconciliation Plan
