@@ -1,5 +1,5 @@
 # IL-legible
-Team Members: Max, Luke Friedman, Eliana Nowlis
+Team Members: Max, Luke Friedman, Eliana Nowlis, Brock Sauvage
 
 ## Abstract
 
@@ -12,23 +12,10 @@ We are particularly interested in the following factors:
 
 ## Data Sources
 
-### Data Source #1 [BROCK/LUKE TO DO]
-
-Source URL: {https://...}  
-Source Type: {Scraped/Bulk Data/API}  
-Approximate Number of Records (rows):  
-Approximate Number of Attributes (columns):   
-Current Status: {At this point, you should have interacted with your data, describe the current status. Have you written code for an API or web scraper yet, explored the data, etc.?}  
-Challenges: {Any challenges or uncertainty about the data at this point?}
-
-### Data Source #2
-
-Source URL: https://illinoissunshine.org/  
-Source Type: Scraped/API -- will need to access hidden APIs to download CSVs of each committee individually  
-Approximate Number of Records (rows): ~ 100 donations x 300 politicians  
-Approximate Number of Attributes (columns): 31  
-Current Status: The data have been explored and specific committees have been scraped. The next step is to isolate the committees we need from the Open States data and write a code to download information from each related API.  
-Challenges: We are still unsure how we will identify donations from corporations versus individuas.  
+| Data Source | Source URL | Type | Approx. Number of Records | Approx. Number of Attributes | Current Status | Challenges |
+| --- | --- | --- | --- | --- | --- | --- |
+| Open States | https://docs.openstates.org/api-v3/  | API/Bulk Data | Approx. Number of Records | Approx. Number of Attributes | Data Exploration via API and Bulk Data Download | Internal IDs might not reconcile well with other data sources |
+| Illinois Sunshine | https://illinoissunshine.org/ | Scraped/API -- will need to access hidden APIs to download CSVs of each committee individually  | ~ 100 donations x 300 politicians   | 31  | The data have been explored and specific committees have been scraped. The next step is to isolate the committees we need from the Open States data and write a code to download information from each related API.  | We are still unsure how we will identify donations from corporations versus individuas.  |
 
 ## Data Reconciliation Plan
 
