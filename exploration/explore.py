@@ -6,6 +6,17 @@ from dotenv import load_dotenv
 from pathlib import Path
 import pandas as pd
 
+INCLUDED_DATA = {
+    "bill_abstracts",
+    "actions",
+    "bill_sponsorships",
+    "bills",
+    "organizations",
+    "vote_counts",
+    "votes",
+    "vote_people"
+}
+
 def main():
     print("Hello from project-il-legible!")
     bills = get_bills()
@@ -13,12 +24,18 @@ def main():
     print(bills)
 
     
+def get_all_datasets():
+    datasets = dict.fromkeys(INCLUDED_DATA)
+    for set in datasets:
+        datasets[set] = get_data_from_csv(set)
+
+    return datasets
 
 def get_bills():
     return get_data_from_csv("bills")
 
-# def get_people(person_id=None, max_pages=1):
-#     return get_data_from_csv(url)
+def get_votes():
+    return get_data_from_csv("votes")
 
 def get_sponsors():
     return get_data_from_csv("sponsorships")
