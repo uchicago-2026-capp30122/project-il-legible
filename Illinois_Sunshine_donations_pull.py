@@ -6,14 +6,37 @@ website: https://illinoissunshine.org/
 import csv
 import httpx
 import io
+import lxml.html
+import re
+# import lxml.cssselect
 
 def match_sponsor_to_committee(name: str):
     ## First step: use the lookup URL, use the JSON file it returns to match
     ## names and get relevant ID candidate numbers [Elie]
-
-    ## Second step: go to candidate pages using ID numbers [Max]
-    ## (https://illinoissunshine.org/candidates/7821/) and pull committee ID numbers
     return
+
+## Second step: go to candidate pages using ID numbers [Max]
+## (https://illinoissunshine.org/candidates/7821/) and pull committee ID numbers
+    
+
+def get_committee_ids(candidate_ids: list[str]):
+    """
+    [[write a doc string]]
+    """
+    unique_committee_ids = set()
+    for candidate_id in candidate_ids:
+        response = httpx.get(f"https://illinoissunshine.org/candidates/{candidate_id}/")
+        root = lxml.html.fromstring(response.text)
+        
+        table = root.cssselect("table.table.table-striped")[0]
+        
+        for link in table.cssselect("a"):
+            committee_url = link.get("href")
+            committee_id = committee_url.rstrip("/").split("-")[-1]
+            unique_committee_ids.add(committee_id)
+    
+    committee_ids = list(unique_committee_ids)
+    return committee_ids
 
 def download_donations(committees: list):
     """
