@@ -13,6 +13,7 @@ def match_sponsor_to_committee(name: str):
 
     ## Second step: go to candidate pages using ID numbers [Max]
     ## (https://illinoissunshine.org/candidates/7821/) and pull committee ID numbers
+    return
 
 def download_donations(committees: list):
     """
