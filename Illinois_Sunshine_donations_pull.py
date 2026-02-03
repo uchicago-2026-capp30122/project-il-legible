@@ -34,7 +34,7 @@ def get_committee_ids(candidate_ids: list[str]):
             committee_url = link.get("href")
             committee_id = committee_url.rstrip("/").split("-")[-1]
             unique_committee_ids.add(committee_id)
-    
+            
     committee_ids = list(unique_committee_ids)
     return committee_ids
 
