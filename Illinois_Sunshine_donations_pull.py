@@ -6,10 +6,8 @@ website: https://illinoissunshine.org/
 import csv
 import httpx
 import io
-import lxml.html
-# import re
+from lxml import html
 import json
-# import lxml.cssselect
 
 def match_sponsor_to_candidate(name: str) -> list[str]:
     """
@@ -80,15 +78,24 @@ def get_committee_ids(candidate_ids: list[str]):
     return committee_ids
 
 
-def download_donations(committees: list[str]):
+def download_donations(committee: str):
     """
     [[write a doc string]]
     """
-    for committee in committees:
-        response = httpx.get(f"https://illinoissunshine.org/api/receipts/?committee_id={committee}&datatype=csv&limit=100000", headers={"Referer": f"https://illinoissunshine.org/committees/{committee}/"})
+    response = httpx.get(f"https://illinoissunshine.org/api/receipts/?committee_id={committee}&datatype=csv&limit=100000", headers={"Referer": f"https://illinoissunshine.org/committees/{committee}/"})
+    return csv.reader(io.StringIO(response.text))
 
-        data = csv.reader(io.StringIO(response.text))
 
-        with open("test", "w") as f:
-            writer = csv.writer(f)
-            writer.writerows(data)
+if __name__ == "__main__":
+    with open("unique_sponsors.csv", "r") as name_list:
+        reader = csv.reader(name_list)
+        for name in reader:
+            sponsor = name[0]
+            filepath = f"donations/{sponsor}.csv"
+
+            ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
+            with open(filepath, "w") as f:
+                writer = csv.writer(f)
+                for id in ids:
+                    writer.writerows(download_donations(id))
+        
