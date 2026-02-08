@@ -48,16 +48,10 @@ with open("donation_stats.csv", "w") as file:
     for filename in os.listdir(directory):
         path = os.path.join(directory, filename)
 
-        if os.path.getsize(path) == 0:
-            continue
-
         # Read in CSV for a sponsor and clean necessary vars
         try:
             df = pd.read_csv(path)
         except pd.errors.EmptyDataError:
-            continue
-
-        if df.empty:
             continue
 
         df["received_date"] = pd.to_datetime(df["received_date"], errors="coerce")
