@@ -12,8 +12,8 @@ import json
 def match_sponsor_to_candidate(name: str) -> list[str]:
     """
     First step: use the lookup URL, use the JSON file it returns to match
-    names and get relevant ID candidate numbers [Elie]
-    [[make this better]]
+    names and get relevant ID candidate numbers.
+    [[make a better doc string]]
     """
     first_name = name.split()[0]
     last_name = name.split()[1]
