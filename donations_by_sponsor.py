@@ -44,13 +44,19 @@ with open("donation_stats.csv", "w") as file:
     writer.writeheader()
 
     # Loop through each sponsor in the folder
+    total_names = 0
+    working_names = 0
+
     directory = 'donations'
     for filename in os.listdir(directory):
+        total_names += 1
+
         path = os.path.join(directory, filename)
 
         # Read in CSV for a sponsor and clean necessary vars
         try:
             df = pd.read_csv(path)
+            working_names += 1
         except pd.errors.EmptyDataError:
             continue
 
@@ -108,3 +114,5 @@ with open("donation_stats.csv", "w") as file:
 
         # Step 3: write to a row of the CSV
         writer.writerow(row)
+    print("working names: ", working_names)
+    print("working name percentage: ", (working_names / total_names)*100)
