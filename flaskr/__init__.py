@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask
-from . import db
 
 def create_app(test_config=None):
     # create and configure the app
@@ -22,11 +21,17 @@ def create_app(test_config=None):
     os.makedirs(app.instance_path, exist_ok=True)
 
     # Initialize our data base when creating the app
+    from . import db
     db.init_app(app)
 
+
+    from .blueprints import home
+    app.register_blueprint(home.bp)
+    app.add_url_rule('/', endpoint='index')
+
     # a simple page that says hello
-    @app.route('/hello')
-    def hello():
+    @app.route('/home')
+    def home():
         return 'Hello, World!'
 
     return app
