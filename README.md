@@ -1,5 +1,30 @@
 # project-il-legible
 
+
+## Web Framework
+
+For this project, we'll be using the Flask web framework. This tool allows us to keep and maintain and lightweight database, spin up a web server, serve HTML/CSS files to a browser, and more. Read more about it [here](https://flask.palletsprojects.com/en/stable/#user-s-guide).
+
+There are a few steps to take to get the app up and running on your machine. Once completed, you'll be able to work with the project.
+
+### Initializing the Database
+
+Since we don't check the database into version control, you'll need to intiialize (create) and seed the database - populating it with all of the relevant data we'll be using in our app. To initialize, run this from the command line in the root directory of the project:
+
+`uv run flask --app flaskr init-db`
+
+Once this has ran, you should see a `flaskr.sqlite` file in the `instance` folder of the project.
+
+### Seeding the Database
+
+`TO-DO: write this section`
+
+### Running the Web App
+
+After the database has been created and seeded with data, we can finally spin up the web server to run our app:
+
+`uv run flask --app flaskr run --debug`
+
 ## Environment Variables
 
 This project makes use of several APIs that require API keys for endpoint requests. Many of these will require API keys which are not to be checked into version control for security reasons. Instead, we will be using an envrionment file - a file that keeps track of the API keys, sensitive info, and specific configuration settings for your local program. Following these steps, you may set up your own environment file with custom variables defined:

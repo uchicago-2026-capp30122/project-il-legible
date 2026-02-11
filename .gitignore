@@ -219,3 +219,7 @@ __marimo__/
 # IL-legible
 *.csv
 donations/
+exploration/bulk_data/*
+
+# Flask
+*.pyc
