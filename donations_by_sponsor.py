@@ -27,7 +27,8 @@ import csv
 with open("donation_stats.csv", "w") as file:
     vars = [
     "Name",
-    "Total_all", "Total_L3",
+    "donation_count_all", "donation_count_L3"
+    "total_all", "total_L3",
     "pct_c_above_all", "pct_c_above_L3",
     "pct_$_above_all", "pct_$_above_L3",
     "avg_donation_all", "avg_donation_L3",
@@ -77,17 +78,20 @@ with open("donation_stats.csv", "w") as file:
         df["last_3_years"] = df["received_date"] >= '01/01/2023'
 
         # Step 2: calculate stats
-        total_len = len(df)
-        L3_len = df["last_3_years"].sum()
         keywords = r"PAC|INC|LLC|Corp|Committee|Assoc|Union"
 
         row = {}
         row["Name"] = filename.replace(".csv", "")
         
+        total_len = len(df)
+        L3_len = df["last_3_years"].sum()
+        row["donation_count_all"] = total_len
+        row["donation_count_L3"] = L3_len
+
         total_all = df["amount"].sum()
-        row["Total_all"] = total_all
+        row["total_all"] = total_all
         total_L3 = df.loc[df["last_3_years"], "amount"].sum()
-        row["Total_L3"] = total_L3
+        row["total_L3"] = total_L3
 
         row["pct_c_above_all"] = (df["amount"] > 5000).sum() / total_len
         row["pct_c_above_L3"] = (df["last_3_years"] & (df["amount"] > 5000)).sum() / L3_len
