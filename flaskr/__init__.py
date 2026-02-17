@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_bootstrap import Bootstrap5
+from flaskr.db import db_session
 
 def create_app(test_config=None):
     # create and configure the app
@@ -36,5 +37,10 @@ def create_app(test_config=None):
     @app.route('/home')
     def home():
         return 'Hello, World!'
+    
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
 
     return app
+
