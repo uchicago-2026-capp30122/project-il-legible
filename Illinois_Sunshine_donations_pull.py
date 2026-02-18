@@ -8,6 +8,7 @@ import httpx
 import io
 from lxml import html
 import json
+import re
 
 def match_sponsor_to_candidate(name: str) -> list[str]:
     """
@@ -15,8 +16,13 @@ def match_sponsor_to_candidate(name: str) -> list[str]:
     names and get relevant ID candidate numbers.
     [[make a better doc string]]
     """
-    first_name = name.split()[0]
-    last_name = name.split()[1]
+    name_split = name.split()
+    first_name = name_split[0]
+    last_name = name_split[1]
+    if len(name_split) > 2:
+        title = name_split[2]
+    else:
+        title = None
 
     url = "https://illinoissunshine.org/api/advanced-search/"
 
@@ -53,8 +59,15 @@ def match_sponsor_to_candidate(name: str) -> list[str]:
         response = c.get(url, params = params)
         json_dic = json.loads(response.text)
         for candidate in json_dic["objects"]["candidates"]:
-            if candidate["first_name"] == first_name and candidate["last_name"] == last_name:
-                id_list.append(candidate["id"])
+            if (first_name in candidate["first_name"] and
+                last_name in candidate["last_name"]):
+                # Check on appropriate title or lack thereof
+                if title is None:
+                    if not (re.search(r'Jr|II+', first_name) or re.search(r'Jr|II+', last_name)):
+                        id_list.append(candidate["id"])
+                else:
+                    if re.search(title, first_name) or re.search(title, last_name):
+                        id_list.append(candidate["id"])
         return id_list
 
 
@@ -88,9 +101,10 @@ def download_donations(committee: str):
 
 if __name__ == "__main__":
     with open("unique_sponsors.csv", "r") as name_list:
+        next(name_list)
         reader = csv.reader(name_list)
         for name in reader:
-            sponsor = name[0]
+            sponsor = name[1]
             filepath = f"donations/{sponsor}.csv"
 
             ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
