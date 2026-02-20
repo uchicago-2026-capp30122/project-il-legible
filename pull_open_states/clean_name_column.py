@@ -42,9 +42,9 @@ openstates.drop(openstates.columns[0], axis = 1, inplace=True)
 # Angelica Cuellar -> Angie Cuellar
 
 # Output final dataset
-openstates.to_csv("openstates_final.csv")
+openstates.to_csv("openstates_w_names.csv")
 
 # Create a list of unique primary sponsors
 unique_sponsors = pd.DataFrame(openstates["primary_sponsor_1_clean"].unique(),
                                columns=["Sponsor"])
-unique_sponsors.to_csv("unique_sponsors.csv")
+unique_sponsors.to_csv("../pull_IL_sunshine/unique_sponsors.csv")

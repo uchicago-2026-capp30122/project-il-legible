@@ -105,7 +105,7 @@ if __name__ == "__main__":
         reader = csv.reader(name_list)
         for name in reader:
             sponsor = name[1]
-            filepath = f"donations/{sponsor}.csv"
+            filepath = f"../donations/{sponsor}.csv"
 
             ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
             with open(filepath, "w") as f:
