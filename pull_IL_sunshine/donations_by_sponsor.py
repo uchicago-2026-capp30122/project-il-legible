@@ -55,7 +55,7 @@ with open("donation_stats.csv", "w") as file:
     total_names = 0
     working_names = 0
 
-    directory = 'donations'
+    directory = '../donations'
     for filename in os.listdir(directory):
         total_names += 1
 

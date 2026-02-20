@@ -34,7 +34,7 @@ def general_cleaning(name):
         return " ".join([first, last])
 
 # Apply function to all rows of the primary_sponsor_1 column
-openstates = pd.read_csv("openstates_cleaned.csv")
+openstates = pd.read_csv("intermediate_data/openstates_cleaned.csv")
 openstates["primary_sponsor_1_clean"] = openstates["primary_sponsor_1"].apply(general_cleaning)
 openstates.drop(openstates.columns[0], axis = 1, inplace=True)
 
@@ -42,9 +42,9 @@ openstates.drop(openstates.columns[0], axis = 1, inplace=True)
 # Angelica Cuellar -> Angie Cuellar
 
 # Output final dataset
-openstates.to_csv("openstates_w_names.csv")
+openstates.to_csv("intermediate_data/openstates_w_names.csv")
 
 # Create a list of unique primary sponsors
 unique_sponsors = pd.DataFrame(openstates["primary_sponsor_1_clean"].unique(),
                                columns=["Sponsor"])
-unique_sponsors.to_csv("../pull_IL_sunshine/unique_sponsors.csv")
+unique_sponsors.to_csv("../pull_IL_sunshine/intermediate_data/unique_sponsors.csv")

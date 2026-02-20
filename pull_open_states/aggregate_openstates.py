@@ -99,7 +99,7 @@ def main():
     # Pulling the first word out of the abstract
     df["abstract_action"] = df["abstract"].str.split().str[0].str.lower()
 
-    df.to_csv("openstates_cleaned.csv")
+    df.to_csv("intermediate_data/openstates_cleaned.csv")
 
     return df
 

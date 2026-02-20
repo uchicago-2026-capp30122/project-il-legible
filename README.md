@@ -43,6 +43,16 @@ The APIs for Open States and Illinois Sunshine have some significant rate limit 
 
 If you'd like to add bulk data for Open States, you'll need to do this manually (for now.) Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `exploration/bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `explore.py` "data get" methods rely on this.
 
+### Create Data Used in Website
+
+After downloading the bulk data, you want to populate the final_data folder, which is
+what is used for the website databases. To do so, run these programs in the following order.
+1. pull_open_states/aggregate_openstates.py
+2. pull_open_states/clean_name_column.py
+3. pull_IL_sunshine/Illinois_Sunshine_donations_pull.py
+4. pull_IL_sunshine/donations_by_sponsor.py
+**Internal note: do we want one script that just does all of this for us??**
+
 ### Setting up Jupyter in VS Code
 
 1. Run `uv sync` in the root directory to ensure that the ipykernel package is installed.
