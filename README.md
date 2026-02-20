@@ -51,6 +51,7 @@ what is used for the website databases. To do so, run these programs in the foll
 2. pull_open_states/clean_name_column.py
 3. pull_IL_sunshine/Illinois_Sunshine_donations_pull.py
 4. pull_IL_sunshine/donations_by_sponsor.py
+
 **Internal note: do we want one script that just does all of this for us??**
 
 ### Setting up Jupyter in VS Code
