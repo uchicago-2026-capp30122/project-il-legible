@@ -100,12 +100,12 @@ def download_donations(committee: str):
 
 
 if __name__ == "__main__":
-    with open("unique_sponsors.csv", "r") as name_list:
+    with open("pull_IL_sunshine/intermediate_data/unique_sponsors.csv", "r") as name_list:
         next(name_list)
         reader = csv.reader(name_list)
         for name in reader:
             sponsor = name[1]
-            filepath = f"../donations/{sponsor}.csv"
+            filepath = f"donations/{sponsor}.csv"
 
             ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
             with open(filepath, "w") as f:
