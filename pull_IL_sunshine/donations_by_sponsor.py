@@ -23,7 +23,7 @@ import os
 import csv
 
 #Set up csv output file
-with open("donation_stats.csv", "w") as file:
+with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     vars = [
     "Name",
     "donation_count_all", "donation_count_L3",
@@ -55,7 +55,7 @@ with open("donation_stats.csv", "w") as file:
     total_names = 0
     working_names = 0
 
-    directory = '../donations'
+    directory = 'donations'
     for filename in os.listdir(directory):
         total_names += 1
 
