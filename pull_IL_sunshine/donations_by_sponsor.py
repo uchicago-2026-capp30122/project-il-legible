@@ -2,7 +2,6 @@
 This file takes in CSVs with donation information by sponsor and outputs a
 a table that links sponser name to a variety of statistics about their donations
 
-TO BE DELETED LATER
 List of the stats we want:
 ** All of these to be calculated for all time and the last 3(?) years **
 - Total donations
@@ -24,10 +23,10 @@ import os
 import csv
 
 #Set up csv output file
-with open("donation_stats.csv", "w") as file:
+with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     vars = [
     "Name",
-    "donation_count_all", "donation_count_L3"
+    "donation_count_all", "donation_count_L3",
     "total_all", "total_L3",
     "pct_c_above_all", "pct_c_above_L3",
     "pct_$_above_all", "pct_$_above_L3",
