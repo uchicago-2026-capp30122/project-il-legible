@@ -63,10 +63,10 @@ def match_sponsor_to_candidate(name: str) -> list[str]:
                 last_name in candidate["last_name"]):
                 # Check on appropriate title or lack thereof
                 if title is None:
-                    if not (re.search(r'Jr|II+', first_name) or re.search(r'Jr|II+', last_name)):
+                    if not (re.search(r'Jr|II+', candidate["first_name"]) or re.search(r'Jr|II+', candidate["last_name"])):
                         id_list.append(candidate["id"])
                 else:
-                    if re.search(title, first_name) or re.search(title, last_name):
+                    if re.search(title, candidate["first_name"]) or re.search(title, candidate["last_name"]):
                         id_list.append(candidate["id"])
         return id_list
 
@@ -108,8 +108,9 @@ if __name__ == "__main__":
             filepath = f"donations/{sponsor}.csv"
 
             ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
-            with open(filepath, "w") as f:
-                writer = csv.writer(f)
-                for id in ids:
-                    writer.writerows(download_donations(id))
+            if ids != []:
+                with open(filepath, "w") as f:
+                    writer = csv.writer(f)
+                    for id in ids:
+                        writer.writerows(download_donations(id))
         

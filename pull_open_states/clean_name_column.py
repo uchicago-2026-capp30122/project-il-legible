@@ -33,13 +33,32 @@ def general_cleaning(name):
     else:
         return " ".join([first, last])
 
+# Fix specific instances of nicknames or name changes
+def specific_changes(clean_name):
+    names_to_change = {"Michael Coffey Jr" : "Mike Coffey",
+                    "Sandra Hamilton" : "Sandy Hamilton",
+                    "William Hauter" : "Bill Hauter",
+                    "Suzy Hilton" : "Suzanne Hilton",
+                    "Anne Murray" : "Anne Stava",
+                    "Dave Vella" : "David Vella",
+                    "Frances Hurley" : "Fran Hurley",
+                    "Michael Marron" : "Mike Marron",
+                    "Daniel Swanson" : "Dan Swanson",
+                    "Napoleon Harris III" : "Napoleon Harris",
+                    "Kimberly Buclet" : "Kim DuBuclet",
+                    "Angelica Cuellar" : "Angie Cuellar",
+                    "Thomas Morrison" : "Tom Morrison",
+                    "Lamont Robinson Jr" : "Lamont Robinson"}
+    if clean_name in names_to_change.keys():
+        return names_to_change[clean_name]
+    else:
+        return clean_name
+
 # Apply function to all rows of the primary_sponsor_1 column
 openstates = pd.read_csv("pull_open_states/intermediate_data/openstates_cleaned.csv")
 openstates["primary_sponsor_1_clean"] = openstates["primary_sponsor_1"].apply(general_cleaning)
+openstates["primary_sponsor_1_clean"] = openstates["primary_sponsor_1_clean"].apply(specific_changes)
 openstates.drop(openstates.columns[0], axis = 1, inplace=True)
-
-# Fix specific instances
-# Angelica Cuellar -> Angie Cuellar
 
 # Output dataset
 openstates.to_csv("pull_open_states/intermediate_data/openstates_w_names.csv")
