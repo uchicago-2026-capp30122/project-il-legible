@@ -56,7 +56,12 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     working_names = 0
 
     directory = 'donations'
-    for filename in os.listdir(directory):
+    with open("pull_IL_sunshine/intermediate_data/unique_sponsors.csv", "r") as file:
+        reader = csv.DictReader(file)
+        unique_names = []
+        for row in reader:
+            unique_names.append(row["Sponsor"] + ".csv")
+    for filename in unique_names:
         total_names += 1
 
         path = os.path.join(directory, filename)
@@ -65,7 +70,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
         try:
             df = pd.read_csv(path)
             working_names += 1
-        except pd.errors.EmptyDataError:
+        except FileNotFoundError:
             row = {}
             row["Name"] = filename.replace(".csv", "")
             writer.writerow(row)
@@ -81,6 +86,8 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
 
         # Step 2: calculate stats
         keywords = r"PAC|INC|LLC|Corp|Committee|Assoc|Union"
+        # This is the amount significant enough to require expedited schedule 1A reporting
+        large_donation = 1000
 
         row = {}
         row["Name"] = filename.replace(".csv", "")
@@ -95,11 +102,11 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
         total_L3 = df.loc[df["last_3_years"], "amount"].sum()
         row["total_L3"] = total_L3
 
-        row["pct_c_above_all"] = (df["amount"] > 5000).sum() / total_len
-        row["pct_c_above_L3"] = (df["last_3_years"] & (df["amount"] > 5000)).sum() / L3_len
+        row["pct_c_above_all"] = (df["amount"] > large_donation).sum() / total_len
+        row["pct_c_above_L3"] = (df["last_3_years"] & (df["amount"] > large_donation)).sum() / L3_len
 
-        row["pct_$_above_all"] = df.loc[(df["amount"] > 5000), "amount"].sum() / total_all
-        row["pct_$_above_L3"] = df.loc[(df["last_3_years"] & (df["amount"] > 5000)), "amount"].sum() / total_L3
+        row["pct_$_above_all"] = df.loc[(df["amount"] > large_donation), "amount"].sum() / total_all
+        row["pct_$_above_L3"] = df.loc[(df["last_3_years"] & (df["amount"] > large_donation)), "amount"].sum() / total_L3
 
         row["avg_donation_all"] = df["amount"].mean()
         row["avg_donation_L3"] = df.loc[df["last_3_years"], "amount"].mean()
