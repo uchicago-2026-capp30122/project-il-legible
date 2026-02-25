@@ -48,7 +48,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     "pct_$_IL_all", "pct_$_IL_L3",
     "yrs_since_first", "yrs_since_last",
 ]
-    writer = csv.DictWriter(file, fieldnames = vars)
+    writer = csv.DictWriter(file, fieldnames = vars, restval='')
     writer.writeheader()
 
     # Loop through each sponsor in the folder
@@ -66,6 +66,9 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
             df = pd.read_csv(path)
             working_names += 1
         except pd.errors.EmptyDataError:
+            row = {}
+            row["Name"] = filename.replace(".csv", "")
+            writer.writerow(row)
             continue
 
         df["received_date"] = pd.to_datetime(df["received_date"], errors="coerce")
