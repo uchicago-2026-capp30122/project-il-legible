@@ -4,7 +4,9 @@ from flaskr.database.db import Base
 class Bill(Base):
     __tablename__ = 'bills'
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), unique=True)
+    title = Column(String(100), unique=True)
+    session_identifer = Column(String(20))
+    organization_classification = Column(String(20))
 
     def __init__(self, name=None):
         self.name = name
