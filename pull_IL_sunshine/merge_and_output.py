@@ -5,7 +5,10 @@ This file adds statistics on bills to each sponsor and outputs the final dataset
 import pandas as pd
 
 donations = pd.read_csv("pull_IL_sunshine/intermediate_data/donation_stats.csv")
+bills = pd.read_csv("pull_open_states/intermediate_data/openstates_w_names.csv")
 
+# Merge Chamber into donation data
+bill_agg = bills.groupby("primary_sponsor_1")
 
 # Keep specific columns
 columns_to_keep = ["Name", "donation_count_all", "donation_count_L3",
