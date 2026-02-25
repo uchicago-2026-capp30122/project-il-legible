@@ -2,6 +2,7 @@ import pandas as pd
 import exploration.explore as ex
 import matplotlib as plot
 import re
+from pathlib import Path
 
 # Create all_data object - dictionary with all sub-tables
 
@@ -99,7 +100,9 @@ def main():
     # Pulling the first word out of the abstract
     df["abstract_action"] = df["abstract"].str.split().str[0].str.lower()
 
-    df.to_csv("pull_open_states/intermediate_data/openstates_cleaned.csv")
+    filepath = Path("pull_open_states/intermediate_data/openstates_cleaned.csv")
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(filepath)
 
     return df
 
