@@ -60,10 +60,17 @@ openstates["primary_sponsor_1_clean"] = openstates["primary_sponsor_1"].apply(ge
 openstates["primary_sponsor_1_clean"] = openstates["primary_sponsor_1_clean"].apply(specific_changes)
 openstates.drop(openstates.columns[0], axis = 1, inplace=True)
 
-# Output dataset
+# Output full dataset
 openstates.to_csv("pull_open_states/intermediate_data/openstates_w_names.csv")
 
 # Create a list of unique primary sponsors
 unique_sponsors = pd.DataFrame(openstates["primary_sponsor_1_clean"].unique(),
                                columns=["Sponsor"])
 unique_sponsors.to_csv("pull_IL_sunshine/intermediate_data/unique_sponsors.csv")
+
+# Output final, trimmed dataset
+columns_to_keep = ["title", "session_identifier", "organization_classification",
+                   "abstract", "first_action", "primary_sponsor_1", "num_sponsors",
+                   "became_law", "first_committee_referral_date", "committee_passages",
+                   "passed_first_chamber", "passed_full_legislature"]
+openstates[columns_to_keep].to_csv("final_data/bills.csv")
