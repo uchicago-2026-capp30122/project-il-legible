@@ -9,6 +9,7 @@ import io
 from lxml import html
 import json
 import re
+from pathlib import Path
 
 def match_sponsor_to_candidate(name: str) -> list[str]:
     """
@@ -105,7 +106,8 @@ if __name__ == "__main__":
         reader = csv.reader(name_list)
         for name in reader:
             sponsor = name[1]
-            filepath = f"donations/{sponsor}.csv"
+            filepath = Path(f"donations/{sponsor}.csv")
+            filepath.parent.mkdir(parents=True, exist_ok=True)
 
             ids = get_committee_ids(match_sponsor_to_candidate(sponsor))
             if ids != []:

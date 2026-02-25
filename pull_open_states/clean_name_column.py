@@ -6,6 +6,7 @@ names and outputs the finalized Open States dataset.
 import pandas as pd
 import re
 from unidecode import unidecode
+from pathlib import Path
 
 def general_cleaning(name):
     """
@@ -66,6 +67,10 @@ openstates.to_csv("pull_open_states/intermediate_data/openstates_w_names.csv")
 # Create a list of unique primary sponsors
 unique_sponsors = pd.DataFrame(openstates["primary_sponsor_1_clean"].unique(),
                                columns=["Sponsor"])
+
+unique_sponsors_out_path = Path("pull_IL_sunshine/intermediate_data/unique_sponsors.csv")
+unique_sponsors_out_path.parent.mkdir(parents=True, exist_ok=True)
+
 unique_sponsors.to_csv("pull_IL_sunshine/intermediate_data/unique_sponsors.csv")
 
 # Output final, trimmed dataset
@@ -73,4 +78,7 @@ columns_to_keep = ["title", "session_identifier", "organization_classification",
                    "abstract", "first_action", "primary_sponsor_1", "num_sponsors",
                    "became_law", "first_committee_referral_date", "committee_passages",
                    "passed_first_chamber", "passed_full_legislature"]
+
+final_out_path = Path("final_data/bills.csv")
+final_out_path.parent.mkdir(parents=True, exist_ok=True)
 openstates[columns_to_keep].to_csv("final_data/bills.csv")
