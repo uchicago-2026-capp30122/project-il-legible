@@ -16,13 +16,16 @@ def create_bills():
     with open(filepath, "r") as file:
         reader = csv.DictReader(file)
         for rows in reader:
-            b = Bill(title=rows["title"])
+            b = Bill(title=rows["title"],session_identifier=rows["session_identifer"],
+                    organization_classification=rows["organization_classification"])
             db.add(b)
         
     db.commit()
 
+
 def create_sponsors():
     pass
+
 
 if __name__ == "__main__":
     seed_db()

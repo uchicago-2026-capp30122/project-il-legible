@@ -6,7 +6,7 @@ class Bill(Base):
 
     __tablename__ = 'bills'
     id = Column(Integer, primary_key=True)
-    title = Column(String(100), unique=True)
+    title = Column(String(100))
     session_identifer = Column(String(20))
     organization_classification = Column(String(20))
     abstract = Column(Text)
@@ -36,7 +36,7 @@ class Bill(Base):
 
 
 class Sponsor(Base):
-    
+
     __tablename__ = 'sponsors'
     id = Column(Integer, primary_key=True)
     first_name = Column(String (50), unique=False)
