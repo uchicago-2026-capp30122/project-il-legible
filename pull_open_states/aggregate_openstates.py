@@ -91,11 +91,11 @@ def main():
     df = df.merge(sponsors_summary, how="inner", left_on="id", right_on="bill_id")
     #df = df.drop(columns = ["id_y", "bill_id_x", "bill_id_y"])
 
-    # Adding an action timeframe column
-    df["first_to_last_action_time"] = df["last_action"] - df["first_action"]
-    df["time_to_first_reading"] = df["first_reading_date"] - df["first_action"]
-    df["time_to_first_committee_referral"] = df["first_committee_referral_date"] - df["first_action"]
-    df["time_to_first_committee_passage"] = df["first_committee_passage_date"] - df["first_action"]
+    # Adding action timeframe columns
+    df["first_to_last_action_days"] = (df["last_action"] - df["first_action"]).dt.days
+    df["days_to_first_reading"] = (df["first_reading_date"] - df["first_action"]).dt.days
+    df["days_to_first_committee_referral"] = (df["first_committee_referral_date"] - df["first_action"]).dt.days
+    df["days_to_first_committee_passage"] = (df["first_committee_passage_date"] - df["first_action"]).dt.days
 
     # Pulling the first word out of the abstract
     df["abstract_action"] = df["abstract"].str.split().str[0].str.lower()
