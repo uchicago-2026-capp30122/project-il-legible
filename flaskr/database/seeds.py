@@ -21,16 +21,14 @@ def create_bills():
         with open(filepath, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                year, month, day = tuple(row["first_committee_referral_date"].split("-")) if row["first_committee_referral_date"] else tuple([None]*3)
                 fa_year, fa_month, fa_day = tuple(row["first_action"].split("-")) if row["first_action"] else tuple([None]*3)
-                b = Bill(title = row["title"],
+                b = Bill(identifier = row["identifier"],
                         session_identifier = row["session_identifier"],
                         organization_classification = row["organization_classification"],
-                        abstract = row["abstract"],
                         first_action = datetime.date(int(fa_year), int(fa_month), int(fa_day)) if row["first_action"] else None,
                         num_sponsors = int(row["num_sponsors"]),
                         became_law = bool(row["became_law"]),
-                        first_committee_referral_date = datetime.date(int(year), int(month), int(day)) if row["first_committee_referral_date"] else None,
+                        referred_to_committee = bool(row["referred_to_committee"]),
                         committee_passages = int(row["committee_passages"]),
                         passed_first_chamber = bool(row["passed_first_chamber"]),
                         passed_full_legislature = bool(row["passed_full_legislature"])
@@ -59,15 +57,17 @@ def create_sponsors():
                             pct_c_above_L3 = float(row["pct_c_above_L3"]) if row["pct_c_above_L3"] else None,
                             avg_donation_all = float(row["avg_donation_all"]) if row["avg_donation_all"] else None,
                             avg_donation_L3 = float(row["avg_donation_L3"]) if row["avg_donation_L3"] else None,
-                            pct_dollar_non1a_all = float(row["pct_dollar_non1a_all"]) if row["pct_dollar_non1a_all"] else None,
-                            pct_dollar_non1a_L3 = float(row["pct_dollar_non1a_L3"]) if row["pct_dollar_non1a_L3"] else None,
-                            pct_dollar_IL_all = float(row["pct_dollar_IL_all"]) if row["pct_dollar_IL_all"] else None,
-                            pct_dollar_IL_L3 = float(row["pct_dollar_IL_L3"]) if row["pct_dollar_IL_L3"] else None,
+                            amt_allcond_all= float(row["amt_allcond_all"]) if row["amt_allcond_all"] else None,
+                            amt_allcond_L3 = float(row["amt_allcond_L3"]) if row["amt_allcond_L3"] else None,
+                            pct_c_allcond_all = float(row["pct_c_allcond_all"]) if row["pct_c_allcond_all"] else None,
+                            pct_c_allcond_L3 = float(row["pct_c_allcond_L3"]) if row["pct_c_allcond_L3"] else None,
+                            pct_c_IL_all = float(row["pct_c_IL_all"]) if row["pct_c_IL_all"] else None,
+                            pct_c_IL_L3 = float(row["pct_c_IL_L3"]) if row["pct_c_IL_L3"] else None,
                             num_bills = int(row["num_bills"]) if row["num_bills"] else None,
-                            bills_passed = int(row["bills_passed"]) if row["bills_passed"] else None,
                             pct_bills_passed = float(row["pct_bills_passed"]) if row["pct_bills_passed"] else None,
-                            yrs_since_first = int(row["yrs_since_first"]) if row["yrs_since_first"] else None,
-                            yrs_since_last = int(row["yrs_since_last"])  if row["yrs_since_last"] else None 
+                            first_donation_year = row["first_donation_year"]  if row["first_donation_year"] else None,
+                            effectiveness_score = float(row["effectiveness_score"]) if row["effectiveness_score"] else None
+
                 )
                 db.add(s)
         db.commit()
