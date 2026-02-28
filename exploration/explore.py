@@ -41,8 +41,8 @@ def get_sponsors():
     return get_data_from_csv("sponsorships")
 
 def get_data_from_csv(file_fragment):
-    root_dir = Path(os.getcwd())
-    file_list = list(root_dir.rglob(f"./*/bulk_data/IL/*/*{file_fragment}.csv")) 
+    root_dir = Path(__file__).parent
+    file_list = list(root_dir.rglob(f"bulk_data/IL/*/*{file_fragment}.csv")) 
     df = None
     df = pd.concat((pd.read_csv(f) for f in file_list), ignore_index=True)
     
