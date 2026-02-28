@@ -35,7 +35,11 @@
         </section>
         <!-- Your page content -->
         {% block content %}{% endblock %}
-
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">@2026 CAPP122 Project</span>
+            </div>
+        </footer>
         {% block scripts %}
             <!-- Optional JavaScript -->
             {{ bootstrap.load_js() }}
