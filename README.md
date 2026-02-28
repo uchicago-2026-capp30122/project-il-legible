@@ -17,7 +17,13 @@ Once this has ran, you should see a `flaskr.sqlite` file in the `instance` folde
 
 ### Seeding the Database
 
-`TO-DO: write this section`
+To get data in your database, first ensure you have the bulk data files for Open States in the correct directories, and then run:
+
+`bash create_datasets.sh` (or whatever command you use to execute a shell script)
+
+This process should take a few minutes, and it will create `final_data/bills.csv` and `final_data.sponsors.csv`. Once you have these, you are ready to seed the database. Make sure you have intiialized the DB using the command above, and then run:
+
+`uv run python flaskr/database/seeds.py`
 
 ### Running the Web App
 
