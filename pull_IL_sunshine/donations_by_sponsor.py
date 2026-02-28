@@ -25,7 +25,7 @@ import csv
 #Set up csv output file
 with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     vars = [
-    "Name",
+    "name",
     "donation_count_all", "donation_count_L3",
     "total_all", "total_L3",
     "pct_c_above_all", "pct_c_above_L3",
@@ -72,7 +72,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
             working_names += 1
         except FileNotFoundError:
             row = {}
-            row["Name"] = filename.replace(".csv", "")
+            row["name"] = filename.replace(".csv", "")
             writer.writerow(row)
             continue
 
@@ -90,7 +90,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
         large_donation = 1000
 
         row = {}
-        row["Name"] = filename.replace(".csv", "")
+        row["name"] = filename.replace(".csv", "")
         
         total_len = len(df)
         L3_len = df["last_3_years"].sum()
