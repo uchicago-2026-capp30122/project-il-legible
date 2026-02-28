@@ -58,6 +58,7 @@ def main():
         amendment_introductions = ("classification", lambda x: x.apply(lambda classif: "amendment-introduction" in classif).sum()),
         num_readings = ("classification", lambda x: x.apply(lambda classif: "reading" in classif).sum()),
         committee_passages = ("classification", lambda x: x.apply(lambda classif: "committee-passage" in classif).sum()),
+        referred_to_committee = ("classification", lambda x: x.apply(lambda classif: "referral-committee" in classif).any()),
         passed_first_chamber = ("classification", lambda x: x.apply(lambda classif: bool(re.search(r"'passage'", classif))).any()),
         passed_full_legislature = ("classification", lambda x: x.apply(lambda classif: "executive-receipt" in classif).any()),
         became_law = ("classification", lambda x: x.apply(lambda classif: "became-law" in classif).any()),

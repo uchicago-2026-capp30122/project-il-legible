@@ -75,8 +75,8 @@ unique_sponsors.to_csv("pull_IL_sunshine/intermediate_data/unique_sponsors.csv")
 
 # Output final, trimmed dataset
 columns_to_keep = ["identifier", "session_identifier", "organization_classification",
-                   "primary_sponsor_1", "num_sponsors",
-                   "became_law", "first_committee_referral_date", "committee_passages",
+                   "first_action", "primary_sponsor_1", "num_sponsors",
+                   "became_law", "referred_to_committee", "committee_passages",
                    "passed_first_chamber", "passed_full_legislature"]
 
 final_out_path = Path("final_data/bills.csv")
