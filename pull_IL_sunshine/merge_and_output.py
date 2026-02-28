@@ -21,13 +21,20 @@ bill_agg["pct_bills_passed"] = bill_agg["bills_passed"] / bill_agg["num_bills"]
 
 sponsors = pd.merge(donations, bill_agg, how = "left", on = "name")
 
+# Add legislator effectiveness scores using percentiles
+sponsors["bills_introduced_percentile"] = sponsors["num_bills"].rank(pct=True)
+sponsors["passage_rate_percentile"] = sponsors["pct_bills_passed"].rank(pct=True)
+sponsors["effectiveness_score"] = (sponsors["bills_introduced_percentile"] + sponsors["passage_rate_percentile"]) / 2
+
+
 # Keep specific columns
 columns_to_keep = ["name", "organization_classification", "donation_count_all", 
                    "donation_count_L3", "total_all", "total_L3", "pct_c_above_all",
                    "pct_c_above_L3", "avg_donation_all", "avg_donation_L3",
-                   "pct_$_non1a_all", "pct_$_non1a_L3", "pct_$_IL_all",
-                   "pct_$_IL_L3", "num_bills", "bills_passed", "pct_bills_passed",
-                   "yrs_since_first", "yrs_since_last"]
+                   "amt_allcond_all", "amt_allcond_L3", "pct_c_allcond_all",
+                   "pct_c_allcond_L3", "pct_c_IL_all", "pct_c_IL_L3",
+                   "num_bills", "pct_bills_passed",
+                   "first_donation_year", "effectiveness_score"]
 
 # Output final dataset
 sponsors[columns_to_keep].to_csv("final_data/sponsors.csv")

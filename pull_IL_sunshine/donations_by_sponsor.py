@@ -46,7 +46,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
     "amt_IL_all", "amt_IL_L3",
     "pct_c_IL_all", "pct_c_IL_L3",
     "pct_$_IL_all", "pct_$_IL_L3",
-    "yrs_since_first", "yrs_since_last",
+    "yrs_since_first", "yrs_since_last", "first_donation_year"
 ]
     writer = csv.DictWriter(file, fieldnames = vars, restval='')
     writer.writeheader()
@@ -167,8 +167,9 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
         row["pct_$_IL_L3"] = amt_IL_L3 / total_L3
 
         row["yrs_since_first"] = pd.Timestamp.today().year - pd.to_datetime(df["received_date"]).min().year
-
         row["yrs_since_last"] = pd.Timestamp.today().year - pd.to_datetime(df["received_date"]).max().year
+        row["first_donation_year"] = pd.to_datetime(df["received_date"]).min().year
+
 
         # Step 3: write to a row of the CSV
         writer.writerow(row)

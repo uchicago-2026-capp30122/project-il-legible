@@ -74,9 +74,9 @@ unique_sponsors_out_path.parent.mkdir(parents=True, exist_ok=True)
 unique_sponsors.to_csv("pull_IL_sunshine/intermediate_data/unique_sponsors.csv")
 
 # Output final, trimmed dataset
-columns_to_keep = ["title", "session_identifier", "organization_classification",
-                   "abstract", "first_action", "primary_sponsor_1_clean", "num_sponsors",
-                   "became_law", "first_committee_referral_date", "committee_passages",
+columns_to_keep = ["identifier", "session_identifier", "organization_classification",
+                   "first_action", "primary_sponsor_1_clean", "num_sponsors",
+                   "became_law", "referred_to_committee", "committee_passages",
                    "passed_first_chamber", "passed_full_legislature"]
 
 final_out_path = Path("final_data/bills.csv")
