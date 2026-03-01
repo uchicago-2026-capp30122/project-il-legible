@@ -1,16 +1,16 @@
 import pandas as pd
 import altair as alt
 
-FILENAME = "../final_data/sponsors.csv"
+FILENAME = "final_data/sponsors.csv"
 main_df = pd.read_csv(FILENAME)
-
-#print(main_df.sample(10))
+MAIN_COLOR = "maroon"
+SIZE = 60
 
 def total_donations_hist(df):
 
     chart = (
         alt.Chart(df)
-        .mark_bar(color="maroon")
+        .mark_bar(color=MAIN_COLOR)
         .encode(
             x = alt.X(
                 "total_all",
@@ -35,7 +35,7 @@ def average_donation_hist(df):
 
     chart = (
         alt.Chart(df)
-        .mark_bar(color="maroon")
+        .mark_bar(color=MAIN_COLOR)
         .encode(
             x = alt.X(
                 "avg_donation_all",
@@ -70,7 +70,7 @@ def num_bills_total_donations_scatter(df):
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
-        .mark_circle(size=60, color="maroon")
+        .mark_circle(size=SIZE, color=MAIN_COLOR)
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
             y = alt.Y("num_bills", title="Number of Bills Introduced"),
@@ -106,7 +106,7 @@ def num_bills_total_donations_scatter_wo_outliers(df):
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
-        .mark_circle(size=60, color="maroon")
+        .mark_circle(size=SIZE, color=MAIN_COLOR)
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
             y = alt.Y("num_bills", title="Number of Bills Introduced"),
@@ -122,6 +122,79 @@ def num_bills_total_donations_scatter_wo_outliers(df):
     )
 
     return chart
+
+
+def bills_introduced_legislator(df: pd.DataFrame, name: str) -> alt.Chart:
+    """
+    Create a bar graph showing the number of bills introduced by a specific legislator
+    compared to an average.
+
+    Inputs:
+        df: Dataframe with legislator and bill data
+        name: Legislator's name
+    
+    Returns:
+        An Altair Chart
+    """
+    legislator_bills = df[df["name"] == name]["num_bills"].mean()
+    median_bills = df["num_bills"].median()
+
+    legislator_df = pd.DataFrame({
+        "names": ["Median", name],
+        "num_bills": [median_bills, legislator_bills]
+    })
+    
+    chart=(
+        alt.Chart(legislator_df)
+        .mark_bar(color=MAIN_COLOR)
+        .encode(
+            x = alt.X("names", title="Legislator", axis=alt.Axis(labelAngle=0)),
+            y = alt.Y("num_bills", title="Number of Bills Introduced"))
+        .properties(title="Bills Introduced in 102nd & 103rd Sessions",
+            width = 300,
+            height = 400
+        )
+    )
+
+    return chart
+
+
+def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.LayerChart:
+    """
+    Create a pie chart (my apologies in advance) showing the number of bills 
+    introduced by a specific legislator compared to an average.
+
+    Inputs:
+        df: Dataframe with legislator and bill data
+        name: Legislator's name
+    
+    Returns:
+        An Altair Chart
+    """
+    legislator_bills = df[df["name"] == name]["num_bills"].mean()
+    legislator_passed = df[df["name"] == name]["bills_passed"].mean()
+
+    bill_success_df = pd.DataFrame({
+        "category": ["Introduced", "Passed"],
+        "num_bills": [legislator_bills, legislator_passed]
+    })
+
+    base=(
+        alt.Chart(bill_success_df)
+        .encode(
+            theta="num_bills",
+            color="category")
+        .properties(title="Bill Introduction and Passage",
+            width = 300,
+            height = 400
+        )
+    )
+
+    pie = base.mark_arc(color=MAIN_COLOR)
+    text = base.mark_text(radius=150, size=20).encode(text="num_bills")
+
+    return pie + text
+
 
 
 if __name__ == "__main__":
@@ -140,3 +213,12 @@ if __name__ == "__main__":
     chart4 = num_bills_total_donations_scatter_wo_outliers(main_df)
     chart4.save("num_bills_total_donations_scatter_wo_outliers.html")
     print("Saved chart to num_bills_total_donations_scatter_wo_outliers.html")
+
+    chart5 = bills_introduced_legislator(main_df, "Omar Aquino")
+    chart5.save("bills_introduced_legislator.html")
+    print("Saved chart to bills_introduced_legislator.html")
+
+    # We need to fix the labels (or move away from a pie chart)
+    chart6 = bill_success_legislator(main_df, "Omar Aquino")
+    chart6.save("bill_success_legislator.html")
+    print("Saved chart to bill_success_legislator.html")
