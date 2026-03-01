@@ -1,11 +1,8 @@
-from flaskr.database.db import db_session as db
-from flaskr.models import Bill, Sponsor
+from app import db
+from app.models import Bill, Sponsor
 from sqlalchemy import select
-from flask.cli import AppGroup
-from flask import current_app
 from pathlib import Path
 import datetime
-import click
 import csv
 
 
@@ -15,8 +12,9 @@ def seed_db():
         
 
 def create_bills():
-    bills = db.execute(select(Bill)).first()
-    if(not bills):
+    bills_exist = len(db.session.scalars(select(Bill)).all())
+    if(not bills_exist):
+        print("Seeding bills into database")
         filepath = Path("final_data/bills.csv")
         with open(filepath, "r") as file:
             reader = csv.DictReader(file)
@@ -33,16 +31,17 @@ def create_bills():
                         passed_first_chamber = bool(row["passed_first_chamber"]),
                         passed_full_legislature = bool(row["passed_full_legislature"])
                 )
-                sponsor = db.scalar(select(Sponsor).where(Sponsor.name == row["primary_sponsor_1_clean"]))
+                sponsor = db.session.scalar(select(Sponsor).where(Sponsor.name == row["primary_sponsor_1_clean"]))
                 b.sponsor_id = sponsor.id
-                db.add(b)
+                db.session.add(b)
             
-        db.commit()
+        db.session.commit()
 
 
 def create_sponsors():
-    sponsors = db.execute(select(Sponsor)).first()
-    if(not sponsors):
+    sponsors_exist = len(db.session.scalars(select(Sponsor)).all())
+    if(not sponsors_exist):
+        print("Seeding sponsors into database")
         filepath = Path("final_data/sponsors.csv")
         with open(filepath, "r") as file:
             reader = csv.DictReader(file)
@@ -69,9 +68,5 @@ def create_sponsors():
                             effectiveness_score = float(row["effectiveness_score"]) if row["effectiveness_score"] else None
 
                 )
-                db.add(s)
-        db.commit()
-
-
-if __name__ == "__main__":
-    seed_db()
+                db.session.add(s)
+        db.session.commit()
