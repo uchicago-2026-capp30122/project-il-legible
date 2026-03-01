@@ -3,7 +3,6 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from flaskr.database import db
 
 bp = Blueprint('home', __name__)
 

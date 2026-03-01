@@ -8,7 +8,7 @@
             "name": "Python Debugger: Seeds",
             "type": "debugpy",
             "request": "launch",
-            "module": "flaskr.database.seeds"
+            "module": "app.database.seeds"
         },
         {
             "name": "Python Debugger: Exploration Module",

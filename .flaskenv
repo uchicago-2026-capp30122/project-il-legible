@@ -1,0 +1,1 @@
+FLASK_APP=project_illegible.py
