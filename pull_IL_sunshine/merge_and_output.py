@@ -24,7 +24,8 @@ sponsors = pd.merge(donations, bill_agg, how = "left", on = "name")
 # Add legislator effectiveness scores using percentiles
 sponsors["bills_introduced_percentile"] = sponsors["num_bills"].rank(pct=True)
 sponsors["passage_rate_percentile"] = sponsors["pct_bills_passed"].rank(pct=True)
-sponsors["effectiveness_score"] = (sponsors["bills_introduced_percentile"] + sponsors["passage_rate_percentile"]) / 2
+sponsors["effectiveness_score"] = (sponsors["bills_introduced_percentile"] +
+                                    sponsors["passage_rate_percentile"]) / 2
 
 
 # Keep specific columns
