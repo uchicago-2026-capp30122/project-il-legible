@@ -24,7 +24,7 @@ To get data in your database, first ensure you have the bulk data files for Open
 
 This process should take a few minutes, and it will create `final_data/bills.csv` and `final_data.sponsors.csv`. Once you have these, you are ready to seed the database. Make sure you have intiialized the DB using the command above, and then run:
 
-`uv run flask db seed`
+`uv run flask dbc seed`
 
 The database should now have data. If you find yourself needing to reseed the database, you can drop and recreate the tables before rerunning the seed command:
 
