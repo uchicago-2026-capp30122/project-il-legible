@@ -25,7 +25,7 @@ def general_cleaning(name):
     """
     name = unidecode(name)
     first = re.findall(r'\A\w+\b', name)[0]
-    last = re.findall(r'\b(\w+)\b(?=\s*(?:,|\band\b|$))',name)[0]
+    last = re.findall(r'\b(\w+)\b(?=\s*(?:,|\band\b|$))', name)[0]
     title_list = re.findall(r'I+|Jr', name)
 
     if title_list != []:
@@ -34,8 +34,14 @@ def general_cleaning(name):
     else:
         return " ".join([first, last])
 
-# Fix specific instances of nicknames or name changes
+
 def specific_changes(clean_name):
+    """
+    Fix specific instances of nicknames or name changes that are not captured
+    by the general cleaning algorithim.
+
+    Inputs: 
+    """
     names_to_change = {"Michael Coffey Jr" : "Mike Coffey",
                     "Sandra Hamilton" : "Sandy Hamilton",
                     "William Hauter" : "Bill Hauter",
