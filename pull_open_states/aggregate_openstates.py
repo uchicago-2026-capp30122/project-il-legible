@@ -1,6 +1,5 @@
 import pandas as pd
 import exploration.explore as ex
-import matplotlib as plot
 import re
 from pathlib import Path
 
@@ -86,6 +85,18 @@ def summarize_sponsors(bill_sponsorships):
 
 def merge_datasets(bills: pd.DataFrame, actions_summary: pd.DataFrame, 
                    sponsors_summary: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create a final combined dataset, with one row for each bill, and with all
+    associated summary fields.
+
+    Inputs:
+        bills (pd.DataFrame): Basic identifiers for each bill
+        actions_summary: Key action stats, summarized for each bill
+        sponsors_summary: Key sponsorship stats, summarized for each bill
+    
+    Outputs:
+        A single dataframe with all bills and all relevant summary stats
+    """
     
     intermediate_df = bills.merge(actions_summary, how="inner", left_on="id", right_on="bill_id")
     final_df = intermediate_df.merge(sponsors_summary, how="inner", left_on="id", right_on="bill_id")
