@@ -28,8 +28,8 @@ This process should take a few minutes, and it will create `final_data/bills.csv
 
 The database should now have data. If you find yourself needing to reseed the database, you can drop and recreate the tables before rerunning the seed command:
 
-`uv run flask db drop-tables`
-`uv run flask db create-tables`
+`uv run flask dbc drop-tables`
+`uv run flask dbc create-tables`
 
 ### Exploring the Database
 

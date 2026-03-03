@@ -17,6 +17,10 @@
         <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <!-- Import vega-embed -->
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
@@ -29,21 +33,21 @@
                     <li class="nav-item active">
                         <a class="btn btn-outline-info" href="/">Home</a>
                     </li>
+                     <li class="nav-item active">
+                        <a class="btn btn-outline-info" href="/insights">Key Insights</a>
+                    </li>
                     <li class="nav-item active">
                         <a class="btn btn-outline-info" href="/sponsors">Sponsors</a>
                     </li>
                     <li class="nav-item active">
                         <a class="btn btn-outline-info" href="/bills">Bills</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="btn btn-outline-info" href="#">About</a>
-                    </li>
                 </ul>
             </div>
         </nav>
 
         <!-- Inherited content -->
-        <div class="container-fluid mt-2">
+        <div class="container-fluid">
             {% block content %}{% endblock %}
         </div>
         <footer class="footer">
