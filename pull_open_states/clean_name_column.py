@@ -8,7 +8,7 @@ import re
 from unidecode import unidecode
 from pathlib import Path
 
-def general_cleaning(name: str) -> str:
+def general_name_cleaning(name: str) -> str:
     """
     Step 0: Cleaning
     We want to do some basic cleaning before attempting to match. The goal is 
@@ -45,7 +45,7 @@ def general_cleaning(name: str) -> str:
         return " ".join([first, last])
 
 
-def specific_changes(clean_name: str) -> str:
+def specific_name_changes(clean_name: str) -> str:
     """
     Fix specific instances of nicknames or name changes that are not captured
     by the general cleaning algorithim.
@@ -89,7 +89,7 @@ def clean_sponsor_names(bills: pd.DataFrame) -> pd.DataFrame:
     """
     sponsor_cols = ["primary_sponsor_1", "primary_sponsor_2"]
     for col in sponsor_cols:
-        bills[f"{col}_clean"] = bills[f"{col}"].fillna("").apply(general_cleaning).apply(specific_changes)
+        bills[f"{col}_clean"] = bills[f"{col}"].fillna("").apply(general_name_cleaning).apply(specific_name_changes)
         #bills[f"{col}_clean"] = bills[f"{col}_clean"]
     bills.drop(bills.columns[0], axis = 1, inplace=True)
 
@@ -123,7 +123,7 @@ def output_final_bills_csv(bills_cleaned: pd.DataFrame) -> None:
     Generates and saves a consolidated CSV with all key and cleaned bill data.
 
     Inputs:
-        cleaned_bills (pd.DataFrame): A dataframe with summarized bill information
+        bills_cleaned (pd.DataFrame): A dataframe with summarized bill information
         and cleaned sponsor names.
     
     Outputs:
