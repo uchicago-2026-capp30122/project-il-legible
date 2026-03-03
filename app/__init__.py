@@ -29,7 +29,7 @@ def create_app():
 
     # Tie blueprints to the app
 
-    from .blueprints import home, sponsors, bills, viz, template_filters, api
+    from .blueprints import home, sponsors, bills, viz, template_filters, api, insights
     from app.cli import bp as cli_bp
 
     app.register_blueprint(cli_bp)
@@ -37,6 +37,7 @@ def create_app():
     app.register_blueprint(sponsors.bp)
     app.register_blueprint(bills.bp)
     app.register_blueprint(viz.bp)
+    app.register_blueprint(insights.bp)
     app.register_blueprint(template_filters.bp)
     app.register_blueprint(api.bp)
 
