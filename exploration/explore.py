@@ -29,11 +29,14 @@ def get_all_datasets():
 def get_bills():
     return get_data_from_csv("bills")
 
-def get_votes():
-    return get_data_from_csv("votes")
+def get_actions():
+    return get_data_from_csv("actions")
 
 def get_sponsors():
     return get_data_from_csv("sponsorships")
+
+def get_votes():
+    return get_data_from_csv("votes")
 
 def get_data_from_csv(file_fragment):
     root_dir = Path(__file__).parent

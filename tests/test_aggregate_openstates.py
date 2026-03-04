@@ -2,31 +2,60 @@ import pytest
 from pathlib import Path
 import exploration.explore as ex
 
-from pull_open_states.aggregate_openstates import summarize_actions
+from pull_open_states.aggregate_openstates import summarize_actions, summarize_sponsors
 from pull_open_states.clean_name_column import general_name_cleaning
 
 #@pytest.fixture
-def openstates_data_sample():
-    all_data = ex.get_all_datasets()
+def get_bills_sample():
+    """Get sample of 10 bills sorted by id."""
 
-    # Get sample of 10 relevant bills
-    bills = all_data["bills"]
+    bills = ex.get_bills()
     bills = bills[bills["classification"].apply(lambda x: "bill" in x)]
     bills = bills.sort_values("id")[:10]
 
-    bill_actions = all_data["actions"].sort_values("bill_id")[:200]
-    bill_sponsorships = all_data["bill_sponsorships"].sort_values("bill_id")[:200]
-
-    return (bills, bill_actions, bill_sponsorships)
+    return bills
 
 
-def test_summarize_actions():
-     _, bill_actions, _ = openstates_data_sample()
-     bills_summary = summarize_actions(bill_actions)
-     assert bill_actions.shape == (200, 7)
-     assert bill_actions["bill_id"].nunique() == 14
+def get_actions_sample():
+    """Get sample of 200 actions sorted by bill_id."""
+
+    actions = ex.get_actions()
+    actions = actions.sort_values("bill_id")[:200]
+    return actions
 
 
+def get_sponsors_sample():
+    """Get sample of 200 sponsorships sorted by bill_id."""
+
+    sponsors = ex.get_sponsors()
+    sponsors = sponsors.sort_values("bill_id")[:200]
+    return sponsors
+
+
+def test_summarize_actions_shape():
+    bill_actions = get_actions_sample()
+    bills_summary = summarize_actions(bill_actions)
+    assert bills_summary.shape == (14, 6)
+
+
+def test_summarize_actions_values():
+    bill_actions = get_actions_sample()
+    actions_summary = summarize_actions(bill_actions)
+    assert actions_summary.loc["ocd-bill/002a4c9d-e0bc-4f58-8f93-4f6656cf73d5"]["passed_full_legislature"] == True
+    assert actions_summary["committee_passages"].sum() == 3
+
+
+def test_summarize_sponsors_shape():
+    sponsors = get_sponsors_sample()
+    sponsors_summary = summarize_sponsors(sponsors)
+    assert sponsors_summary.shape == (66, 3)
+
+
+def test_summarize_sponsors_values():
+    sponsors = get_sponsors_sample()
+    sponsors_summary = summarize_sponsors(sponsors)
+    assert sponsors_summary.loc["ocd-bill/00a8be44-1eda-4f58-9a89-26a72911b601"]["num_sponsors"] == 14
+    assert sponsors_summary["primary_sponsor_2"].notna().sum() == 10
 
 
 def test_automated_name_cleaning():
