@@ -1,21 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% for post in posts %}
-    <article class="post">
-      <header>
-        <div>
-          <h1>{{ post['title'] }}</h1>
-          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
-        {% if g.user['id'] == post['author_id'] %}
-          <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-        {% endif %}
-      </header>
-      <p class="body">{{ post['body'] }}</p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
-  {% endfor %}
+<div id="homepage-hero" class="row">
+  <div id="hero-background"></div>
+  <h1 class="display-3">Welcome to Project IL-legible</h1>
+</div>
+<div class="row">
+  <div class="d-flex justify-content-center col-6">
+    <h1> Key Insights </h1>
+  </div>
+  <div class="d-flex justify-content-center col-6">
+    <h1> Browse Sponsors</h1>
+  </div>
+</div>
 {% endblock %}

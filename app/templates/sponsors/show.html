@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row"> 
+        <div class="col">
+            <h3 class="display-3"> {{ sponsor.name}} </h3>
+            <p class="lead"> {{ sponsor.organization_classification | capitalize }} House Representative</p>
+            <p class="lead"> First Donation Received in {{ sponsor.first_donation_year}} </p>
+        </div>
+    </div>  
+    <div class="row">
+        <h4> Bills </h4>
+        <div class="col">
+            <div id="bills_bar"></div> 
+        </div>
+    </div>
+    <div class="row">
+        <h4> Key Stats </h4>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Lifetime Donation Count</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.donation_count_all | number_format }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Lifetime Donations</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.avg_donation_all | currency_format }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Average Donation Amount</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.avg_donation_all | currency_format }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Number of Bills Sponsored</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Percent Sponsored Bills Passed</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.pct_bills_passed | percent_format }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-3">
+                <div class="card-header">Effectiveness Score</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ num_bills | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#bills_bar', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+{% endblock %}

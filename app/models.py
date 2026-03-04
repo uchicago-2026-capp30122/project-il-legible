@@ -29,6 +29,9 @@ class Sponsor(db.Model):
     effectiveness_score: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     bills: so.WriteOnlyMapped[Optional['Bill']] = so.relationship(back_populates='sponsor')    
 
+    def to_dict(self):
+        return {field.name:getattr(self, field.name) for field in self.__table__.c}
+
     def __repr__(self):
         return '<Sponsor {}>'.format(self.name)
     
@@ -49,6 +52,11 @@ class Bill(db.Model):
 
     sponsor_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey(Sponsor.id), index=True)
     sponsor: so.Mapped[Sponsor] = so.relationship(back_populates='bills')
+
+
+    def to_dict(self):
+        return {field.name:getattr(self, field.name) for field in self.__table__.c}
+
 
     def __repr__(self):
         return '<Bill {}>'.format(self.identifier)

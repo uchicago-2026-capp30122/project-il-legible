@@ -1,0 +1,24 @@
+#homepage-hero {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+
+}
+
+#hero-background{
+    background-image: url("img/illinois.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: inherit;
+    height: inherit;
+    z-index: 0;
+    position: absolute;
+}
+
+#homepage-hero h1{
+    text-align: center;
+    z-index: 1;
+}

@@ -29,17 +29,16 @@ def create_app():
 
     # Tie blueprints to the app
 
-    from .blueprints import home
+    from .blueprints import home, sponsors, bills, viz, template_filters, api, insights
     from app.cli import bp as cli_bp
-    app.register_blueprint(home.bp)
+
     app.register_blueprint(cli_bp)
-    app.add_url_rule('/', endpoint='index')
-
-    # a simple page that says hello
-
-    @app.route('/home')
-    def home():
-        return 'Hello, World!'
-        
+    app.register_blueprint(home.bp)
+    app.register_blueprint(sponsors.bp)
+    app.register_blueprint(bills.bp)
+    app.register_blueprint(viz.bp)
+    app.register_blueprint(insights.bp)
+    app.register_blueprint(template_filters.bp)
+    app.register_blueprint(api.bp)
 
     return app

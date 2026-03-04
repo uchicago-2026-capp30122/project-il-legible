@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="viz"></div>
+  <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ chart | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#viz', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+  </script>
+{% endblock %}

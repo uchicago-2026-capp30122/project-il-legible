@@ -168,8 +168,7 @@ with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
 
         row["yrs_since_first"] = pd.Timestamp.today().year - pd.to_datetime(df["received_date"]).min().year
         row["yrs_since_last"] = pd.Timestamp.today().year - pd.to_datetime(df["received_date"]).max().year
-        row["first_donation_year"] = pd.to_datetime(df["received_date"]).min().year
-
+        row["first_donation_year"] = int(pd.to_datetime(df["received_date"]).min().year)
 
         # Step 3: write to a row of the CSV
         writer.writerow(row)
