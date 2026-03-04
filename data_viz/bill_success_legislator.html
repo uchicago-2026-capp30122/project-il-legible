@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "arc", "color": "maroon"}, "encoding": {"color": {"field": "category", "type": "nominal"}, "theta": {"field": "num_bills", "type": "quantitative"}}, "title": "Bill Introduction and Passage"}, {"mark": {"type": "text", "radius": 150, "size": 20}, "encoding": {"color": {"field": "category", "type": "nominal"}, "text": {"field": "num_bills", "type": "quantitative"}, "theta": {"field": "num_bills", "type": "quantitative"}}, "title": "Bill Introduction and Passage"}], "data": {"name": "data-dc3bc5ec7a1a84214116e60424c5ca4f"}, "height": 400, "width": 300, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-dc3bc5ec7a1a84214116e60424c5ca4f": [{"category": "Introduced", "num_bills": 69.0}, {"category": "Passed", "num_bills": 0.072463768115942}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

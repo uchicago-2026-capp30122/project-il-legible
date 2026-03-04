@@ -1,7 +1,7 @@
 import pandas as pd
 import altair as alt
 
-FILENAME = "final_data/sponsors.csv"
+FILENAME = "../final_data/sponsors.csv"
 main_df = pd.read_csv(FILENAME)
 MAIN_COLOR = "maroon"
 SIZE = 60
@@ -63,13 +63,17 @@ def num_bills_total_donations_scatter(df):
             )
         )
 
-    chart=(
+    base = (
         alt.Chart(df)
         .add_params(donation_choice)
         .transform_calculate(
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
+        )
+
+    points = (
+        base
         .mark_circle(size=SIZE, color=MAIN_COLOR)
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
@@ -79,8 +83,22 @@ def num_bills_total_donations_scatter(df):
                 alt.Tooltip("total_all", title="All-time Donations"),
                 alt.Tooltip("total_L3", title="Last 3 years Donations"),
                 alt.Tooltip("num_bills", title="Bills Introduced")
-            ]
+                ]
             )
+        )
+    
+    line = (
+        base
+        .transform_regression("donation_x", "num_bills")
+        .mark_line(color="black")
+        .encode(
+            x = "donation_x:Q",
+            y = "num_bills:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
         .interactive()
         .properties(title="Total Donations vs Number of Bills Introduced in 102nd & 103rd Sessions")
     )
@@ -99,13 +117,17 @@ def num_bills_total_donations_scatter_wo_outliers(df):
             )
         )
 
-    chart=(
+    base = (
         alt.Chart(df_filtered)
         .add_params(donation_choice)
         .transform_calculate(
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
+        )
+
+    points = (
+        base
         .mark_circle(size=SIZE, color=MAIN_COLOR)
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
@@ -115,8 +137,22 @@ def num_bills_total_donations_scatter_wo_outliers(df):
                 alt.Tooltip("total_all", title="All-time Donations"),
                 alt.Tooltip("total_L3", title="Last 3 years Donations"),
                 alt.Tooltip("num_bills", title="Bills Introduced")
-            ]
+                ]
             )
+        )
+    
+    line = (
+        base
+        .transform_regression("donation_x", "num_bills")
+        .mark_line(color="black")
+        .encode(
+            x = "donation_x:Q",
+            y = "num_bills:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
         .interactive()
         .properties(title="Total Donations vs Number of Bills Introduced in 102nd & 103rd Sessions")
     )
@@ -172,7 +208,7 @@ def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.LayerChart:
         An Altair Chart
     """
     legislator_bills = df[df["name"] == name]["num_bills"].mean()
-    legislator_passed = df[df["name"] == name]["bills_passed"].mean()
+    legislator_passed = df[df["name"] == name]["pct_bills_passed"].mean()
 
     bill_success_df = pd.DataFrame({
         "category": ["Introduced", "Passed"],
@@ -195,7 +231,109 @@ def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.LayerChart:
 
     return pie + text
 
+def num_bills_entity_donations_scatter(df):
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All time",
+        bind=alt.binding_select(
+            options=["All time", "Last 3 years"],
+            name="Donations: "
+            )
+        )
 
+    base = (
+        alt.Chart(df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            donation_x=
+            "DonationWindow == 'All time' ? datum.amt_allcond_all : datum.amt_allcond_L3"
+            )
+        )
+
+    points = (
+        base
+        .mark_circle(size=SIZE, color=MAIN_COLOR)
+        .encode(
+            x = alt.X("donation_x:Q", title="Donation Amount from Entities"),
+            y = alt.Y("num_bills", title="Number of Bills Introduced"),
+            tooltip=[
+                alt.Tooltip("name", title="Legislator"),
+                alt.Tooltip("amt_allcond_all", title="All-time Entity Donations"),
+                alt.Tooltip("amt_allcond_L3", title="Last 3 years Entity Donations"),
+                alt.Tooltip("num_bills", title="Bills Introduced")
+                ]
+            )
+        )
+    
+    line = (
+        base
+        .transform_regression("donation_x", "num_bills")
+        .mark_line(color="black")
+        .encode(
+            x = "donation_x:Q",
+            y = "num_bills:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
+        .interactive()
+        .properties(title="Entity Donations vs Number of Bills Introduced in 102nd & 103rd Sessions")
+    )
+
+    return chart
+
+def bill_passage_pct_entity_donations_scatter(df):
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All time",
+        bind=alt.binding_select(
+            options=["All time", "Last 3 years"],
+            name="Donations: "
+            )
+        )
+
+    base = (
+        alt.Chart(df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            donation_x=
+            "DonationWindow == 'All time' ? datum.pct_c_allcond_all : datum.pct_c_allcond_L3"
+            )
+        )
+
+    points = (
+        base
+        .mark_circle(size=SIZE, color=MAIN_COLOR)
+        .encode(
+            x = alt.X("donation_x:Q", title="Percentage of Donation Counts from Entities"),
+            y = alt.Y("pct_bills_passed", title="Bill Passage Rate"),
+            tooltip=[
+                alt.Tooltip("name", title="Legislator"),
+                alt.Tooltip("pct_c_allcond_all", title="All-time Entity Donation Percentage"),
+                alt.Tooltip("pct_c_allcond_L3", title="Last 3 years Entity Donation Percentage"),
+                alt.Tooltip("pct_bills_passed", title="Bill Passage Rate")
+                ]
+            )
+        )
+    
+    line = (
+        base
+        .transform_regression("donation_x", "pct_bills_passed")
+        .mark_line(color="black")
+        .encode(
+            x = "donation_x:Q",
+            y = "pct_bills_passed:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
+        .interactive()
+        .properties(title="Entity Donation Percentage vs Bill Passage Rate in 102nd & 103rd Sessions")
+    )
+
+    return chart
 
 if __name__ == "__main__":
     chart1 = total_donations_hist(main_df)
@@ -222,3 +360,11 @@ if __name__ == "__main__":
     chart6 = bill_success_legislator(main_df, "Omar Aquino")
     chart6.save("bill_success_legislator.html")
     print("Saved chart to bill_success_legislator.html")
+
+    chart7 = num_bills_entity_donations_scatter(main_df)
+    chart7.save("num_bills_entity_donations_scatter.html")
+    print("Saved chart to num_bills_entity_donations_scatter.html")
+
+    chart8 = bill_passage_pct_entity_donations_scatter(main_df)
+    chart8.save("bill_passage_pct_entity_donations_scatter.html")
+    print("Saved chart to nbill_passage_pct_entity_donations_scatter.html")
