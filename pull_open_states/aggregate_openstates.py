@@ -3,7 +3,6 @@ import exploration.explore as ex
 import re
 from pathlib import Path
 
-# Create all_data object - dictionary with all sub-tables
 
 def load_datasets() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """

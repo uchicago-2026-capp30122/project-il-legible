@@ -1,7 +1,7 @@
 from flask import (
     Blueprint
 )
-
+import math
 from werkzeug.exceptions import abort
 
 bp = Blueprint('template_filters', __name__)
@@ -14,6 +14,14 @@ def currency_format(value, currency_symbol="$"):
     value = float(value)
     return f"{currency_symbol}{value:,.2f}"
 
+
+@bp.app_template_filter('long_currency_format')
+def long_currency_format(n):
+    n = float(n)
+    millnames = ['', 'K', 'M', 'B', 'T']
+    idx = max(0, min(len(millnames)-1, int(math.floor(0 if n == 0 else math.log10(abs(n))/3))))
+    val = n / 10**(3 * idx)    
+    return f'${val:.2f}{millnames[idx]}'
 
 @bp.app_template_filter('percent_format')
 def percent_format(value):

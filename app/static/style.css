@@ -22,3 +22,17 @@
     text-align: center;
     z-index: 1;
 }
+
+.effective-score{
+    width: 30px;
+    height: 30px;
+}
+
+.effective-score > span{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    align-content: center;
+    border-radius: 5px;
+}
+

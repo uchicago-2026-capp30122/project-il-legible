@@ -1,10 +1,9 @@
-from app import db
+from app import db, create_app
 from app.models import Bill, Sponsor
 from sqlalchemy import select
 from pathlib import Path
 import datetime
 import csv
-
 
 def seed_db():
     create_sponsors()
@@ -25,11 +24,11 @@ def create_bills():
                         organization_classification = row["organization_classification"],
                         first_action = datetime.date(int(fa_year), int(fa_month), int(fa_day)) if row["first_action"] else None,
                         num_sponsors = int(row["num_sponsors"]),
-                        became_law = bool(row["became_law"]),
-                        referred_to_committee = bool(row["referred_to_committee"]),
+                        became_law = eval(row["became_law"]),
+                        referred_to_committee = eval(row["referred_to_committee"]),
                         committee_passages = int(row["committee_passages"]),
-                        passed_first_chamber = bool(row["passed_first_chamber"]),
-                        passed_full_legislature = bool(row["passed_full_legislature"])
+                        passed_first_chamber = eval(row["passed_first_chamber"]),
+                        passed_full_legislature = eval(row["passed_full_legislature"])
                 )
                 sponsor = db.session.scalar(select(Sponsor).where(Sponsor.name == row["primary_sponsor_1_clean"]))
                 b.sponsor_id = sponsor.id

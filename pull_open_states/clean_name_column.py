@@ -78,7 +78,8 @@ def specific_name_changes(clean_name: str) -> str:
 
 def clean_sponsor_names(bills: pd.DataFrame) -> pd.DataFrame:
     """
-    Apply sponsor name cleaning rules to both Sponsor Names column in the
+    Apply sponsor name cleaning rules to both Sponsor Names column in a 
+    sponsors DataFrame.
 
     Inputs:
         bills_cleaned (pd.DataFrame): A dataframe with summarized bill information
@@ -90,7 +91,6 @@ def clean_sponsor_names(bills: pd.DataFrame) -> pd.DataFrame:
     sponsor_cols = ["primary_sponsor_1", "primary_sponsor_2"]
     for col in sponsor_cols:
         bills[f"{col}_clean"] = bills[f"{col}"].fillna("").apply(general_name_cleaning).apply(specific_name_changes)
-        #bills[f"{col}_clean"] = bills[f"{col}_clean"]
     bills.drop(bills.columns[0], axis = 1, inplace=True)
 
     return bills
