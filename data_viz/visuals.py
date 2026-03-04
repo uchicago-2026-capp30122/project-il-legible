@@ -159,7 +159,7 @@ def bills_introduced_legislator(df: pd.DataFrame, name: str) -> alt.Chart:
     return chart
 
 
-def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.LayerChart:
+def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.Chart:
     """
     Create a pie chart (my apologies in advance) showing the number of bills 
     introduced by a specific legislator compared to an average.
@@ -171,29 +171,38 @@ def bill_success_legislator(df: pd.DataFrame, name: str) -> alt.LayerChart:
     Returns:
         An Altair Chart
     """
-    legislator_bills = df[df["name"] == name]["num_bills"].mean()
-    legislator_passed = df[df["name"] == name]["bills_passed"].mean()
+    legislator_passed = df[df["name"] == name]["pct_bills_passed"].mean()
 
     bill_success_df = pd.DataFrame({
-        "category": ["Introduced", "Passed"],
-        "num_bills": [legislator_bills, legislator_passed]
+        "Legend": ["Passed", "Failed"],
+        "num_bills": [legislator_passed, 1 - legislator_passed]
     })
 
     base=(
         alt.Chart(bill_success_df)
         .encode(
             theta="num_bills",
-            color="category")
-        .properties(title="Bill Introduction and Passage",
-            width = 300,
-            height = 400
+            color=alt.Color(
+                "Legend",
+                scale=alt.Scale(
+                    domain=["Passed", "Failed"],
+                    range=["#062F8E", "#7C7C7C"]
+                    ),
+                legend=alt.Legend(
+                    titleFontSize=18,
+                    labelFontSize=18
+                    )
+                ))   
+        .properties(title="Bill Passage",
+            width = 200,
+            height = 250
         )
     )
 
-    pie = base.mark_arc(color=MAIN_COLOR)
-    text = base.mark_text(radius=150, size=20).encode(text="num_bills")
+    pie = base.mark_arc(color=MAIN_COLOR, outerRadius= 100)
+    # text = base.mark_text(radius=120, size=20).encode(text="num_bills")
 
-    return pie + text
+    return pie
 
 
 

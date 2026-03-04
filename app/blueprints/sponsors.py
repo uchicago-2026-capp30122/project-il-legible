@@ -22,6 +22,7 @@ def show(sponsor_id):
     query = select(Sponsor).filter(Sponsor.id == sponsor_id)
     sponsor = db.session.scalar(query)
     num_bills = viz.num_bills_bar(sponsor.name, select(Sponsor))
+    perc_passing = viz.bill_success_legislator(sponsor.name, select(Sponsor))
     return render_template('sponsors/show.html', sponsor=sponsor,
                            num_bills=num_bills.to_json())
 
