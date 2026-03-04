@@ -86,10 +86,14 @@ def bills_by_donations_scatter(sponsors):
                 alt.Tooltip("total_all", title="All-time Donations"),
                 alt.Tooltip("total_L3", title="Last 3 years Donations"),
                 alt.Tooltip("num_bills", title="Bills Introduced")
-            ]
+            ],
+            href="url:N"
             )
         .interactive()
         .properties(title="Total Donations vs Number of Bills Introduced in 102nd & 103rd Sessions", width="container")
+        .transform_calculate(
+            url='/sponsors/' + alt.datum.id
+        )
     )
 
     return chart

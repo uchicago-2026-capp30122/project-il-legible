@@ -41,31 +41,41 @@
         <div class="card border rounded d-block bg-secondary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
-                    {{ sponsors | length }}
+                    {{ summary_stats["bill_passage_rate"] | percent_format }}
                 </h1>
-                <span class="text-white">Sponsors analyzed</span>
+                <span class="text-white">Overall Bill Passage Rate</span>
             </div>
         </div>
     </div>
 </div>
 <div class="row mt-3">
-    <div class="col-6">
+    <div class="col-4">
         <div class="card border rounded d-block bg-secondary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
-                    {{ summary_stats["total_donations"] | currency_format }}
+                    {{ summary_stats["total_donations"] | long_currency_format }}
                 </h1>
                 <span class="text-white">In total donations</span>
             </div>
         </div>
     </div>
-    <div class="col-6">
+    <div class="col-4">
         <div class="card border rounded d-block bg-secondary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
-                    {{ summary_stats["last_three_donations"] | currency_format }}
+                    {{ summary_stats["last_three_donations"] | long_currency_format }}
                 </h1>
-                <span class="text-white">In donations in the last three years</span>
+                <span class="text-white">In donations for the last three years</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["average_donation"] | currency_format }}
+                </h1>
+                <span class="text-white">Average Donation Value</span>
             </div>
         </div>
     </div>
@@ -134,7 +144,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3> Bills By Total Donations </h3>
+                <h3> Total Donations by Bills Introduced </h3>
             </div>
             <div class="card-body">
                 <div id="bills-by-donations" class="w-100"></div>
