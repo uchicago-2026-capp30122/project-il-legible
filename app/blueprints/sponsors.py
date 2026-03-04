@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 from app import db
 from app.models import Sponsor
 from sqlalchemy import select
+from app.blueprints import viz
 
 bp = Blueprint('sponsors', __name__)
 
@@ -20,5 +21,7 @@ def index():
 def show(sponsor_id):
     query = select(Sponsor).filter(Sponsor.id == sponsor_id)
     sponsor = db.session.scalar(query)
-    return render_template('sponsors/show.html', sponsor=sponsor)
+    num_bills = viz.num_bills_bar(sponsor.name, select(Sponsor))
+    return render_template('sponsors/show.html', sponsor=sponsor,
+                           num_bills=num_bills.to_json())
 

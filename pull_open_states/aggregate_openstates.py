@@ -1,10 +1,8 @@
 import pandas as pd
 import exploration.explore as ex
-import matplotlib as plot
 import re
 from pathlib import Path
 
-# Create all_data object - dictionary with all sub-tables
 
 def load_datasets() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
@@ -42,7 +40,7 @@ def summarize_actions(bill_actions: pd.DataFrame) -> pd.DataFrame:
         bill_actions (pd.DataFrame): Contains every action associated with bills
     
     Outputs:
-        A one-to-one mapping of bills to summarized actions
+        A DataFrame with one-to-one mapping of bills to summarized actions
     """
     actions_summary = bill_actions.groupby("bill_id").agg(
         first_action = ("date", "min"),
@@ -55,7 +53,7 @@ def summarize_actions(bill_actions: pd.DataFrame) -> pd.DataFrame:
     return actions_summary
 
 
-def summarize_sponsors(bill_sponsorships):
+def summarize_sponsors(bill_sponsorships: pd.DataFrame) -> pd.DataFrame:
     """
     Summarizes a DataFrame with many-to-one sponsors-to-bills into one-to-one
     relationships for key fields.
@@ -64,7 +62,7 @@ def summarize_sponsors(bill_sponsorships):
         bill_actions (pd.DataFrame): Contains every action associated with bills
     
     Outputs:
-        A one-to-one mapping of bills to summarized sponsors
+        A DataFrame with one-to-one mapping of bills to summarized sponsors
     """
     sponsors_stats = bill_sponsorships.groupby("bill_id").agg(
         num_sponsors = ("id", "count"))
@@ -74,7 +72,7 @@ def summarize_sponsors(bill_sponsorships):
         primary_sponsor_1 = ("name", "min"),
         primary_sponsor_2 = ("name", "max"))
 
-    # For bills with only 1 primary sponsor, clear out primary_sponsor_2
+    # For bills with only 1 primary sponsor, clear primary_sponsor_2
     primary_sponsors_summary.loc[primary_sponsors_summary["primary_sponsor_2"] == 
                                  primary_sponsors_summary["primary_sponsor_1"], "primary_sponsor_2"] = pd.NA
 
@@ -86,6 +84,18 @@ def summarize_sponsors(bill_sponsorships):
 
 def merge_datasets(bills: pd.DataFrame, actions_summary: pd.DataFrame, 
                    sponsors_summary: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create a final combined dataset, with one row for each bill, and with all
+    associated summary fields.
+
+    Inputs:
+        bills (pd.DataFrame): Basic identifiers for each bill
+        actions_summary: Key action stats, summarized for each bill
+        sponsors_summary: Key sponsorship stats, summarized for each bill
+    
+    Outputs:
+        A single DataFrame with all bills and all relevant summary stats
+    """
     
     intermediate_df = bills.merge(actions_summary, how="inner", left_on="id", right_on="bill_id")
     final_df = intermediate_df.merge(sponsors_summary, how="inner", left_on="id", right_on="bill_id")
