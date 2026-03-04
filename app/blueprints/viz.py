@@ -103,18 +103,12 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
                     domain=["Passed", "Failed"],
                     range=["#062F8E", "#7C7C7C"]
                     ),
-                legend=alt.Legend(
-                    titleFontSize=18,
-                    labelFontSize=18
-                    )
+                legend=None
                 ))   
-        .properties(title="Bill Passage",
-            width = 200,
-            height = 250
-        )
+        .properties(title="Bill Passage", width=250)
     )
 
-    pie = base.mark_arc(color=MAIN_COLOR, outerRadius= 100)
+    pie = base.mark_arc(color=MAIN_COLOR)
 
     return pie
 
