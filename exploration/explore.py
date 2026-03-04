@@ -7,14 +7,9 @@ from pathlib import Path
 import pandas as pd
 
 INCLUDED_DATA = {
-    "bill_abstracts",
     "actions",
     "bill_sponsorships",
-    "bills",
-    "organizations",
-    "vote_counts",
-    "votes",
-    "vote_people"
+    "bills"
 }
 
 def main():
