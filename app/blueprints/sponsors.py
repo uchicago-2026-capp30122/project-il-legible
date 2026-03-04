@@ -19,9 +19,13 @@ def index():
 
 @bp.route("/sponsors/<int:sponsor_id>")
 def show(sponsor_id):
+    sponsor_query = select(Sponsor)
     query = select(Sponsor).filter(Sponsor.id == sponsor_id)
     sponsor = db.session.scalar(query)
-    num_bills = viz.num_bills_bar(sponsor.name, select(Sponsor))
-    return render_template('sponsors/show.html', sponsor=sponsor,
-                           num_bills=num_bills.to_json())
+
+    charts = {
+        "num_bills": viz.num_bills_bar(sponsor.name, sponsor_query).to_json(),
+        "perc_passing": viz.bill_success_legislator(sponsor.name, sponsor_query).to_json(),
+    }
+    return render_template('sponsors/show.html', sponsor = sponsor, charts = charts)
 

@@ -13,9 +13,38 @@
         <div class="col">
             <div id="bills_bar"></div> 
         </div>
+        <div class="col">
+            <div class="row text-center">
+                <div id="bills_pass_pie"></div> 
+            </div>
+            <div class="row">
+                <div class="text-center">
+                        <p class="fw-bold fs-1" style="color: #062F8E;"">{{ sponsor.pct_bills_passed | percent_format }}</p>
+                        <p class="fs-4">of bills with {{ sponsor.name}} as a primary sponsor pass</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="card mb-3">
+                    <div class="card-header">Number of Bills Sponsored</div>
+                    <div class="card-body">
+                        <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
+                    </div>
+                </div>
+            </div>
+        <div class="row">
+            <div class="card mb-3">
+                <div class="card-header">Effectiveness Score</div>
+                <div class="card-body">
+                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
     <div class="row">
-        <h4> Key Stats </h4>
+        <h4> Donations </h4>
         <div class="col">
             <div class="card mb-3">
                 <div class="card-header">Lifetime Donation Count</div>
@@ -40,38 +69,24 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card mb-3">
-                <div class="card-header">Number of Bills Sponsored</div>
-                <div class="card-body">
-                    <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mb-3">
-                <div class="card-header">Percent Sponsored Bills Passed</div>
-                <div class="card-body">
-                    <p class="card-text display-3">{{ sponsor.pct_bills_passed | percent_format }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card mb-3">
-                <div class="card-header">Effectiveness Score</div>
-                <div class="card-body">
-                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
-                </div>
-            </div>
-        </div>
     </div>
     <script type="text/javascript">
         // Get the chart specification from the Jinja template variable
         // The 'safe' filter ensures the JSON is not escaped
-        var spec = {{ num_bills | safe }};
+        var spec = {{ charts["num_bills"] | safe }};
 
         // Embed the chart using vegaEmbed
         vegaEmbed('#bills_bar', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ charts["perc_passing"] | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#bills_pass_pie', spec, {
             actions: false // Optional: hides the action links (e.g., "View Source")
         }).catch(console.error);
     </script>

@@ -73,8 +73,44 @@ def num_bills_bar(sponsor_name: str, sponsors):
 
     return chart
 
+def bill_success_legislator(name: str, sponsors) -> alt.Chart:
+    """
+    Create a pie chart (my apologies in advance) showing the number of bills 
+    introduced by a specific legislator compared to an average.
 
+    Inputs:
+        df: Dataframe with legislator and bill data
+        name: Legislator's name
+    
+    Returns:
+        An Altair Chart
+    """
+    df = pd.read_sql(sponsors, db.engine)
+    legislator_passed = df[df["name"] == name]["pct_bills_passed"].mean()
 
+    bill_success_df = pd.DataFrame({
+        "Legend": ["Passed", "Failed"],
+        "num_bills": [legislator_passed, 1 - legislator_passed]
+    })
+
+    base=(
+        alt.Chart(bill_success_df)
+        .encode(
+            theta="num_bills",
+            color=alt.Color(
+                "Legend",
+                scale=alt.Scale(
+                    domain=["Passed", "Failed"],
+                    range=["#062F8E", "#7C7C7C"]
+                    ),
+                legend=None
+                ))   
+        .properties(title="Bill Passage", width=250)
+    )
+
+    pie = base.mark_arc(color=MAIN_COLOR)
+
+    return pie
 
 def average_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
