@@ -5,15 +5,27 @@
         <div class="col">
             <h3 class="display-3"> {{ sponsor.name}} </h3>
             <p class="lead"> {{ sponsor.organization_classification | capitalize }} House Representative</p>
-            <p class="lead"> First Donation Received in {{ sponsor.first_donation_year}} </p>
+            <p class="lead"> First Donation Received in {{ sponsor.first_donation_year[:4]}} </p>
         </div>
     </div>  
     <div class="row">
-        <h4> Bills </h4>
-        <div class="col">
-            <div id="bills_bar"></div> 
+        <h3> Bills </h3>
+        <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="card mb-3 w-75 text-center">
+                <div class="card-header">Number of Bills Sponsored</div>
+                <div class="card-body justify-content-center">
+                    <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
+                </div>
+            </div>
+
+            <div class="card mb-3 w-75 text-center">
+                <div class="card-header">Effectiveness Score</div>
+                <div class="card-body justify-content-center">
+                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
+                </div>
+            </div>
         </div>
-        <div class="col">
+        <div class="col-4">
             <div class="row text-center">
                 <div id="bills_pass_pie"></div> 
             </div>
@@ -24,23 +36,8 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="row">
-                <div class="card mb-3">
-                    <div class="card-header">Number of Bills Sponsored</div>
-                    <div class="card-body">
-                        <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
-                    </div>
-                </div>
-            </div>
-        <div class="row">
-            <div class="card mb-3">
-                <div class="card-header">Effectiveness Score</div>
-                <div class="card-body">
-                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
-                </div>
-            </div>
-        </div>
+        <div class="col-4">
+            <div id="bills_bar"></div> 
         </div>
     </div>
     <div class="row">

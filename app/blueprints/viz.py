@@ -55,7 +55,7 @@ def num_bills_bar(sponsor_name: str, sponsors):
     median_bills = df["num_bills"].median()
 
     legislator_df = pd.DataFrame({
-        "names": ["Median", sponsor_name],
+        "names": ["Median Sponsor", sponsor_name],
         "num_bills": [median_bills, legislator_bills]
     })
     
@@ -63,9 +63,20 @@ def num_bills_bar(sponsor_name: str, sponsors):
         alt.Chart(legislator_df)
         .mark_bar(color=MAIN_COLOR)
         .encode(
-            x = alt.X("names", title="Legislator", axis=alt.Axis(labelAngle=0)),
-            y = alt.Y("num_bills", title="Number of Bills Introduced"))
-        .properties(title="Bills Introduced in 102nd & 103rd Sessions",
+            x = alt.X("names", title="",
+                        axis=alt.Axis(
+                            labelAngle=0,
+                            labelFontSize=15,
+                            grid=False)),
+            y = alt.Y("num_bills", title="",
+                        axis=alt.Axis(
+                            labelFontSize=12,
+                            grid=False)))
+        .properties(
+            title=alt.TitleParams(
+            text="Number of Bills Sponsored",
+            fontSize=20
+        ),
             width = 300,
             height = 400
         )
@@ -104,8 +115,17 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
                     range=["#062F8E", "#7C7C7C"]
                     ),
                 legend=None
-                ))   
-        .properties(title="Bill Passage", width=250)
+                ),
+            tooltip=[
+                alt.Tooltip("Legend", title="Outcome"),
+                alt.Tooltip("num_bills:Q", title="Percent", format=".2%")
+                ])   
+        .properties(
+            title=alt.TitleParams(
+            text="Bill Passage",
+            fontSize=20
+        ),
+            width=250)
     )
 
     pie = base.mark_arc(color=MAIN_COLOR)
