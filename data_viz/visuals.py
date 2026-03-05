@@ -344,6 +344,197 @@ def bill_passage_pct_entity_donations_scatter(df):
 
     return chart
 
+def large_donation_barchart(df, name):
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": ["Large Donations", "Small Donations"],
+        "percent_all": [
+            float(person["pct_c_above_all"]) * 100,
+            100 - float(person["pct_c_above_all"]) * 100
+        ],
+        "percent_L3": [
+            float(person["pct_c_above_L3"]) * 100,
+            100 - float(person["pct_c_above_L3"]) * 100
+        ],
+    })
+
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All time",
+        bind=alt.binding_select(
+            options=["All time", "Last 3 years"],
+            name="Donations: "
+            )
+        )
+    
+    base = (
+        alt.Chart(chart_df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            pct_selected="DonationWindow == 'All time' ? datum.percent_all : datum.percent_L3"
+        )
+    )
+
+    bars = (
+        base
+        .mark_bar(color=MAIN_COLOR)
+        .encode(
+            x=alt.X(
+                "pct_selected:Q",
+                title="",
+                scale=alt.Scale(domain=[0,100]),
+                axis=alt.Axis(grid=False)
+                ),
+            y=alt.Y("category:N", title="")
+            )
+        )
+    
+    labels = (
+        base
+        .mark_text(
+            align="left",
+            dx=3
+        )
+        .encode(
+            x="pct_selected:Q",
+            y="category:N",
+            text=alt.Text("pct_selected:Q", format=".1f")
+        )
+    )
+    
+    chart = (bars + labels).properties(title=f"Percentage of Large vs Small Donations for {name}")
+        
+    return chart
+
+def entity_donation_barchart(df, name):
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": ["Entity Donations", "Individual Donations"],
+        "percent_all": [
+            float(person["pct_c_allcond_all"]) * 100,
+            100 - float(person["pct_c_allcond_all"]) * 100
+        ],
+        "percent_L3": [
+            float(person["pct_c_allcond_L3"]) * 100,
+            100 - float(person["pct_c_allcond_L3"]) * 100
+        ],
+    })
+
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All time",
+        bind=alt.binding_select(
+            options=["All time", "Last 3 years"],
+            name="Donations: "
+            )
+        )
+    
+    base = (
+        alt.Chart(chart_df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            pct_selected="DonationWindow == 'All time' ? datum.percent_all : datum.percent_L3"
+        )
+    )
+
+    bars = (
+        base
+        .mark_bar(color=MAIN_COLOR)
+        .encode(
+            x=alt.X(
+                "pct_selected:Q",
+                title="",
+                scale=alt.Scale(domain=[0,100]),
+                axis=alt.Axis(grid=False)
+                ),
+            y=alt.Y("category:N", title="")
+            )
+        )
+    
+    labels = (
+        base
+        .mark_text(
+            align="left",
+            dx=3
+        )
+        .encode(
+            x="pct_selected:Q",
+            y="category:N",
+            text=alt.Text("pct_selected:Q", format=".1f")
+        )
+    )
+    
+    chart = (bars + labels).properties(title=f"Percentage of Entity vs Individual Donations for {name}")
+        
+    return chart
+
+def in_state_donation_barchart(df, name):
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": ["In-State Donations", "Out-of-State Donations"],
+        "percent_all": [
+            float(person["pct_c_IL_all"]) * 100,
+            100 - float(person["pct_c_IL_all"]) * 100
+        ],
+        "percent_L3": [
+            float(person["pct_c_IL_L3"]) * 100,
+            100 - float(person["pct_c_IL_L3"]) * 100
+        ],
+    })
+
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All time",
+        bind=alt.binding_select(
+            options=["All time", "Last 3 years"],
+            name="Donations: "
+            )
+        )
+    
+    base = (
+        alt.Chart(chart_df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            pct_selected="DonationWindow == 'All time' ? datum.percent_all : datum.percent_L3"
+        )
+    )
+
+    bars = (
+        base
+        .mark_bar(color=MAIN_COLOR)
+        .encode(
+            x=alt.X(
+                "pct_selected:Q",
+                title="",
+                scale=alt.Scale(domain=[0,100]),
+                axis=alt.Axis(grid=False)
+                ),
+            y=alt.Y("category:N", title="")
+            )
+        )
+    
+    labels = (
+        base
+        .mark_text(
+            align="left",
+            dx=3
+        )
+        .encode(
+            x="pct_selected:Q",
+            y="category:N",
+            text=alt.Text("pct_selected:Q", format=".1f")
+        )
+    )
+    
+    chart = (bars + labels).properties(title=f"Percentage of In-State vs Out-of-State Donations for {name}")
+        
+    return chart
+
+
+
 if __name__ == "__main__":
     chart1 = total_donations_hist(main_df)
     chart1.save("total_donations_hist.html")
@@ -376,4 +567,16 @@ if __name__ == "__main__":
 
     chart8 = bill_passage_pct_entity_donations_scatter(main_df)
     chart8.save("bill_passage_pct_entity_donations_scatter.html")
-    print("Saved chart to nbill_passage_pct_entity_donations_scatter.html")
+    print("Saved chart to bill_passage_pct_entity_donations_scatter.html")
+
+    chart9 = large_donation_barchart(main_df, "Deb Conroy")
+    chart9.save("large_donation_barchart.html")
+    print("Saved chart to large_donation_barchart.html")
+
+    chart10 = entity_donation_barchart(main_df, "Deb Conroy")
+    chart10.save("entity_donation_barchart.html")
+    print("Saved chart to lentity_donation_barchart.html")
+
+    chart11 = in_state_donation_barchart(main_df, "Deb Conroy")
+    chart11.save("in_state_donation_barchart.html")
+    print("Saved chart to in_state_donation_barchart.html")

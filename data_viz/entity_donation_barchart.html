@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "bar", "color": "maroon"}, "encoding": {"x": {"axis": {"grid": false}, "field": "pct_selected", "scale": {"domain": [0, 100]}, "title": "", "type": "quantitative"}, "y": {"field": "category", "title": "", "type": "nominal"}}, "transform": [{"calculate": "DonationWindow == 'All time' ? datum.percent_all : datum.percent_L3", "as": "pct_selected"}]}, {"mark": {"type": "text", "align": "left", "dx": 3}, "encoding": {"text": {"field": "pct_selected", "format": ".1f", "type": "quantitative"}, "x": {"field": "pct_selected", "type": "quantitative"}, "y": {"field": "category", "type": "nominal"}}, "transform": [{"calculate": "DonationWindow == 'All time' ? datum.percent_all : datum.percent_L3", "as": "pct_selected"}]}], "data": {"name": "data-6cf008fc8ebcf0e13bdea0bccb7cc695"}, "params": [{"name": "DonationWindow", "bind": {"input": "select", "options": ["All time", "Last 3 years"], "name": "Donations: "}, "value": "All time"}], "title": "Percentage of Entity vs Individual Donations for Deb Conroy", "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-6cf008fc8ebcf0e13bdea0bccb7cc695": [{"category": "Entity Donations", "percent_all": 26.28865979381443, "percent_L3": 27.55102040816326}, {"category": "Individual Donations", "percent_all": 73.71134020618557, "percent_L3": 72.44897959183675}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
