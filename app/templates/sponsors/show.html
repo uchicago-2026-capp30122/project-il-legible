@@ -10,34 +10,29 @@
     </div>  
     <div class="row">
         <h3> Bills </h3>
-        <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-            <div class="card mb-3 w-75 text-center">
-                <div class="card-header">Number of Bills Sponsored</div>
-                <div class="card-body justify-content-center">
-                    <p class="card-text display-3">{{ sponsor.num_bills | number_format }}</p>
-                </div>
-            </div>
-
-            <div class="card mb-3 w-75 text-center">
-                <div class="card-header">Effectiveness Score</div>
-                <div class="card-body justify-content-center">
-                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
+        <div class="col-4 d-flex flex-column align-items-center">
             <div class="row text-center">
                 <div id="bills_pass_pie"></div> 
             </div>
             <div class="row">
-                <div class="text-center">
-                        <p class="fw-bold fs-1" style="color: #062F8E;"">{{ sponsor.pct_bills_passed | percent_format }}</p>
+                <div class="text-center mx-auto" style="max-width: 300px;">
+                        <p class="fw-bold fs-1" style="color: #062F8E;">{{ sponsor.pct_bills_passed | percent_format }}</p>
                         <p class="fs-4">of bills with {{ sponsor.name}} as a primary sponsor pass</p>
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-5 d-flex flex-column align-items-center">
             <div id="bills_bar"></div> 
+        </div>
+        <div class="col-3 d-flex flex-column justify-content-center">
+            <div class="card mb-3 text-center">
+                <div class="card-header">Effectiveness Score</div>
+                <div class="card-body justify-content-center">
+                    <p class="card-text display-3">{{ sponsor.effectiveness_score | score_format }}
+                        <small class="fs-3 text-muted"> / 100</small>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">

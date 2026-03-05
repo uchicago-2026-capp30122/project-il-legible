@@ -10,14 +10,20 @@ import altair as alt
 
 bp = Blueprint('viz', __name__)
 
-MAIN_COLOR = "maroon"
+COLORS = {
+    "blue": "#1A3C8C",
+    "yellow": "#EBE973",
+    "red": "#8C303C",
+    "charcol": "#404437",
+    "grey": "#E5E7EA"
+}
 SIZE = 60
 
 def total_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["blue"])
         .encode(
             x = alt.X(
                 "total_all",
@@ -61,7 +67,7 @@ def num_bills_bar(sponsor_name: str, sponsors):
     
     chart=(
         alt.Chart(legislator_df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["red"])
         .encode(
             x = alt.X("names", title="",
                         axis=alt.Axis(
@@ -71,7 +77,12 @@ def num_bills_bar(sponsor_name: str, sponsors):
             y = alt.Y("num_bills", title="",
                         axis=alt.Axis(
                             labelFontSize=12,
-                            grid=False)))
+                            grid=False)),
+            tooltip=[
+                alt.Tooltip("names", title=" "),
+                alt.Tooltip("num_bills:Q", title="Count", format=",")
+                ]
+                )
         .properties(
             title=alt.TitleParams(
             text="Number of Bills Sponsored",
@@ -82,7 +93,15 @@ def num_bills_bar(sponsor_name: str, sponsors):
         )
     )
 
-    return chart
+    text = chart.mark_text(
+        dy=-10,
+        fontSize=17,
+        color=COLORS["red"]
+        ).encode(
+        text=alt.Text("num_bills:Q", format=",")
+        )
+
+    return chart + text
 
 def bill_success_legislator(name: str, sponsors) -> alt.Chart:
     """
@@ -112,7 +131,7 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
                 "Legend",
                 scale=alt.Scale(
                     domain=["Passed", "Failed"],
-                    range=["#062F8E", "#7C7C7C"]
+                    range=[COLORS["blue"], COLORS["grey"]]
                     ),
                 legend=None
                 ),
@@ -128,7 +147,7 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
             width=250)
     )
 
-    pie = base.mark_arc(color=MAIN_COLOR)
+    pie = base.mark_arc(color=COLORS["blue"])
 
     return pie
 
@@ -136,7 +155,7 @@ def average_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["blue"])
         .encode(
             x = alt.X(
                 "avg_donation_all",
@@ -172,7 +191,7 @@ def bills_by_donations_scatter(sponsors):
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
-        .mark_circle(size=SIZE, color=MAIN_COLOR)
+        .mark_circle(size=SIZE, color=COLORS["blue"])
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
             y = alt.Y("num_bills", title="Number of Bills Introduced"),
