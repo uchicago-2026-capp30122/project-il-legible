@@ -146,7 +146,7 @@ def main():
     bills_cleaned = clean_sponsor_names(bills)
 
     # Save CSV with full dataset before tirmming down to final versions
-    bills_cleaned.to_csv("pull_open_states/intermediate_data/openstates_w_names_test.csv")
+    bills_cleaned.to_csv("pull_open_states/intermediate_data/openstates_w_names.csv")
 
     output_unique_sponsors_csv(bills_cleaned)
     output_final_bills_csv(bills_cleaned)

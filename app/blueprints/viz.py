@@ -10,14 +10,20 @@ import altair as alt
 
 bp = Blueprint('viz', __name__)
 
-MAIN_COLOR = "maroon"
+COLORS = {
+    "blue": "#1A3C8C",
+    "yellow": "#EBE973",
+    "red": "#8C303C",
+    "charcol": "#404437",
+    "grey": "#E5E7EA"
+}
 SIZE = 60
 
 def total_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["blue"])
         .encode(
             x = alt.X(
                 "total_all",
@@ -55,23 +61,43 @@ def num_bills_bar(sponsor_name: str, sponsors):
     median_bills = df["num_bills"].median()
 
     legislator_df = pd.DataFrame({
-        "names": ["Median", sponsor_name],
+        "names": ["Median Sponsor", sponsor_name],
         "num_bills": [median_bills, legislator_bills]
     })
     
     chart=(
         alt.Chart(legislator_df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["red"])
         .encode(
-            x = alt.X("names", title="Legislator", axis=alt.Axis(labelAngle=0)),
-            y = alt.Y("num_bills", title="Number of Bills Introduced"))
-        .properties(title="Bills Introduced in 102nd & 103rd Sessions",
+            x = alt.X("names", title="",
+                        axis=alt.Axis(
+                            labelAngle=0,
+                            labelFontSize=15,
+                            grid=False)),
+            y = alt.Y("num_bills", title="",
+                        axis=alt.Axis(
+                            labelFontSize=12,
+                            grid=False)),
+            tooltip=[
+                alt.Tooltip("names", title=" "),
+                alt.Tooltip("num_bills:Q", title="Count", format=",")
+                ]
+                )
+        .properties(
             width = 300,
             height = 400
         )
     )
 
-    return chart
+    text = chart.mark_text(
+        dy=-10,
+        fontSize=17,
+        color=COLORS["red"]
+        ).encode(
+        text=alt.Text("num_bills:Q", format=",")
+        )
+
+    return chart + text
 
 def bill_success_legislator(name: str, sponsors) -> alt.Chart:
     """
@@ -101,14 +127,19 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
                 "Legend",
                 scale=alt.Scale(
                     domain=["Passed", "Failed"],
-                    range=["#062F8E", "#7C7C7C"]
+                    range=[COLORS["blue"], COLORS["grey"]]
                     ),
                 legend=None
-                ))   
-        .properties(title="Bill Passage", width=250)
+                ),
+            tooltip=[
+                alt.Tooltip("Legend", title="Outcome"),
+                alt.Tooltip("num_bills:Q", title="Percent", format=".2%")
+                ])   
+        .properties(
+            width=250)
     )
 
-    pie = base.mark_arc(color=MAIN_COLOR)
+    pie = base.mark_arc(color=COLORS["blue"])
 
     return pie
 
@@ -116,7 +147,7 @@ def average_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=MAIN_COLOR)
+        .mark_bar(color=COLORS["blue"])
         .encode(
             x = alt.X(
                 "avg_donation_all",
@@ -152,7 +183,7 @@ def bills_by_donations_scatter(sponsors):
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
-        .mark_circle(size=SIZE, color=MAIN_COLOR)
+        .mark_circle(size=SIZE, color=COLORS["blue"])
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount"),
             y = alt.Y("num_bills", title="Number of Bills Introduced"),
@@ -171,4 +202,61 @@ def bills_by_donations_scatter(sponsors):
         )
     )
 
+    return chart
+
+def large_donation_barchart(name: str, sponsors, time: str):
+    """
+    time: a string equal to to "all" for lifetime donations or "L3" for
+    donations from the last three years
+    """
+    df = pd.read_sql(sponsors, db.engine)
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": ["Large Donations", "Small Donations"],
+        "percent_all": [
+            float(person["pct_c_above_all"]) * 100,
+            100 - float(person["pct_c_above_all"]) * 100
+        ],
+        "percent_L3": [
+            float(person["pct_c_above_L3"]) * 100,
+            100 - float(person["pct_c_above_L3"]) * 100
+        ],
+    })
+    
+    base = (
+        alt.Chart(chart_df)
+        .transform_calculate(
+                pct_selected="percent_" + time
+        ))
+
+    bars = (
+        base
+        .mark_bar(color=COLORS["yellow"])
+        .encode(
+            x=alt.X(
+                "pct_selected:Q",
+                title="",
+                scale=alt.Scale(domain=[0,100]),
+                axis=alt.Axis(grid=False)
+                ),
+            y=alt.Y("category:N", title="")
+            )
+        )
+    
+    labels = (
+        base
+        .mark_text(
+            align="left",
+            dx=3
+        )
+        .encode(
+            x="pct_selected:Q",
+            y="category:N",
+            text=alt.Text("pct_selected:Q", format=".1f")
+        )
+    )
+    
+    chart = (bars + labels).properties(title=f"Percentage of Large vs Small Donations for {name}")
+        
     return chart
