@@ -89,7 +89,7 @@ def output_final_sponsors_csv(sponsors_cleaned: pd.DataFrame) -> None:
                     "num_bills", "pct_bills_passed",
                     "first_donation_year", "effectiveness_score"]
 
-    sponsors_cleaned[cols_final].to_csv("final_data/sponsors_test.csv")
+    sponsors_cleaned[cols_final].to_csv("final_data/sponsors.csv")
 
 
 def main():
