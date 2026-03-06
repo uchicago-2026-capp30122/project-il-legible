@@ -7,7 +7,7 @@
 </div>
 <div class="row mt-5">
     <div class="col-3">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     2
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="col-3">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="col-3">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     {{ summary_stats["total_bills"] | number_format }}
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="col-3">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     {{ summary_stats["bill_passage_rate"] | percent_format }}
@@ -50,7 +50,7 @@
 </div>
 <div class="row mt-3">
     <div class="col-4">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     {{ summary_stats["total_donations"] | long_currency_format }}
@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="col-4">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     {{ summary_stats["last_three_donations"] | long_currency_format }}
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="col-4">
-        <div class="card border rounded d-block bg-secondary text-center text-white border-success">
+        <div class="card border rounded d-block bg-primary text-center text-white border-success">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
                     {{ summary_stats["average_donation"] | currency_format }}

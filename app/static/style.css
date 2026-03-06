@@ -1,3 +1,8 @@
+
+:root {
+    --bs-primary: #ff4136; /* Change the primary color */
+  }
+
 #homepage-hero {
     width: 100vw;
     display: flex;
