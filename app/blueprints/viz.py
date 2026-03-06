@@ -84,10 +84,6 @@ def num_bills_bar(sponsor_name: str, sponsors):
                 ]
                 )
         .properties(
-            title=alt.TitleParams(
-            text="Number of Bills Sponsored",
-            fontSize=20
-        ),
             width = 300,
             height = 400
         )
@@ -140,10 +136,6 @@ def bill_success_legislator(name: str, sponsors) -> alt.Chart:
                 alt.Tooltip("num_bills:Q", title="Percent", format=".2%")
                 ])   
         .properties(
-            title=alt.TitleParams(
-            text="Bill Passage",
-            fontSize=20
-        ),
             width=250)
     )
 
@@ -210,4 +202,61 @@ def bills_by_donations_scatter(sponsors):
         )
     )
 
+    return chart
+
+def large_donation_barchart(name: str, sponsors, time: str):
+    """
+    time: a string equal to to "all" for lifetime donations or "L3" for
+    donations from the last three years
+    """
+    df = pd.read_sql(sponsors, db.engine)
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": ["Large Donations", "Small Donations"],
+        "percent_all": [
+            float(person["pct_c_above_all"]) * 100,
+            100 - float(person["pct_c_above_all"]) * 100
+        ],
+        "percent_L3": [
+            float(person["pct_c_above_L3"]) * 100,
+            100 - float(person["pct_c_above_L3"]) * 100
+        ],
+    })
+    
+    base = (
+        alt.Chart(chart_df)
+        .transform_calculate(
+                pct_selected="percent_" + time
+        ))
+
+    bars = (
+        base
+        .mark_bar(color=COLORS["yellow"])
+        .encode(
+            x=alt.X(
+                "pct_selected:Q",
+                title="",
+                scale=alt.Scale(domain=[0,100]),
+                axis=alt.Axis(grid=False)
+                ),
+            y=alt.Y("category:N", title="")
+            )
+        )
+    
+    labels = (
+        base
+        .mark_text(
+            align="left",
+            dx=3
+        )
+        .encode(
+            x="pct_selected:Q",
+            y="category:N",
+            text=alt.Text("pct_selected:Q", format=".1f")
+        )
+    )
+    
+    chart = (bars + labels).properties(title=f"Percentage of Large vs Small Donations for {name}")
+        
     return chart
