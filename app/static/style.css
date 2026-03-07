@@ -1,21 +1,44 @@
+
+:root {
+    --primary-color: #1A3C8C;
+    --secondary-color: #8C303C;
+    --tertiary-color: #EBE973;
+    --dark-gray: #656565;
+    --light-grey: #E5E7EA;
+  }
+
+.background-primary{
+    background-color: var(--primary-color);
+}
+
+.background-secondary{
+    background-color: var(--secondary-color);
+}
+
+.background-muted{
+    background-color: var(--dark-gray)!important;
+}
+
+.button-primary{
+    background-color: var(--primary-color)!important;
+    color: white!important;
+}
+
+#site-nav{
+    z-index: 100
+}
+
 #homepage-hero {
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh;
-
+    height: 60vh;
+    min-height: max-content;
 }
 
-#hero-background{
-    background-image: url("img/illinois.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: inherit;
-    height: inherit;
-    z-index: 0;
-    position: absolute;
+#hero-logo{
+    width: 80%;
 }
 
 #homepage-hero h1{
@@ -36,3 +59,6 @@
     border-radius: 5px;
 }
 
+#footer{
+    height: 10vh;
+}

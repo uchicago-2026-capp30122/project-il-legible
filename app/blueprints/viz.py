@@ -24,7 +24,7 @@ def total_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=COLORS["blue"])
+        .mark_bar(color=COLORS["red"])
         .encode(
             x = alt.X(
                 "total_all",
@@ -148,7 +148,7 @@ def average_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
-        .mark_bar(color=COLORS["blue"])
+        .mark_bar(color=COLORS["red"])
         .encode(
             x = alt.X(
                 "avg_donation_all",

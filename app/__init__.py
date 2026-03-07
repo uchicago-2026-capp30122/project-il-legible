@@ -3,6 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap5
+from flask_scss import Scss
 
 
 
@@ -22,7 +23,8 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     bootstrap.init_app(app)
-
+    Scss(app)
+    
     # Ensure models are included and associated with the app
 
     from app import models
