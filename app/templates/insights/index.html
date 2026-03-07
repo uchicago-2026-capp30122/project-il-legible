@@ -84,7 +84,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3>Top 5 Most Effective</h3>
+                <h3>Top 5 Most Effective Sponsors</h3>
             </div>
             <ul class="list-group list-group-flush">
 
@@ -103,7 +103,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3>Top 5 Least Effective</h3>
+                <h3>Top 5 Least Effective Sponsors</h3>
             </div>
             <ul class="list-group list-group-flush">
                 {% for sponsor in sponsors[-6:-1] %}
@@ -120,17 +120,17 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h3>Total Donations</h3>
             </div>
             <div class="card-body">
-                <div id="total-donation-history" class="w-100"></div>
+                <div id="total-donation-history" class="w-100 h-100"></div>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h3>Average Donations</h3>
             </div>
@@ -144,7 +144,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3> Total Donations by Bills Introduced </h3>
+                <h3> Total Donations vs Bills Introduced </h3>
             </div>
             <div class="card-body">
                 <div id="bills-by-donations" class="w-100"></div>

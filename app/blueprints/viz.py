@@ -28,18 +28,26 @@ def total_donation_history(sponsors):
         .encode(
             x = alt.X(
                 "total_all",
-                title="Total Donation Amounts",
+                title="Total Donation Amount ($)",
                 bin=alt.Bin(maxbins=50),
                 axis=alt.Axis(
                     tickMinStep=2_000_000,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=15,
                     labelExpr="datum.value % 10000000 === 0 ? format(datum.value, '~s') : ''")
                     ),
             y = alt.Y(
                 'count()',
                 title = "Number of Sponsors",
-                axis=alt.Axis(grid=False))
+                axis=alt.Axis(grid=False, labelFontSize=12, titleFontSize=15,
+                              titlePadding=10)),
+            tooltip=[
+                alt.Tooltip("count()", title="Number of Sponsors", format=","),
+                alt.Tooltip("total_all:Q", bin=True, title="Total Donations Range", format="$,.0f"),
+            ]
             )
-        .properties(title=f"Total Donation Amounts of Primary Sponsors in 102nd & 103rd Sessions", width="container")
+        .properties(width="container")
     )
     
     return chart
@@ -148,20 +156,36 @@ def average_donation_history(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     chart = (
         alt.Chart(df)
+        .transform_bin(
+            ["bin_start", "bin_end"],
+            field="avg_donation_all",
+            bin=alt.Bin(maxbins=50))
         .mark_bar(color=COLORS["red"])
         .encode(
             x = alt.X(
-                "avg_donation_all",
-                title="Average Donation Amount",
-                bin=alt.Bin(maxbins=50),
-                axis=alt.Axis(format="~s")
+                "bin_start:Q",
+                bin="binned",
+                title="Average Donation Amount ($)",
+                axis=alt.Axis(format="~s",
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=15)
                 ),
+            x2="bin_end:Q",
             y = alt.Y(
                 'count()',
                 title = "Number of Sponsors",
-                axis=alt.Axis(grid=False))
+                axis=alt.Axis(grid=False,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=10)),
+            tooltip=[
+                alt.Tooltip("count()", title="Number of Sponsors", format=","),
+                alt.Tooltip("bin_start:Q", title="Average Donation From", format="$,.0f"),
+                alt.Tooltip("bin_end:Q", title="To", format="$,.0f")
+            ],
                 )
-        .properties(title=f"Average Donation Amount of Primary Sponsors in 102nd & 103rd Sessions", width="container")
+        .properties(width="container")
         )
     
     return chart
@@ -186,18 +210,29 @@ def bills_by_donations_scatter(sponsors):
             )
         .mark_circle(size=SIZE, color=COLORS["blue"])
         .encode(
-            x = alt.X("donation_x:Q", title="Total Donation Amount"),
-            y = alt.Y("num_bills", title="Number of Bills Introduced"),
+            x = alt.X("donation_x:Q", title="Total Donation Amount",
+                    axis=alt.Axis(
+                    grid=False,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=15,
+                    labelExpr="datum.value % 10000000 === 0 ? format(datum.value, '~s') : ''")),
+            y = alt.Y("num_bills", title="Number of Bills Introduced",
+                    axis=alt.Axis(
+                    grid=False,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=10)),
             tooltip=[
                 alt.Tooltip("name", title="Legislator"),
-                alt.Tooltip("total_all", title="All-time Donations"),
-                alt.Tooltip("total_L3", title="Last 3 years Donations"),
-                alt.Tooltip("num_bills", title="Bills Introduced")
+                alt.Tooltip("total_all", title="All-time Donations", format="$,.0f"),
+                alt.Tooltip("total_L3", title="Last 3 years Donations", format="$,.0f"),
+                alt.Tooltip("num_bills", title="Bills Introduced", format=",")
             ],
             href="url:N"
             )
         .interactive()
-        .properties(title="Total Donations vs Number of Bills Introduced in 102nd & 103rd Sessions", width="container")
+        .properties(width="container")
         .transform_calculate(
             url='/sponsors/' + alt.datum.id
         )
