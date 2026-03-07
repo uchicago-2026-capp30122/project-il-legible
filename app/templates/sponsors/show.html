@@ -4,7 +4,7 @@
     <div class="row"> 
         <div class="col">
             <h3 class="display-3"> {{ sponsor.name}} </h3>
-            <p class="lead"> {{ sponsor.organization_classification | capitalize }} House Representative</p>
+            <p class="lead mb-1"> {{ sponsor.organization_classification | capitalize }} House Representative</p>
             <p class="lead"> First Donation Received in {{ sponsor.first_donation_year[:4]}} </p>
         </div>
     </div>  
@@ -35,6 +35,11 @@
                     </p>
                 </div>
             </div>
+            <div class="text-end">
+                <a href="#" data-toggle="tooltip" title="The Effectiveness Score is based on both bill passage rate and number of bills sponsored.">
+                    Learn More
+                </a>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -51,21 +56,23 @@
                 <p> </p>
                 <div class="col-4">
                     <div class="card mb-3 text-center h6">
-                        <div class="card-header">Donations Count</div>
+                        <div class="card-header">Total Donations Count</div>
                         <div class="card-body justify-content-center">
                             <p class="card-text display-3">{{ sponsor.donation_count_all | number_format }}</p>
                         </div>
                     </div>
-                    <div class="h4">Large Donations</div>
-                    <div id="large_donations_lifetime"></div> 
+                    <div class="h4">Size of Donations</div>
+                    <div id="large_donations_lifetime" class="w-75"></div> 
                 </div>
                 <div class="col-4">
                     <div class="card mb-3 text-center h6">
-                        <div class="card-header">Donations Amount</div>
+                        <div class="card-header">Total Donations Amount</div>
                         <div class="card-body justify-content-center">
                             <p class="card-text display-3">{{ sponsor.total_all |currency_format }}</p>
                         </div>
                     </div>
+                    <div class="h4">Source of Donations</div>
+                    <div id="entity_donations_lifetime" class="w-75"></div> 
                 </div>
                 <div class="col">
                     <div class="card mb-3 text-center h6">
@@ -74,6 +81,8 @@
                             <p class="card-text display-3">{{ sponsor.avg_donation_all |currency_format }}</p>
                         </div>
                     </div>
+                    <div class="h4">Location of Donations</div>
+                    <div id="state_donations_lifetime" class="w-75"></div> 
                 </div>
             </div>
         </div>
@@ -82,19 +91,23 @@
                 <p> </p>
                 <div class="col-4">
                     <div class="card mb-3 text-center h6">
-                        <div class="card-header">Donations Count</div>
+                        <div class="card-header">Total Donations Count</div>
                         <div class="card-body justify-content-center">
                             <p class="card-text display-3">{{ sponsor.donation_count_L3 | number_format }}</p>
                         </div>
                     </div>
+                    <div class="h4">Size of Donations</div>
+                    <div id="large_donations_L3" class="w-75"></div> 
                 </div>
                 <div class="col-4">
                     <div class="card mb-3 text-center h6">
-                        <div class="card-header">Donations Amount</div>
+                        <div class="card-header">Total Donations Amount</div>
                         <div class="card-body justify-content-center">
                             <p class="card-text display-3">{{ sponsor.total_L3 |currency_format }}</p>
                         </div>
                     </div>
+                    <div class="h4">Source of Donations</div>
+                    <div id="entity_donations_L3" class="w-75"></div> 
                 </div>
                 <div class="col">
                     <div class="card mb-3 text-center h6">
@@ -103,6 +116,8 @@
                             <p class="card-text display-3">{{ sponsor.avg_donation_L3 |currency_format }}</p>
                         </div>
                     </div>
+                    <div class="h4">Location of Donations</div>
+                    <div id="state_donations_L3" class="w-75"></div> 
                 </div>
             </div>
         </div>
@@ -145,6 +160,46 @@
 
         // Embed the chart using vegaEmbed
         vegaEmbed('#large_donations_L3', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ charts["entity_donations_lifetime"] | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#entity_donations_lifetime', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ charts["entity_donations_L3"] | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#entity_donations_L3', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ charts["state_donations_lifetime"] | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#state_donations_lifetime', spec, {
+            actions: false // Optional: hides the action links (e.g., "View Source")
+        }).catch(console.error);
+    </script>
+    <script type="text/javascript">
+        // Get the chart specification from the Jinja template variable
+        // The 'safe' filter ensures the JSON is not escaped
+        var spec = {{ charts["state_donations_L3"] | safe }};
+
+        // Embed the chart using vegaEmbed
+        vegaEmbed('#state_donations_L3', spec, {
             actions: false // Optional: hides the action links (e.g., "View Source")
         }).catch(console.error);
     </script>
