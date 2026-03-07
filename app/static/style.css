@@ -1,26 +1,40 @@
 
 :root {
-    --bs-primary: #ff4136; /* Change the primary color */
+    --primary-color: #1A3C8C;
+    --secondary-color: #8C303C;
+    --tertiary-color: #EBE973;
+    --dark-gray: #404437;
+    --light-grey: #E5E7EA;
   }
+
+.background-primary{
+    background-color: var(--primary-color);
+}
+
+.background-secondary{
+    background-color: var(--secondary-color);
+}
+
+.background-muted{
+    background-color: var(--dark-gray);
+}
+
+.button-primary{
+    background-color: var(--primary-color);
+    color: white;
+}
 
 #homepage-hero {
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 50vw;
 
 }
 
-#hero-background{
-    background-image: url("img/illinois.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: inherit;
-    height: inherit;
-    z-index: 0;
-    position: absolute;
+#hero-logo{
+    height: 85%
 }
 
 #homepage-hero h1{
@@ -41,3 +55,6 @@
     border-radius: 5px;
 }
 
+#footer{
+    height: 10vh;
+}
