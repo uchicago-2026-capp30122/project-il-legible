@@ -7,14 +7,9 @@ from pathlib import Path
 import pandas as pd
 
 INCLUDED_DATA = {
-    "bill_abstracts",
     "actions",
     "bill_sponsorships",
-    "bills",
-    "organizations",
-    "vote_counts",
-    "votes",
-    "vote_people"
+    "bills"
 }
 
 def main():
@@ -34,15 +29,18 @@ def get_all_datasets():
 def get_bills():
     return get_data_from_csv("bills")
 
-def get_votes():
-    return get_data_from_csv("votes")
+def get_actions():
+    return get_data_from_csv("actions")
 
 def get_sponsors():
     return get_data_from_csv("sponsorships")
 
+def get_votes():
+    return get_data_from_csv("votes")
+
 def get_data_from_csv(file_fragment):
-    root_dir = Path(os.getcwd())
-    file_list = list(root_dir.rglob(f"./*/bulk_data/IL/*/*{file_fragment}.csv")) 
+    root_dir = Path(__file__).parent
+    file_list = list(root_dir.rglob(f"bulk_data/IL/*/*{file_fragment}.csv")) 
     df = None
     df = pd.concat((pd.read_csv(f) for f in file_list), ignore_index=True)
     

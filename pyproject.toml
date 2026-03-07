@@ -1,21 +1,29 @@
 [project]
-name = "flaskr"
+name = "project_il_legible"
 version = "0.1.0"
-description = "Add your description here"
+description = "The uv dependency file for Project IL-legible"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "altair>=6.0.0",
     "bootstrap-flask>=2.5.0",
     "coverage>=7.13.4",
     "cssselect>=1.4.0",
     "dotenv>=0.9.9",
     "flask>=3.1.2",
+    "flask-migrate>=4.1.0",
+    "flask-scss>=0.5",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "gunicorn>=25.1.0",
     "httpx>=0.28.1",
     "jupyter>=1.1.1",
     "lxml>=6.0.2",
     "matplotlib>=3.10.8",
     "pandas>=3.0.0",
+    "psycopg2-binary>=2.9.11",
     "pytest>=9.0.2",
+    "python-dotenv>=1.2.1",
     "unidecode>=1.4.0",
 ]
 
@@ -28,4 +36,4 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["flaskr"]
+source = ["app"]

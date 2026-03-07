@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <h1 class="display-3">Key Insights</h1>
+    <span class="lead">Explore the highlights from an analysis of Illinois state legislature data.</span>
+</div>
+<div class="row mt-5">
+    <div class="col-3">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    2
+                </h1>
+                <span class="text-white">Chamber Sessions</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card border rounded d-block background-muted text-center text-white border-success">
+            
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ sponsors | length | number_format }}
+                </h1>
+                <span class="text-white">Sponsors</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["total_bills"] | number_format }}
+                </h1>
+                <span class="text-white">Bills</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["bill_passage_rate"] | percent_format }}
+                </h1>
+                <span class="text-white">Overall Bill Passage Rate</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-4">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["total_donations"] | long_currency_format }}
+                </h1>
+                <span class="text-white">In total donations</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["last_three_donations"] | long_currency_format }}
+                </h1>
+                <span class="text-white">In donations for the last three years</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card border rounded d-block background-muted text-center text-white">
+            <div class="card-body justify-content-center">
+                <h1 class="display-1">
+                    {{ summary_stats["average_donation"] | currency_format }}
+                </h1>
+                <span class="text-white">Average Donation Value</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Top 5 Most Effective</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+
+                {% for sponsor in sponsors[0:5] %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/sponsors/{{sponsor.id}}">{{ sponsor.name }}</a>
+                    <div class="effective-score">
+                        <span class="d-block bg-success text-white">{{ sponsor.effectiveness_score | score_format }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Top 5 Least Effective</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for sponsor in sponsors[-6:-1] %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/sponsors/{{sponsor.id}}">{{ sponsor.name }}</a>
+                    <div class="effective-score">
+                        <span class="d-block bg-danger text-white">{{ sponsor.effectiveness_score | score_format }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Total Donations</h3>
+            </div>
+            <div class="card-body">
+                <div id="total-donation-history" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Average Donations</h3>
+            </div>
+            <div class="card-body">
+                <div id="average-donation-history" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3> Total Donations by Bills Introduced </h3>
+            </div>
+            <div class="card-body">
+                <div id="bills-by-donations" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // Get the chart specification from the Jinja template variable
+    // The 'safe' filter ensures the JSON is not escaped
+    var totalDonations = {{ charts["total_donation_history"] | safe }};
+    var averageDonations = {{ charts["average_donation_history"] | safe }};
+    var billsByDonations = {{ charts["bills_by_donations"] | safe }};
+
+
+    vegaEmbed('#total-donation-history', totalDonations, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+
+    vegaEmbed('#average-donation-history', averageDonations, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+
+    vegaEmbed('#bills-by-donations', billsByDonations, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+</script>
+{% endblock %}

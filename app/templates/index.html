@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="homepage-hero" class="row bg-body-tertiary">
+  <div class="col-md-5 col-sm-12">
+    <div class="d-flex justify-content-center align-items-center">
+      <img id="hero-logo" src="/static/img/logo.svg"/>
+    </div>
+  </div>
+  <div class="col-md-7 col-sm-12 d-flex flex-column justify-content-center align-items-start">
+      <h1 class="display-1">
+        Project IL-legible
+      </h1>
+      <h2><small class="text-muted text-center"> Understanding Illinois state bill, sponsorship, and donation data.</small></h2>
+
+  </div>
+</div>
+<div class="row background-secondary text-light p-5">
+  <div class="d-flex justify-content-center align-items-center col-md-6 p-3">
+    <h1 class="display-3"> Objective </h1>
+  </div>
+  <div class="d-flex justify-content-center flex-column align-items-center col-md-4 p-3">
+    <p class="text-center lead"> 
+      Project IL-legible attempts to analyze and understand the intersection of bill sponsorship and
+      financial contributions to legislatures of the Illinois State General Assembly. We pull and join data 
+      from different data sources to accomplish this, in addition to reporting on the more interesting findings
+      that we've been able to uncover. Our primary goal is to make Illinois legislation data more accessible and
+      readable for a wider audience.
+    </p>
+    <a class="mt-3" href="/about"><button class="btn btn-lg btn-light">Key Insights</button></a>
+  </div>
+</div>
+<div class="row justify-content-around p-5">
+  <div class="d-flex justify-content-between flex-column text-center col-md-5 col-sm-12 p-3">
+    <h1> Sponsors </h1>
+    <div>
+      <p class="text-center"> 
+        Our exploration and analysis is limited to legislators that have acted as a primary sponsor on at least one proposed bill.
+        We examine data related to each sponsor for a number of categories - including the donations they have received, the number of bills they have proposed,
+        and the number of bills they have passed. Finally, we assign an "effectiveness score" to rate and compare sponsors within the Illinois General Assembly.
+      </p>
+    </div>
+    <a class="mt-3" href="/sponsors"><button class="btn btn-lg button-primary">View Sponsors</button></a>
+  </div>
+  <div class="d-flex justify-content-between flex-column text-center col-md-5 col-sm-12 p-3">
+    <h1> About the Project </h1>
+    <div>
+      <p class="text-center"> 
+      Project IL-legible was developed by a student group within the University of Chicago's Computational Analysis for Public Policy program, using data from 
+      <a href="https://open.pluralpolicy.com/">Open States</a> and <a href="https://illinoissunshine.org/">Illinois Sunshine.</a> We are dedicated to continuing to improve the site
+      to make Illinois legislation data transparent and understandable. If you would like to learn more about the details of the project, click the button below.
+      </p>
+    </div>
+    <a class="mt-3" href="/about"><button class="btn btn-lg button-primary">About Us</button></a>
+  </div>
+</div>
+{% endblock %}
+
+

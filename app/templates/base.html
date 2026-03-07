@@ -1,0 +1,79 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/png" href="/static/img/logo.png" sizes="32x32">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+        <title>Project ILlegible</title>
+        {% endblock %}
+        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <!-- Import vega-embed -->
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+        <!-- Initialize tooltips -->
+        <script>
+            $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+        <!-- Initialize Font Awesome -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav id="site-nav" class="navbar navbar-expand-lg background-primary p-2 w-100">
+            <img src="/static/img/logo-white.png" alt="" width="40" height="40">
+            <a class="navbar-brand fs-3 fw-bold text-light mx-2" href="/">Project IL-legible</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/">Home</a>
+                    </li>
+                     <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/insights">Key Insights</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/sponsors">Sponsors</a>
+                    </li>
+                    <!-- <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/bills">Bills</a>
+                    </li> -->
+                    <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Inherited content -->
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+        <footer id="footer" class="footer background-muted d-flex justify-content-center align-items-center">
+            <div>
+                <span class="text-light">© 2026 CAPP122 Project</span>
+            </div>
+        </footer>
+        
+        {% block scripts %}
+            <!-- Optional JavaScript -->
+            {{ bootstrap.load_js() }}
+        {% endblock %}
+   
+    </body>
+</html>

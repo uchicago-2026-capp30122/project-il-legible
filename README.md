@@ -11,19 +11,46 @@ There are a few steps to take to get the app up and running on your machine. Onc
 
 Since we don't check the database into version control, you'll need to intiialize (create) and seed the database - populating it with all of the relevant data we'll be using in our app. To initialize, run this from the command line in the root directory of the project:
 
-`uv run flask --app flaskr init-db`
+`uv run flask db init`
+`uv run flask db upgrade`
 
-Once this has ran, you should see a `flaskr.sqlite` file in the `instance` folder of the project.
+Once this has ran, you should see a `app.db` file in the `instance` folder of the project.
 
 ### Seeding the Database
 
-`TO-DO: write this section`
+To get data in your database, first ensure you have the bulk data files for Open States in the correct directories, and then run:
+
+`bash create_datasets.sh` (or whatever command you use to execute a shell script)
+
+This process should take a few minutes, and it will create `final_data/bills.csv` and `final_data.sponsors.csv`. Once you have these, you are ready to seed the database. Make sure you have intiialized the DB using the command above, and then run:
+
+`uv run flask dbc seed`
+
+The database should now have data. If you find yourself needing to reseed the database, you can drop and recreate the tables before rerunning the seed command:
+
+`uv run flask dbc drop-tables`
+`uv run flask dbc create-tables`
+
+### Exploring the Database
+
+During development, it will be necessary to explore the data and test out queries before running them in the server-side handlers. An easy way to do that is as follows:
+
+`uv run flask shell`
+
+The above command will start a Python shell with a create app context - which allows you to access the app object and database as if it were running live. Now, you can run queries on the models like this:
+
+```
+>>> query = sa.select(Sponsor)
+>>> db.session.scalars(query).first()
+```
+
+Please refer to SQLAlchemy documentation for specific methods and syntax for querying tables within the database.
 
 ### Running the Web App
 
 After the database has been created and seeded with data, we can finally spin up the web server to run our app:
 
-`uv run flask --app flaskr run --debug`
+`uv run flask run --debug`
 
 ## Environment Variables
 
@@ -51,6 +78,7 @@ what is used for the website databases. To do so, run these programs in the foll
 2. pull_open_states/clean_name_column.py
 3. pull_IL_sunshine/Illinois_Sunshine_donations_pull.py
 4. pull_IL_sunshine/donations_by_sponsor.py
+5. pull_IL_sunshine/merge_and_output.py
 
 **Internal note: do we want one script that just does all of this for us??**
 
