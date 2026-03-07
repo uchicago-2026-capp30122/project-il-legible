@@ -134,7 +134,7 @@ def output_final_bills_csv(bills_cleaned: pd.DataFrame) -> None:
                 "num_sponsors", "became_law", "referred_to_committee", "committee_passages",
                 "passed_first_chamber", "passed_full_legislature"]
 
-    filepath = Path("final_data/bills_test.csv")
+    filepath = Path("final_data/bills.csv")
     filepath.parent.mkdir(parents=True, exist_ok=True)
     bills_cleaned[cols_final].to_csv(filepath)
 

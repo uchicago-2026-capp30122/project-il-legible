@@ -25,7 +25,7 @@ class Sponsor(db.Model):
     pct_c_IL_L3: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     num_bills: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
     pct_bills_passed: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
-    first_donation_year: so.Mapped[Optional[str]] = so.mapped_column(sa.String(4))
+    first_donation_year: so.Mapped[Optional[str]] = so.mapped_column(sa.String(10))
     effectiveness_score: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     bills: so.WriteOnlyMapped[Optional['Bill']] = so.relationship(back_populates='sponsor')    
 
