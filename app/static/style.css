@@ -3,7 +3,7 @@
     --primary-color: #1A3C8C;
     --secondary-color: #8C303C;
     --tertiary-color: #EBE973;
-    --dark-gray: #404437;
+    --dark-gray: #656565;
     --light-grey: #E5E7EA;
   }
 
@@ -16,12 +16,12 @@
 }
 
 .background-muted{
-    background-color: var(--dark-gray);
+    background-color: var(--dark-gray)!important;
 }
 
 .button-primary{
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--primary-color)!important;
+    color: white!important;
 }
 
 #site-nav{
@@ -33,12 +33,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vw;
-
+    height: 60vh;
+    min-height: max-content;
 }
 
 #hero-logo{
-    height: 85%
+    width: 80%;
 }
 
 #homepage-hero h1{
