@@ -24,6 +24,10 @@
     color: white;
 }
 
+#site-nav{
+    z-index: 100
+}
+
 #homepage-hero {
     width: 100vw;
     display: flex;
