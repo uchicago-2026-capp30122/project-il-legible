@@ -1,1 +1,1 @@
-FLASK_APP=project_illegible.py
+FLASK_APP=project_il_legible.py
