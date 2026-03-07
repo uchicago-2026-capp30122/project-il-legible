@@ -235,7 +235,7 @@ def large_donation_barchart(name, sponsors, time):
 
     bars = (
         alt.Chart(chart_df)
-        .mark_bar(color=COLORS["orange"], size=30)
+        .mark_bar(color=COLORS["red"], size=30)
         .encode(
             x=alt.X(
                 pct_selected + ":Q",
@@ -265,7 +265,7 @@ def large_donation_barchart(name, sponsors, time):
             align="left",
             dx=3,
             fontSize=15,
-            color=COLORS["orange"]
+            color=COLORS["red"]
         )
         .encode(
             x=pct_selected + ":Q",
@@ -308,7 +308,7 @@ def entity_donation_barchart(name, sponsors, time):
 
     bars = (
         alt.Chart(chart_df)
-        .mark_bar(color=COLORS["orange"], size=30)
+        .mark_bar(color=COLORS["red"], size=30)
         .encode(
             x=alt.X(
                 pct_selected + ":Q",
@@ -338,7 +338,7 @@ def entity_donation_barchart(name, sponsors, time):
             align="left",
             dx=3,
             fontSize=15,
-            color=COLORS["orange"]
+            color=COLORS["red"]
         )
         .encode(
             x=pct_selected + ":Q",
@@ -381,7 +381,7 @@ def in_state_donation_barchart(name, sponsors, time):
 
     bars = (
         alt.Chart(chart_df)
-        .mark_bar(color=COLORS["orange"], size=30)
+        .mark_bar(color=COLORS["red"], size=30)
         .encode(
             x=alt.X(
                 pct_selected + ":Q",
@@ -411,7 +411,7 @@ def in_state_donation_barchart(name, sponsors, time):
             align="left",
             dx=3,
             fontSize=15,
-            color=COLORS["orange"]
+            color=COLORS["red"]
         )
         .encode(
             x=pct_selected + ":Q",
