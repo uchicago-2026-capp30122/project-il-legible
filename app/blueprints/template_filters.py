@@ -12,7 +12,7 @@ def currency_format(value, currency_symbol="$"):
     if(value is None):
         return ""
     value = float(value)
-    return f"{currency_symbol}{value:,.2f}"
+    return f"{currency_symbol}{value:,.0f}"
 
 
 @bp.app_template_filter('long_currency_format')

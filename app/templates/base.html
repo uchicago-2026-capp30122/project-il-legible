@@ -23,6 +23,12 @@
         <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
         <!-- Import vega-embed -->
         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+        <!-- Initialize tooltips -->
+        <script>
+            $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     </head>
     <body>
         <nav id="site-nav" class="navbar navbar-expand-lg background-primary p-2 w-100">
@@ -35,14 +41,18 @@
                 <ul class="navbar-nav ms-auto gap-2">
                     <li class="nav-item active">
                         <a class="btn btn-outline-light" href="/">Home</a>
+                        <a class="btn btn-outline-light" href="/">Home</a>
                     </li>
                      <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/insights">Key Insights</a>
                         <a class="btn btn-outline-light" href="/insights">Key Insights</a>
                     </li>
                     <li class="nav-item active">
                         <a class="btn btn-outline-light" href="/sponsors">Sponsors</a>
+                        <a class="btn btn-outline-light" href="/sponsors">Sponsors</a>
                     </li>
                     <li class="nav-item active">
+                        <a class="btn btn-outline-light" href="/bills">Bills</a>
                         <a class="btn btn-outline-light" href="/bills">Bills</a>
                     </li>
                 </ul>

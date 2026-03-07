@@ -24,8 +24,14 @@ def show(sponsor_id):
     sponsor = db.session.scalar(query)
 
     charts = {
-        "num_bills": viz.num_bills_bar(sponsor.name, sponsor_query).to_json(),
+        "num_bills": viz.num_bills_bar(sponsor.name, sponsor_query).configure_view(strokeWidth=0).to_json(),
         "perc_passing": viz.bill_success_legislator(sponsor.name, sponsor_query).to_json(),
+        "large_donations_lifetime" : viz.large_donation_barchart(sponsor.name, sponsor_query, "all").configure_view(strokeWidth=0).to_json(),
+        "large_donations_L3" : viz.large_donation_barchart(sponsor.name, sponsor_query, "L3").configure_view(strokeWidth=0).to_json(),
+        "entity_donations_lifetime" : viz.entity_donation_barchart(sponsor.name, sponsor_query, "all").configure_view(strokeWidth=0).to_json(),
+        "entity_donations_L3" : viz.entity_donation_barchart(sponsor.name, sponsor_query, "L3").configure_view(strokeWidth=0).to_json(),
+        "state_donations_lifetime" : viz.in_state_donation_barchart(sponsor.name, sponsor_query, "all").configure_view(strokeWidth=0).to_json(),
+        "state_donations_L3" : viz.in_state_donation_barchart(sponsor.name, sponsor_query, "L3").configure_view(strokeWidth=0).to_json()
     }
     return render_template('sponsors/show.html', sponsor = sponsor, charts = charts)
 
