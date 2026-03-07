@@ -15,7 +15,8 @@ COLORS = {
     "yellow": "#EBE973",
     "red": "#8C303C",
     "charcol": "#404437",
-    "grey": "#E5E7EA"
+    "grey": "#E5E7EA",
+    "orange": "#FF8050"
 }
 SIZE = 60
 
@@ -67,7 +68,7 @@ def num_bills_bar(sponsor_name: str, sponsors):
     
     chart=(
         alt.Chart(legislator_df)
-        .mark_bar(color=COLORS["red"])
+        .mark_bar(color=COLORS["blue"])
         .encode(
             x = alt.X("names", title="",
                         axis=alt.Axis(
@@ -92,7 +93,7 @@ def num_bills_bar(sponsor_name: str, sponsors):
     text = chart.mark_text(
         dy=-10,
         fontSize=17,
-        color=COLORS["red"]
+        color=COLORS["blue"]
         ).encode(
         text=alt.Text("num_bills:Q", format=",")
         )
@@ -204,59 +205,221 @@ def bills_by_donations_scatter(sponsors):
 
     return chart
 
-def large_donation_barchart(name: str, sponsors, time: str):
-    """
-    time: a string equal to to "all" for lifetime donations or "L3" for
-    donations from the last three years
-    """
+def large_donation_barchart(name, sponsors, time):
     df = pd.read_sql(sponsors, db.engine)
     person = df[df["name"] == name].iloc[0]
 
     chart_df = pd.DataFrame({
-        "category": ["Large Donations", "Small Donations"],
+        "category": [["Over", "$1,000"], ["Under", "$1,000"]],
+        "name": ["Over $1,000", "Under $1,000"],
         "percent_all": [
-            float(person["pct_c_above_all"]) * 100,
-            100 - float(person["pct_c_above_all"]) * 100
+            float(person["pct_c_above_all"]),
+            1 - float(person["pct_c_above_all"])
         ],
         "percent_L3": [
-            float(person["pct_c_above_L3"]) * 100,
-            100 - float(person["pct_c_above_L3"]) * 100
+            float(person["pct_c_above_L3"]),
+            1 - float(person["pct_c_above_L3"])
         ],
+        "count_all":[
+            int(person["pct_c_above_all"] * person["donation_count_all"]),
+            int((1 - float(person["pct_c_above_all"])) * person["donation_count_all"])
+        ],
+        "count_L3":[
+            int(person["pct_c_above_L3"] * person["donation_count_L3"]),
+            int((1 - float(person["pct_c_above_L3"])) * person["donation_count_L3"])
+        ]
     })
-    
-    base = (
-        alt.Chart(chart_df)
-        .transform_calculate(
-                pct_selected="percent_" + time
-        ))
+
+    pct_selected = "percent_" + time
+    count_selected = "count_" + time
 
     bars = (
-        base
-        .mark_bar(color=COLORS["yellow"])
+        alt.Chart(chart_df)
+        .mark_bar(color=COLORS["orange"], size=30)
         .encode(
             x=alt.X(
-                "pct_selected:Q",
+                pct_selected + ":Q",
                 title="",
-                scale=alt.Scale(domain=[0,100]),
-                axis=alt.Axis(grid=False)
+                scale=alt.Scale(domain=[0,1]),
+                axis=alt.Axis(grid=False, format=".0%",
+                            labelFontSize=12,)
                 ),
-            y=alt.Y("category:N", title="")
+            y=alt.Y("category:N", title="",
+                    axis=alt.Axis(ticks=False,
+                                labelFontSize=15,
+                                labelPadding=10)
+                ),
+            tooltip=[
+                alt.Tooltip("name", title=" "),
+                alt.Tooltip(pct_selected + ":Q", title="Percent", format=".0%"),
+                alt.Tooltip(count_selected + ":Q", title="Count", format=",")
+                ]
             )
-        )
+        ).properties(
+            width=300,
+            height=200)
     
     labels = (
-        base
+        alt.Chart(chart_df)
         .mark_text(
             align="left",
-            dx=3
+            dx=3,
+            fontSize=15,
+            color=COLORS["orange"]
         )
         .encode(
-            x="pct_selected:Q",
+            x=pct_selected + ":Q",
             y="category:N",
-            text=alt.Text("pct_selected:Q", format=".1f")
+            text=alt.Text(pct_selected + ":Q", format=".0%")
         )
     )
     
-    chart = (bars + labels).properties(title=f"Percentage of Large vs Small Donations for {name}")
+    chart = (bars + labels)
+        
+    return chart
+
+def entity_donation_barchart(name, sponsors, time):
+    df = pd.read_sql(sponsors, db.engine)
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": [["From", "Entities"], ["From", "Individuals"]],
+        "name": ["From Entities", "From Individuals"],
+        "percent_all": [
+            float(person["pct_c_allcond_all"]),
+            1 - float(person["pct_c_allcond_all"])
+        ],
+        "percent_L3": [
+            float(person["pct_c_allcond_L3"]),
+            1 - float(person["pct_c_allcond_L3"])
+        ],
+        "count_all":[
+            int(person["pct_c_allcond_all"] * person["donation_count_all"]),
+            int((1 - float(person["pct_c_allcond_all"])) * person["donation_count_all"])
+        ],
+        "count_L3":[
+            int(person["pct_c_allcond_L3"] * person["donation_count_L3"]),
+            int((1 - float(person["pct_c_allcond_L3"])) * person["donation_count_L3"])
+        ]
+    })
+
+    pct_selected = "percent_" + time
+    count_selected = "count_" + time
+
+    bars = (
+        alt.Chart(chart_df)
+        .mark_bar(color=COLORS["orange"], size=30)
+        .encode(
+            x=alt.X(
+                pct_selected + ":Q",
+                title="",
+                scale=alt.Scale(domain=[0,1]),
+                axis=alt.Axis(grid=False, format=".0%",
+                            labelFontSize=12,)
+                ),
+            y=alt.Y("category:N", title="",
+                    axis=alt.Axis(ticks=False,
+                                labelFontSize=15,
+                                labelPadding=10)
+                ),
+            tooltip=[
+                alt.Tooltip("name", title=" "),
+                alt.Tooltip(pct_selected + ":Q", title="Percent", format=".0%"),
+                alt.Tooltip(count_selected + ":Q", title="Count", format=",")
+                ]
+            )
+        ).properties(
+            width=300,
+            height=200)
+    
+    labels = (
+        alt.Chart(chart_df)
+        .mark_text(
+            align="left",
+            dx=3,
+            fontSize=15,
+            color=COLORS["orange"]
+        )
+        .encode(
+            x=pct_selected + ":Q",
+            y="category:N",
+            text=alt.Text(pct_selected + ":Q", format=".0%")
+        )
+    )
+    
+    chart = (bars + labels)
+        
+    return chart
+
+def in_state_donation_barchart(name, sponsors, time):
+    df = pd.read_sql(sponsors, db.engine)
+    person = df[df["name"] == name].iloc[0]
+
+    chart_df = pd.DataFrame({
+        "category": [["In", "State"], ["Out of", "State"]],
+        "name": ["In-State", "Out-of-State"],
+        "percent_all": [
+            float(person["pct_c_IL_all"]),
+            1 - float(person["pct_c_IL_all"])
+        ],
+        "percent_L3": [
+            float(person["pct_c_IL_L3"]),
+            1 - float(person["pct_c_IL_L3"])
+        ],
+        "count_all":[
+            int(person["pct_c_IL_all"] * person["donation_count_all"]),
+            int((1 - float(person["pct_c_IL_all"])) * person["donation_count_all"])
+        ],
+        "count_L3":[
+            int(person["pct_c_IL_L3"] * person["donation_count_L3"]),
+            int((1 - float(person["pct_c_IL_L3"])) * person["donation_count_L3"])
+        ]
+    })
+
+    pct_selected = "percent_" + time
+    count_selected = "count_" + time
+
+    bars = (
+        alt.Chart(chart_df)
+        .mark_bar(color=COLORS["orange"], size=30)
+        .encode(
+            x=alt.X(
+                pct_selected + ":Q",
+                title="",
+                scale=alt.Scale(domain=[0,1]),
+                axis=alt.Axis(grid=False, format=".0%",
+                            labelFontSize=12,)
+                ),
+            y=alt.Y("category:N", title="",
+                    axis=alt.Axis(ticks=False,
+                                labelFontSize=15,
+                                labelPadding=10)
+                ),
+            tooltip=[
+                alt.Tooltip("name", title=" "),
+                alt.Tooltip(pct_selected + ":Q", title="Percent", format=".0%"),
+                alt.Tooltip(count_selected + ":Q", title="Count", format=",")
+                ]
+            )
+        ).properties(
+            width=300,
+            height=200)
+    
+    labels = (
+        alt.Chart(chart_df)
+        .mark_text(
+            align="left",
+            dx=3,
+            fontSize=15,
+            color=COLORS["orange"]
+        )
+        .encode(
+            x=pct_selected + ":Q",
+            y="category:N",
+            text=alt.Text(pct_selected + ":Q", format=".0%")
+        )
+    )
+    
+    chart = (bars + labels)
         
     return chart
