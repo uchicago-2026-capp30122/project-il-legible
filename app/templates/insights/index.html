@@ -158,7 +158,9 @@
                 <h3> Bill Progress Through Legislative Milestones </h3>
             </div>
             <div class="card-body">
-                <div id="sankey" class="w-100"></div>
+                <div id="sankey" class="w-100">
+                    {{ charts['sankey'] | safe }}
+                </div>
             </div>
         </div>
     </div>
@@ -184,8 +186,8 @@
         actions: false // Optional: hides the action links (e.g., "View Source")
     }).catch(console.error);
 
-    vegaEmbed('#sankey', sankey, {
-        actions: false // Optional: hides the action links (e.g., "View Source")
-    }).catch(console.error);
+    // vegaEmbed('#sankey', sankey, {
+    //     actions: false // Optional: hides the action links (e.g., "View Source")
+    // }).catch(console.error);
 </script>
 {% endblock %}
