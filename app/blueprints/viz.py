@@ -207,13 +207,17 @@ def bills_by_donations_scatter(sponsors):
             )
         )
 
-    chart=(
+    base = (
         alt.Chart(df)
         .add_params(donation_choice)
         .transform_calculate(
             donation_x=
             "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
             )
+        )
+
+    points=(
+        base
         .mark_circle(size=SIZE, color=COLORS["blue"])
         .encode(
             x = alt.X("donation_x:Q", title="Total Donation Amount",
@@ -237,11 +241,25 @@ def bills_by_donations_scatter(sponsors):
             ],
             href="url:N"
             )
-        .interactive()
+    )
+
+    line = (
+        base
+        .transform_regression("donation_x", "num_bills")
+        .mark_line(color="black")
+        .encode(
+            x = "donation_x:Q",
+            y = "num_bills:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
         .properties(width="container")
         .transform_calculate(
             url='/sponsors/' + alt.datum.id
         )
+        .interactive()
     )
 
     return chart
