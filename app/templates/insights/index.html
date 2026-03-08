@@ -159,7 +159,9 @@
                 <h3> Bill Progress Through Legislative Milestones </h3>
             </div>
             <div class="card-body">
-                <div id="sankey" class="w-100"></div>
+                <div id="sankey" class="w-100">
+                    {{ charts['sankey'] | safe }}
+                </div>
             </div>
         </div>
     </div>
@@ -170,8 +172,6 @@
     var totalDonations = {{ charts["total_donation_history"] | safe }};
     var averageDonations = {{ charts["average_donation_history"] | safe }};
     var billsByDonations = {{ charts["bills_by_donations"] | safe }};
-    var sankey = {{ charts["sankey"] | safe }};
-
 
     vegaEmbed('#total-donation-history', totalDonations, {
         actions: false // Optional: hides the action links (e.g., "View Source")
@@ -185,8 +185,5 @@
         actions: false // Optional: hides the action links (e.g., "View Source")
     }).catch(console.error);
 
-    vegaEmbed('#sankey', sankey, {
-        actions: false // Optional: hides the action links (e.g., "View Source")
-    }).catch(console.error);
 </script>
 {% endblock %}
