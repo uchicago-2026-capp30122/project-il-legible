@@ -83,7 +83,7 @@ def match_sponsor_to_candidate(name: str) -> list[str]:
         return id_list
 
 
-def get_committee_ids(candidate_ids: list[str]) -> list[str]:
+def get_committee_ids(candidate_ids: list[str | int]) -> list[str]:
     """
     Given a list of candidate ids, returns a list of donation committee ids
     associated with the candidate.
