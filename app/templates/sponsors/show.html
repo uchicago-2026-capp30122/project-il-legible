@@ -206,4 +206,10 @@
             actions: false // Optional: hides the action links (e.g., "View Source")
         }).catch(console.error);
     </script>
+    <!-- Initialize tooltips -->
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 {% endblock %}
