@@ -201,9 +201,9 @@ def bills_by_donations_scatter(sponsors):
     df = pd.read_sql(sponsors, db.engine)
     donation_choice = alt.param(
         name="DonationWindow",
-        value="All time",
+        value="All Time",
         bind=alt.binding_select(
-            options=["All time", "Last 3 years"],
+            options=["All Time", "Last 3 Years"],
             name="Donations: "
             )
         )
@@ -213,7 +213,7 @@ def bills_by_donations_scatter(sponsors):
         .add_params(donation_choice)
         .transform_calculate(
             donation_x=
-            "DonationWindow == 'All time' ? datum.total_all : datum.total_L3"
+            "DonationWindow == 'All Time' ? datum.total_all : datum.total_L3"
             )
         )
 
@@ -236,8 +236,8 @@ def bills_by_donations_scatter(sponsors):
                     titlePadding=10)),
             tooltip=[
                 alt.Tooltip("name", title="Legislator"),
-                alt.Tooltip("total_all", title="All-time Donations", format="$,.0f"),
-                alt.Tooltip("total_L3", title="Last 3 years Donations", format="$,.0f"),
+                alt.Tooltip("total_all", title="All Time Donations", format="$,.0f"),
+                alt.Tooltip("total_L3", title="Last 3 Years Donations", format="$,.0f"),
                 alt.Tooltip("num_bills", title="Bills Introduced", format=",")
             ],
             href="url:N"
@@ -619,7 +619,83 @@ def bill_progress_sankey(bills):
     fig.update_layout(
         font_size=15,
         width=2000,
-        height=600,
+        height=400,
+        xaxis=dict(
+        rangeslider=dict(
+            visible=True
+        ))
     )
 
     return fig
+
+def bill_passage_pct_entity_donations_scatter(sponsors):
+    df = pd.read_sql(sponsors, db.engine)
+    donation_choice = alt.param(
+        name="DonationWindow",
+        value="All Time",
+        bind=alt.binding_select(
+            options=["All Time", "Last 3 Years"],
+            name="Donations: "
+            )
+        )
+
+    base = (
+        alt.Chart(df)
+        .add_params(donation_choice)
+        .transform_calculate(
+            donation_x=
+            "DonationWindow == 'All Time' ? datum.pct_c_allcond_all : datum.pct_c_allcond_L3"
+            )
+        )
+
+    points=(
+        base
+        .mark_circle(size=SIZE, color=COLORS["blue"])
+        .encode(
+            x = alt.X("donation_x:Q", title="Percentage of Donation Count from Entities",
+                    axis=alt.Axis(
+                    grid=False,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=15,
+                    format=".0%"
+                    )),
+            y = alt.Y("pct_bills_passed", title="Bill Passage Rate",
+                    axis=alt.Axis(
+                    grid=False,
+                    labelFontSize=12,
+                    titleFontSize=15,
+                    titlePadding=10,
+                    format=".0%")),
+            tooltip=[
+                alt.Tooltip("name", title="Legislator"),
+                alt.Tooltip("pct_c_allcond_all", title="All Time Percent of Donations from Entities", format=".0%"),
+                alt.Tooltip("pct_c_allcond_L3", title="Last 3 Years Percent of Donations from Entities ", format=".0%"),
+                alt.Tooltip("pct_bills_passed", title="Bill Passage Rate", format=".0%"),
+                alt.Tooltip("num_bills", title="Bills Introduced", format=",")
+            ],
+            href="url:N"
+            )
+    )
+
+    line = (
+        base
+        .transform_regression("donation_x", "pct_bills_passed")
+        .mark_line(color="#A5A5A5",
+                   strokeDash=[5, 5])
+        .encode(
+            x = "donation_x:Q",
+            y = "pct_bills_passed:Q"
+        )
+    )
+
+    chart = (
+        (points + line)
+        .properties(width="container")
+        .transform_calculate(
+            url='/sponsors/' + alt.datum.id
+        )
+        .interactive()
+    )
+
+    return chart

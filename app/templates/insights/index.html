@@ -156,11 +156,27 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
+                <h3> Bill Passage Rate vs Percent of Donations from Entities </h3>
+            </div>
+            <div class="card-body">
+                <p>There is a slight positive correlation between a sponsor's all time bill passage rate and the percent of their donations that come from entites.</p>
+                <div id="passing-by-entities" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
                 <h3> Bill Progress Through Legislative Milestones </h3>
             </div>
             <div class="card-body">
-                <div id="sankey" class="w-100">
-                    {{ charts['sankey'] | safe }}
+                <p>Only 8 percent of bills introduced eventually become law. Scroll to see how they progress.</p>
+                <div style="overflow-x: auto; width: 100%;">
+                    <div id="sankey" class="w-100">
+                        {{ charts['sankey'] | safe }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -172,6 +188,7 @@
     var totalDonations = {{ charts["total_donation_history"] | safe }};
     var averageDonations = {{ charts["average_donation_history"] | safe }};
     var billsByDonations = {{ charts["bills_by_donations"] | safe }};
+    var passingByEntity = {{ charts["passing_by_entities"] | safe }};
 
     vegaEmbed('#total-donation-history', totalDonations, {
         actions: false // Optional: hides the action links (e.g., "View Source")
@@ -182,6 +199,10 @@
     }).catch(console.error);
 
     vegaEmbed('#bills-by-donations', billsByDonations, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+
+    vegaEmbed('#passing-by-entities', passingByEntity, {
         actions: false // Optional: hides the action links (e.g., "View Source")
     }).catch(console.error);
 
