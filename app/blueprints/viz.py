@@ -7,6 +7,7 @@ from app.models import Sponsor, Bill
 from sqlalchemy import select
 import pandas as pd
 import altair as alt
+import plotly.graph_objects as go
 
 bp = Blueprint('viz', __name__)
 
@@ -482,3 +483,142 @@ def in_state_donation_barchart(name, sponsors, time):
     chart = (bars + labels)
         
     return chart
+
+def bill_progress_sankey(bills):
+
+    df = pd.read_sql(bills, db.engine)
+    
+    df["first_action"] = pd.to_datetime(df["first_action"], errors="coerce")
+
+    introduced = df["first_action"].notna()
+    referred_to_committee = introduced & df["referred_to_committee"]
+    passed_committee = referred_to_committee & (df["committee_passages"] > 0)
+    passed_first_chamber = passed_committee & df["passed_first_chamber"]
+    passed_full_legislature = passed_first_chamber & df["passed_full_legislature"]
+    became_law = passed_full_legislature & df["became_law"]
+
+    n_introduced= introduced.sum()
+    n_intro_to_referred = referred_to_committee.sum()
+    n_not_referred = n_introduced - n_intro_to_referred
+    n_referred_to_committee_pass = passed_committee.sum()
+    n_committee_to_first_chamber = passed_first_chamber.sum()
+    n_first_chamber_to_full = passed_full_legislature.sum()
+    n_full_chamber_to_law = became_law.sum()
+    
+
+
+    labels = [
+        "Introduced",
+        "",
+        "Referred to Committee",
+        "Passed Committee",
+        "Passed First Chamber",
+        "Passed Full Legislature",
+        "Became Law"
+    ]
+
+    node_colors= [
+        "#80A6FD",
+        "rgba(0,0,0,0)",
+        "#4E82FD",
+        "#3069EE",
+        "#285ACE",
+        "#2450B8",
+        "#1A3C8C"
+    ]
+
+    link_colors= [
+        "rgba(0,0,0,0)",
+        "#E5E7EA",
+        "#E5E7EA",
+        "#E5E7EA",
+        "#E5E7EA",
+        "#E5E7EA"
+    ]
+
+    hover_colors = [
+        "rgba(0,0,0,0)",
+        "#ACACAC",
+        "#ACACAC",
+        "#ACACAC",
+        "#ACACAC",
+        "#ACACAC"    
+    ]
+
+    sources = [0, 0, 2, 3, 4, 5]            
+    targets = [1, 2, 3, 4, 5, 6]
+
+    values = [
+        n_not_referred,
+        n_intro_to_referred,
+        n_referred_to_committee_pass,
+        n_committee_to_first_chamber,
+        n_first_chamber_to_full,
+        n_full_chamber_to_law,
+    ]
+
+    percentages = [
+        (n_not_referred / n_introduced) * 100,
+        (n_intro_to_referred / n_introduced) * 100,
+        (n_referred_to_committee_pass / n_intro_to_referred) * 100,
+        (n_committee_to_first_chamber / n_referred_to_committee_pass) * 100,
+        (n_first_chamber_to_full / n_committee_to_first_chamber) * 100,
+        (n_full_chamber_to_law / n_first_chamber_to_full) * 100
+    ]
+
+    link_text = [
+        "",
+        f"{n_intro_to_referred:,} bills passed from<br> {labels[0]} to<br> {labels[2]} ({percentages[1]:.0f}%)",
+        f"{n_referred_to_committee_pass:,} bills passed from<br> {labels[2]} to<br> {labels[3]} ({percentages[2]:.0f}%)",
+        f"{n_not_referred:,} bills passed from<br> {labels[3]} to<br> {labels[4]} ({percentages[3]:.0f}%)",
+        f"{n_intro_to_referred:,} bills passed from<br> {labels[4]} to<br> {labels[5]} ({percentages[4]:.0f}%)",
+        f"{n_referred_to_committee_pass:,} bills passed from<br> {labels[5]} to<br> {labels[6]} ({percentages[5]:.0f}%)",
+    ]
+
+    node_text= []
+    values_all = [n_introduced] + values
+    for i, val in enumerate(labels):
+        node_text.append(f"{val}<br>{values_all[i]:,} bills<br>{(values_all[i] / n_introduced):.0%} of total")
+    node_text[1] = ""
+
+    fig = go.Figure(
+        data=[
+            go.Sankey(
+                arrangement="fixed",
+                node=dict(
+                    pad=20,
+                    thickness=20,
+                    color=node_colors,
+                    line=dict(color="white", width=0.5),
+                    label=labels,
+                    customdata=node_text,
+                    hovertemplate="%{customdata}<extra></extra>",
+                    hoverlabel=dict(
+                        bgcolor="black",
+                        font=dict(color="white")
+                    )
+                ),
+                link=dict(
+                    source=sources,
+                    target=targets,
+                    value=values,
+                    color=link_colors,
+                    hovercolor=hover_colors,
+                    customdata=link_text,
+                    hovertemplate="%{customdata}<extra></extra>",
+                    hoverlabel=dict(
+                        bgcolor="black",
+                        font=dict(color="white")
+                    )
+                )
+            )
+        ]
+    )   
+
+    fig.update_layout(
+        font_size=15,
+        width=2000,
+        height=600,
+    )
+
+    return fig

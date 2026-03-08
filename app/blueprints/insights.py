@@ -36,7 +36,8 @@ def index():
     charts = {
         "total_donation_history": viz.total_donation_history(sponsor_query).configure_view(strokeWidth=0).to_json(),
         "average_donation_history": viz.average_donation_history(sponsor_query).configure_view(strokeWidth=0).to_json(),
-        "bills_by_donations": viz.bills_by_donations_scatter(sponsor_query).to_json()
+        "bills_by_donations": viz.bills_by_donations_scatter(sponsor_query).to_json(),
+        "sankey": viz.bill_progress_sankey(bill_query).to_json()
     }
     return render_template('insights/index.html', sponsors=sponsors, summary_stats=summary_stats, charts=charts)
 

@@ -151,12 +151,25 @@
         </div>
     </div>
 </div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3> Bill Progress Through Legislative Milestones </h3>
+            </div>
+            <div class="card-body">
+                <div id="sankey" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     // Get the chart specification from the Jinja template variable
     // The 'safe' filter ensures the JSON is not escaped
     var totalDonations = {{ charts["total_donation_history"] | safe }};
     var averageDonations = {{ charts["average_donation_history"] | safe }};
     var billsByDonations = {{ charts["bills_by_donations"] | safe }};
+    var sankey = {{ charts["sankey"] | safe }};
 
 
     vegaEmbed('#total-donation-history', totalDonations, {
@@ -168,6 +181,10 @@
     }).catch(console.error);
 
     vegaEmbed('#bills-by-donations', billsByDonations, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+
+    vegaEmbed('#sankey', sankey, {
         actions: false // Optional: hides the action links (e.g., "View Source")
     }).catch(console.error);
 </script>
