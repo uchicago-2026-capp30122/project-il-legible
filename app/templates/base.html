@@ -33,10 +33,10 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
     <body>
-        <nav id="site-nav" class="navbar navbar-expand-lg background-primary p-2 w-100">
+        <nav id="site-nav" class="navbar navbar-expand-md background-primary p-2 w-100">
             <img src="/static/img/logo-white.png" alt="" width="40" height="40">
             <a class="navbar-brand fs-3 fw-bold text-light mx-2" href="/">Project IL-legible</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -50,9 +50,6 @@
                     <li class="nav-item active">
                         <a class="btn btn-outline-light" href="/sponsors">Sponsors</a>
                     </li>
-                    <!-- <li class="nav-item active">
-                        <a class="btn btn-outline-light" href="/bills">Bills</a>
-                    </li> -->
                     <li class="nav-item active">
                         <a class="btn btn-outline-light" href="/about">About</a>
                     </li>
@@ -61,7 +58,7 @@
         </nav>
 
         <!-- Inherited content -->
-        <div class="container-fluid">
+        <div class="container-fluid min-vh-100">
             {% block content %}{% endblock %}
         </div>
         <footer id="footer" class="footer background-muted d-flex justify-content-center align-items-center">

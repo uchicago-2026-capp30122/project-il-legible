@@ -92,7 +92,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a href="/sponsors/{{sponsor.id}}">{{ sponsor.name }}</a>
                     <div class="effective-score">
-                        <span class="d-block bg-success text-white">{{ sponsor.effectiveness_score | score_format }}</span>
+                        <span class="badge text-bg-success">{{ sponsor.effectiveness_score | score_format }}</span>
                     </div>
                 </li>
                 {% endfor %}
@@ -110,7 +110,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <a href="/sponsors/{{sponsor.id}}">{{ sponsor.name }}</a>
                     <div class="effective-score">
-                        <span class="d-block bg-danger text-white">{{ sponsor.effectiveness_score | score_format }}</span>
+                        <span class="badge text-bg-danger">{{ sponsor.effectiveness_score | score_format }}</span>
                     </div>
                 </li>
                 {% endfor %}
