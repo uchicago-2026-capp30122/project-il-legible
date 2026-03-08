@@ -1,1 +1,1 @@
-web: flask db upgrade; flask dbc seed; gunicorn project_il_legible:app
+web: flask db upgrade; gunicorn project_il_legible:app

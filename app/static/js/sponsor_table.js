@@ -2,7 +2,6 @@
     $('#sponsors-table').DataTable({
         ajax: 'api/sponsors',
         columns: [
-            {data: 'id', searchable: false, orderable: false},
             {data: 'name', render: (data, type, row) => {
                 return '<a href="/sponsors/' + row.id + '">' + data + '</a>'
             }},
@@ -25,7 +24,9 @@
                         }).format(data)
             }},
             {data: 'effectiveness_score', searchable: false, render: (data) => {
-                return parseInt(data * 100)
+                score = parseInt(data * 100)
+                colorClass = score > 65 ? "text-bg-success" : (score < 35 ? "text-bg-danger" : "text-bg-warning")
+                return '<span class="badge '+colorClass+'">' + score + '</span>'
             }}
         ]
     });

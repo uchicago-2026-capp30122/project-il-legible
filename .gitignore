@@ -223,6 +223,7 @@ __marimo__/
 *.csv
 donations/
 exploration/bulk_data/*
+pull_open_states/intermediate_data/
 
 # Flask
 *.pyc

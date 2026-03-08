@@ -5,6 +5,8 @@ from pathlib import Path
 import datetime
 import csv
 
+data_path = Path(__file__).parents[2]
+
 def seed_db():
     create_sponsors()
     create_bills()
@@ -14,7 +16,7 @@ def create_bills():
     bills_exist = len(db.session.scalars(select(Bill)).all())
     if(not bills_exist):
         print("Seeding bills into database")
-        filepath = Path("final_data/bills.csv")
+        filepath = Path(f"{data_path}/final_data/bills.csv")
         with open(filepath, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -41,14 +43,14 @@ def create_sponsors():
     sponsors_exist = len(db.session.scalars(select(Sponsor)).all())
     if(not sponsors_exist):
         print("Seeding sponsors into database")
-        filepath = Path("final_data/sponsors.csv")
+        filepath = Path(f"{data_path}/final_data/sponsors.csv")
         with open(filepath, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 s = Sponsor(name = row["name"],
                             organization_classification = row["organization_classification"] if row["organization_classification"] else None,
-                            donation_count_all = row["donation_count_all"] if row["donation_count_all"] else None,
-                            donation_count_L3 = row["donation_count_L3"] if row["donation_count_L3"] else None,
+                            donation_count_all = float(row["donation_count_all"]) if row["donation_count_all"] else None,
+                            donation_count_L3 = float(row["donation_count_L3"]) if row["donation_count_L3"] else None,
                             total_all = float(row["total_all"]) if row["total_all"] else None,
                             total_L3 = float(row["total_L3"]) if row["total_L3"] else None,
                             pct_c_above_all = float(row["pct_c_above_all"]) if row["pct_c_above_all"] else None,
