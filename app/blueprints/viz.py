@@ -28,7 +28,7 @@ def total_donation_history(sponsors):
         .mark_bar(color=COLORS["red"])
         .transform_bin(
             ["bin_start", "bin_end"],
-            field="avg_donation_all",
+            field="total_all",
             bin=alt.Bin(maxbins=50))
         .encode(
             x = alt.X(
@@ -247,7 +247,8 @@ def bills_by_donations_scatter(sponsors):
     line = (
         base
         .transform_regression("donation_x", "num_bills")
-        .mark_line(color="black")
+        .mark_line(color="#A5A5A5",
+                   strokeDash=[5, 5])
         .encode(
             x = "donation_x:Q",
             y = "num_bills:Q"
