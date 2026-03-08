@@ -2,7 +2,6 @@ from flask import (
     Blueprint, jsonify
 )
 from werkzeug.exceptions import abort
-from app import db
 from app.models import Bill, Sponsor
 
 bp = Blueprint('api', __name__)
