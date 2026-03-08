@@ -25,11 +25,15 @@ def total_donation_history(sponsors):
     chart = (
         alt.Chart(df)
         .mark_bar(color=COLORS["red"])
+        .transform_bin(
+            ["bin_start", "bin_end"],
+            field="avg_donation_all",
+            bin=alt.Bin(maxbins=50))
         .encode(
             x = alt.X(
-                "total_all",
+                "bin_start:Q",
+                bin="binned",
                 title="Total Donation Amount ($)",
-                bin=alt.Bin(maxbins=50),
                 axis=alt.Axis(
                     tickMinStep=2_000_000,
                     labelFontSize=12,
@@ -37,6 +41,7 @@ def total_donation_history(sponsors):
                     titlePadding=15,
                     labelExpr="datum.value % 10000000 === 0 ? format(datum.value, '~s') : ''")
                     ),
+            x2="bin_end:Q",
             y = alt.Y(
                 'count()',
                 title = "Number of Sponsors",
@@ -44,8 +49,9 @@ def total_donation_history(sponsors):
                               titlePadding=10)),
             tooltip=[
                 alt.Tooltip("count()", title="Number of Sponsors", format=","),
-                alt.Tooltip("total_all:Q", bin=True, title="Total Donations Range", format="$,.0f"),
-            ]
+                alt.Tooltip("bin_start:Q", title="Total Donations From", format="$,.0f"),
+                alt.Tooltip("bin_end:Q", title="To", format="$,.0f")
+            ],
             )
         .properties(width="container")
     )
