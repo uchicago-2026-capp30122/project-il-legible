@@ -10,7 +10,7 @@ def load_datasets() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
 
     Inputs:
         None
-    
+
     Returns:
         bills (pd.DataFrame): Contains basic data on each bill, with one row
             per bill
@@ -38,17 +38,35 @@ def summarize_actions(bill_actions: pd.DataFrame) -> pd.DataFrame:
 
     Inputs:
         bill_actions (pd.DataFrame): Contains every action associated with bills
-    
+
     Outputs:
         A DataFrame with one-to-one mapping of bills to summarized actions
     """
     actions_summary = bill_actions.groupby("bill_id").agg(
-        first_action = ("date", "min"),
-        committee_passages = ("classification", lambda x: x.apply(lambda classif: "committee-passage" in classif).sum()),
-        referred_to_committee = ("classification", lambda x: x.apply(lambda classif: "referral-committee" in classif).any()),
-        passed_first_chamber = ("classification", lambda x: x.apply(lambda classif: bool(re.search(r"'passage'", classif))).any()),
-        passed_full_legislature = ("classification", lambda x: x.apply(lambda classif: "executive-receipt" in classif).any()),
-        became_law = ("classification", lambda x: x.apply(lambda classif: "became-law" in classif).any()))
+        first_action=("date", "min"),
+        committee_passages=(
+            "classification",
+            lambda x: x.apply(lambda classif: "committee-passage" in classif).sum(),
+        ),
+        referred_to_committee=(
+            "classification",
+            lambda x: x.apply(lambda classif: "referral-committee" in classif).any(),
+        ),
+        passed_first_chamber=(
+            "classification",
+            lambda x: x.apply(
+                lambda classif: bool(re.search(r"'passage'", classif))
+            ).any(),
+        ),
+        passed_full_legislature=(
+            "classification",
+            lambda x: x.apply(lambda classif: "executive-receipt" in classif).any(),
+        ),
+        became_law=(
+            "classification",
+            lambda x: x.apply(lambda classif: "became-law" in classif).any(),
+        ),
+    )
 
     return actions_summary
 
@@ -60,30 +78,38 @@ def summarize_sponsors(bill_sponsorships: pd.DataFrame) -> pd.DataFrame:
 
     Inputs:
         bill_actions (pd.DataFrame): Contains every action associated with bills
-    
+
     Outputs:
         A DataFrame with one-to-one mapping of bills to summarized sponsors
     """
     sponsors_stats = bill_sponsorships.groupby("bill_id").agg(
-        num_sponsors = ("id", "count"))
+        num_sponsors=("id", "count")
+    )
 
     primary_sponsors = bill_sponsorships["primary"] == True
-    primary_sponsors_summary = bill_sponsorships[primary_sponsors].groupby("bill_id").agg(
-        primary_sponsor_1 = ("name", "min"),
-        primary_sponsor_2 = ("name", "max"))
+    primary_sponsors_summary = (
+        bill_sponsorships[primary_sponsors]
+        .groupby("bill_id")
+        .agg(primary_sponsor_1=("name", "min"), primary_sponsor_2=("name", "max"))
+    )
 
     # For bills with only 1 primary sponsor, clear primary_sponsor_2
-    primary_sponsors_summary.loc[primary_sponsors_summary["primary_sponsor_2"] == 
-                                 primary_sponsors_summary["primary_sponsor_1"], "primary_sponsor_2"] = pd.NA
+    primary_sponsors_summary.loc[
+        primary_sponsors_summary["primary_sponsor_2"]
+        == primary_sponsors_summary["primary_sponsor_1"],
+        "primary_sponsor_2",
+    ] = pd.NA
 
-    sponsors_summary = sponsors_stats.merge(primary_sponsors_summary, 
-                                              how="inner", left_on="bill_id", right_on="bill_id")
+    sponsors_summary = sponsors_stats.merge(
+        primary_sponsors_summary, how="inner", left_on="bill_id", right_on="bill_id"
+    )
 
     return sponsors_summary
 
 
-def merge_datasets(bills: pd.DataFrame, actions_summary: pd.DataFrame, 
-                   sponsors_summary: pd.DataFrame) -> pd.DataFrame:
+def merge_datasets(
+    bills: pd.DataFrame, actions_summary: pd.DataFrame, sponsors_summary: pd.DataFrame
+) -> pd.DataFrame:
     """
     Create a final combined dataset, with one row for each bill, and with all
     associated summary fields.
@@ -92,13 +118,17 @@ def merge_datasets(bills: pd.DataFrame, actions_summary: pd.DataFrame,
         bills (pd.DataFrame): Basic identifiers for each bill
         actions_summary: Key action stats, summarized for each bill
         sponsors_summary: Key sponsorship stats, summarized for each bill
-    
+
     Outputs:
         A single DataFrame with all bills and all relevant summary stats
     """
-    
-    intermediate_df = bills.merge(actions_summary, how="inner", left_on="id", right_on="bill_id")
-    final_df = intermediate_df.merge(sponsors_summary, how="inner", left_on="id", right_on="bill_id")
+
+    intermediate_df = bills.merge(
+        actions_summary, how="inner", left_on="id", right_on="bill_id"
+    )
+    final_df = intermediate_df.merge(
+        sponsors_summary, how="inner", left_on="id", right_on="bill_id"
+    )
 
     return final_df
 
