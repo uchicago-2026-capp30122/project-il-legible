@@ -3,34 +3,36 @@
 <html lang="en">
     <head>
         {% block head %}
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" type="image/png" href="/static/img/logo.png" sizes="32x32">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+            <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      
+            {% block styles %}
+                <!-- Bootstrap CSS -->
+                {{ bootstrap.load_css() }}
+                <link rel="icon" type="image/png" href="/static/img/logo.png" sizes="32x32">
+                <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+                <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.css" rel="stylesheet" integrity="sha384-wZYDVONtScOSiNpwk91lMxH8ZwXmKFkyFMx6bG1AuetV7IfL4nF9elQzj1W+azZR" crossorigin="anonymous">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            {% endblock %}
 
-        {% block styles %}
-            <!-- Bootstrap CSS -->
-            {{ bootstrap.load_css() }}
+            <title>Project ILlegible</title>
         {% endblock %}
-        <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.css" rel="stylesheet" integrity="sha384-wZYDVONtScOSiNpwk91lMxH8ZwXmKFkyFMx6bG1AuetV7IfL4nF9elQzj1W+azZR" crossorigin="anonymous">
-
-
-        <title>Project ILlegible</title>
+        {% block scripts %}
+            {{ bootstrap.load_js() }}
+            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+            {% if request.path == "/sponsors" %}
+                <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.js" integrity="sha384-7yI5EM5fp0MxgDxG4wkadnJzVd5uBETV+m0aaQgVhbPSCRXYVUk0C4PyYK43HoeO" crossorigin="anonymous"></script>
+                <script src="{{ url_for('static', filename='js/sponsor_table.js') }}"></script> 
+            {% endif %}
         {% endblock %}
-        <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.js" integrity="sha384-7yI5EM5fp0MxgDxG4wkadnJzVd5uBETV+m0aaQgVhbPSCRXYVUk0C4PyYK43HoeO" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-        <!-- Import vega-embed -->
-        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-        
-        <!-- Initialize Font Awesome -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
     <body>
         <nav id="site-nav" class="navbar navbar-expand-md background-primary p-2 w-100">
-            <img src="/static/img/logo-white.png" alt="" width="40" height="40">
+            <a href="/"><img src="/static/img/logo-white.png" alt="" width="40" height="40"></a>
             <a class="navbar-brand fs-3 fw-bold text-light mx-2" href="/">Project IL-legible</a>
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -46,9 +48,6 @@
                     <li class="nav-item active">
                         <a class="btn btn-outline-light" href="/sponsors">Sponsors</a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="btn btn-outline-light" href="/about">About</a>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -61,12 +60,6 @@
             <div>
                 <span class="text-light">© 2026 CAPP122 Project</span>
             </div>
-        </footer>
-        
-        {% block scripts %}
-            <!-- Optional JavaScript -->
-            {{ bootstrap.load_js() }}
-        {% endblock %}
-   
+        </footer>   
     </body>
 </html>
