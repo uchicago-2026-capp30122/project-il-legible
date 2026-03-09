@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 import exploration.explore as ex
 
 from pull_open_states.aggregate_openstates import summarize_actions, summarize_sponsors

@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
+<div class="row mt-3">
     <h1 class="display-3">Key Insights</h1>
     <span class="lead">Explore the highlights from an analysis of Illinois state legislature data.</span>
 </div>
 <div class="row mt-5">
-    <div class="col-3">
+    <div class="mt-2 col-xl-3 col-lg-6">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -16,8 +16,8 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
-        <div class="card border rounded d-block background-muted text-center text-white border-success">
+    <div class="mt-2 col-xl-3 col-lg-6">
+        <div class="card border rounded d-block background-muted text-center text-white">
             
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <div class="mt-2 col-xl-3 col-lg-6">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="col-3">
+    <div class="mt-2 col-xl-3 col-lg-6">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -47,9 +47,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class="row mt-3">
-    <div class="col-4">
+
+    <div class="mt-2 col-xl-4 col-lg-6">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -59,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="mt-2 col-xl-4 col-lg-6">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -69,7 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="mt-2 col-xl-4 col-lg-12">
         <div class="card border rounded d-block background-muted text-center text-white">
             <div class="card-body justify-content-center">
                 <h1 class="display-1">
@@ -84,7 +83,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3>Top 5 Most Effective</h3>
+                <h3>Top 5 Most Effective Sponsors</h3>
             </div>
             <ul class="list-group list-group-flush">
 
@@ -103,7 +102,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h3>Top 5 Least Effective</h3>
+                <h3>Top 5 Least Effective Sponsors</h3>
             </div>
             <ul class="list-group list-group-flush">
                 {% for sponsor in sponsors[-6:-1] %}
@@ -120,17 +119,17 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h3>Total Donations</h3>
             </div>
             <div class="card-body">
-                <div id="total-donation-history" class="w-100"></div>
+                <div id="total-donation-history" class="w-100 h-100"></div>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-header">
                 <h3>Average Donations</h3>
             </div>
@@ -144,10 +143,41 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3> Total Donations by Bills Introduced </h3>
+                <h3> Total Donations vs Bills Introduced </h3>
             </div>
             <div class="card-body">
+                <p>There is a positive correlation between a sponsor's total donations and the number of bills they introduce.</p>
                 <div id="bills-by-donations" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3> Bill Passage Rate vs Percent of Donations from Entities </h3>
+            </div>
+            <div class="card-body">
+                <p>There is a slight positive correlation between a sponsor's all time bill passage rate and the percent of their donations that come from entites.</p>
+                <div id="passing-by-entities" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3> Bill Progress Through Legislative Milestones </h3>
+            </div>
+            <div class="card-body">
+                <p>Only 8 percent of bills introduced eventually become law. Scroll to see how they progress.</p>
+                <div style="overflow-x: auto; width: 100%;">
+                    <div id="sankey" class="w-100">
+                        {{ charts['sankey'] | safe }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -158,7 +188,7 @@
     var totalDonations = {{ charts["total_donation_history"] | safe }};
     var averageDonations = {{ charts["average_donation_history"] | safe }};
     var billsByDonations = {{ charts["bills_by_donations"] | safe }};
-
+    var passingByEntity = {{ charts["passing_by_entities"] | safe }};
 
     vegaEmbed('#total-donation-history', totalDonations, {
         actions: false // Optional: hides the action links (e.g., "View Source")
@@ -171,5 +201,10 @@
     vegaEmbed('#bills-by-donations', billsByDonations, {
         actions: false // Optional: hides the action links (e.g., "View Source")
     }).catch(console.error);
+
+    vegaEmbed('#passing-by-entities', passingByEntity, {
+        actions: false // Optional: hides the action links (e.g., "View Source")
+    }).catch(console.error);
+
 </script>
 {% endblock %}

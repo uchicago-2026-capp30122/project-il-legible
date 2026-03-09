@@ -13,22 +13,18 @@
             <!-- Bootstrap CSS -->
             {{ bootstrap.load_css() }}
         {% endblock %}
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css">
+        <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.css" rel="stylesheet" integrity="sha384-wZYDVONtScOSiNpwk91lMxH8ZwXmKFkyFMx6bG1AuetV7IfL4nF9elQzj1W+azZR" crossorigin="anonymous">
+
+
         <title>Project ILlegible</title>
         {% endblock %}
         <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"></script>
+        <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.7/r-3.0.8/datatables.min.js" integrity="sha384-7yI5EM5fp0MxgDxG4wkadnJzVd5uBETV+m0aaQgVhbPSCRXYVUk0C4PyYK43HoeO" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
         <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
         <!-- Import vega-embed -->
         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-        <!-- Initialize tooltips -->
-        <script>
-            $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-            });
-        </script>
+        
         <!-- Initialize Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
