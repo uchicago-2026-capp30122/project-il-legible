@@ -7,14 +7,27 @@ import pandas as pd
 import os
 import csv
 
-COLS = ["name", "donation_count_all", "donation_count_L3", "total_all", 
-            "total_L3", "pct_c_above_all", "pct_c_above_L3", "avg_donation_all", 
-            "avg_donation_L3", "amt_allcond_all", "amt_allcond_L3", 
-            "pct_c_allcond_all", "pct_c_allcond_L3", "pct_c_IL_all", 
-            "pct_c_IL_L3", "first_donation_year"]
+COLS = [
+    "name",
+    "donation_count_all",
+    "donation_count_L3",
+    "total_all",
+    "total_L3",
+    "pct_c_above_all",
+    "pct_c_above_L3",
+    "avg_donation_all",
+    "avg_donation_L3",
+    "amt_allcond_all",
+    "amt_allcond_L3",
+    "pct_c_allcond_all",
+    "pct_c_allcond_L3",
+    "pct_c_IL_all",
+    "pct_c_IL_L3",
+    "first_donation_year",
+]
 
 ENTITY_KEYWORDS = r"PAC|INC|LLC|Corp|Committee|Assoc|Union"
-LAST_3_YR_CUTOFF = '01/01/2023'
+LAST_3_YR_CUTOFF = "01/01/2023"
 
 # Threshold that requires expedited schedule 1A reporting
 LARGE_DONATION = 1000
@@ -28,7 +41,7 @@ def get_unique_sponsor_filenames() -> list[str]:
     Inputs: None
 
     Outputs:
-        A list of strings, with each string containing a unique filename. 
+        A list of strings, with each string containing a unique filename.
     """
 
     filenames = []
@@ -37,7 +50,7 @@ def get_unique_sponsor_filenames() -> list[str]:
         reader = csv.DictReader(file)
         for row in reader:
             filenames.append(row["Sponsor"] + ".csv")
-    
+
     return filenames
 
 
@@ -47,21 +60,23 @@ def remove_null_donations(df: pd.DataFrame) -> pd.DataFrame:
 
     Inputs:
         df (pd.DataFrame): A dataframe with all of a sponsor's donations
-    
+
     Outputs:
-        A filtered pd.DataFrame 
+        A filtered pd.DataFrame
     """
 
     df["received_date"] = pd.to_datetime(df["received_date"], errors="coerce")
     df = df.dropna(subset=["received_date"])
-    
+
     df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
     df = df.dropna(subset=["amount"])
 
     return df
 
 
-def calculate_summary_stats(df: pd.DataFrame, name: str) -> dict[str, str | float |int]:
+def calculate_summary_stats(
+    df: pd.DataFrame, name: str
+) -> dict[str, str | float | int]:
     """
     Calculate a full set of summary stats on each sponsor's donations.
 
@@ -89,15 +104,21 @@ def calculate_summary_stats(df: pd.DataFrame, name: str) -> dict[str, str | floa
 
     # Large donations
     row["pct_c_above_all"] = (df["amount"] > LARGE_DONATION).sum() / total_len
-    row["pct_c_above_L3"] = (df["last_3_years"] & (df["amount"] > LARGE_DONATION)).sum() / L3_len
+    row["pct_c_above_L3"] = (
+        df["last_3_years"] & (df["amount"] > LARGE_DONATION)
+    ).sum() / L3_len
 
     # Average donation sizes
     row["avg_donation_all"] = df["amount"].mean()
     row["avg_donation_L3"] = df.loc[df["last_3_years"], "amount"].mean()
 
     # Donations from entities
-    entity_mask = (df["d2_part"] != "1A") & (df["first_name"].isna()) & (df["last_name"].str.contains(ENTITY_KEYWORDS, case=False))
-    
+    entity_mask = (
+        (df["d2_part"] != "1A")
+        & (df["first_name"].isna())
+        & (df["last_name"].str.contains(ENTITY_KEYWORDS, case=False))
+    )
+
     row["amt_allcond_all"] = df.loc[entity_mask, "amount"].sum()
     row["amt_allcond_L3"] = df.loc[entity_mask & df["last_3_years"], "amount"].sum()
     row["pct_c_allcond_all"] = entity_mask.sum() / total_len
@@ -114,16 +135,16 @@ def calculate_summary_stats(df: pd.DataFrame, name: str) -> dict[str, str | floa
 
 
 def main():
-    #Set up csv output file
+    # Set up csv output file
     with open("pull_IL_sunshine/intermediate_data/donation_stats.csv", "w") as file:
-        writer = csv.DictWriter(file, fieldnames = COLS, restval='')
+        writer = csv.DictWriter(file, fieldnames=COLS, restval="")
         writer.writeheader()
 
         # Loop through each sponsor in the folder
         filenames = get_unique_sponsor_filenames()
 
         for filename in filenames:
-            path = os.path.join('donations', filename)
+            path = os.path.join("donations", filename)
             name = filename.replace(".csv", "")
             # Read in CSV for each sponsor
             try:
