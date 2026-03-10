@@ -1,3 +1,5 @@
+import pytest
+
 from pull_IL_sunshine.Illinois_Sunshine_donations_pull import (
     match_sponsor_to_candidate,
     get_committee_ids,
