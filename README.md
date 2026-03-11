@@ -1,7 +1,35 @@
-# project-il-legible
+# Project IL-legible
+See the webite in action at https://www.project-il-legible.com/
 
+## About
+Project IL-legible attempts to analyze and understand the intersection of bill sponsorship and financial contributions to legislatures of the Illinois State General Assembly. We pull and join data from different data sources to accomplish this, in addition to reporting on the more interesting findings that we've been able to uncover. Our primary goal is to make Illinois legislation data more accessible and readable for a wider audience.
 
-## Web Framework
+Team Members: 
+- Brock Sauvage <bsauvage@uchicago.edu>
+- Elie Nowlis <enowlis@uchicago.edu>
+- Max Manalang <manalang@uchicago.edu>
+- Luke Friedman <lukef@uchicago.edu>
+
+Data Sources:
+- Open States (https://open.pluralpolicy.com/data/)
+- Illinois Sunshine (https://illinoissunshine.org/)
+
+A screenshot of a page on the website and a quick video walk-through are included below.
+![alt text](images/image.png)
+
+Project video: [a link to your project video] TO DO
+
+## Instructions
+### Adding Bulk Data
+
+You will first need to manually add bulk data from Open States. Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `data_pull_and_clean\pull_open_states\bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
+
+### Create Data Used in Website
+
+After downloading the bulk data, you want to populate the final_data folder, which is
+what is used for the website databases. To do so, run `bash create_datasets.sh` from the command line.
+
+### Web Framework
 
 For this project, we'll be using the Flask web framework. This tool allows us to keep and maintain and lightweight database, spin up a web server, serve HTML/CSS files to a browser, and more. Read more about it [here](https://flask.palletsprojects.com/en/stable/#user-s-guide).
 
@@ -52,7 +80,7 @@ After the database has been created and seeded with data, we can finally spin up
 
 `uv run flask run --debug`
 
-## Environment Variables
+## Environment Variables [DO WE STILL NEED THIS?]
 
 This project makes use of several APIs that require API keys for endpoint requests. Many of these will require API keys which are not to be checked into version control for security reasons. Instead, we will be using an envrionment file - a file that keeps track of the API keys, sensitive info, and specific configuration settings for your local program. Following these steps, you may set up your own environment file with custom variables defined:
 
@@ -62,27 +90,11 @@ This project makes use of several APIs that require API keys for endpoint reques
 
 Please ensure that the `.env` file is included in the `.gitignore` and that it IS NOT checked into version control.
 
-## Data Exploration
+## Data Exploration [DELETE THIS]
 
 The APIs for Open States and Illinois Sunshine have some significant rate limit barriers in place that would make the aggregate analysis of things like bills and sponsors VERY slow and painstaking. Instead, we are leveraging bulk data (CSVs) to accomplish this analysis. An `exploration` module has been created that will pull data from the `bulk_data` directory into Pandas data frames. You may add additional functions to this module if you have the need to explore different datasets. To actually interact with these functions, you can edit the `Exploration.ipynb` file in the root directory, or create your own (please exclude from version control).
 
-### Adding Bulk Data
-
-If you'd like to add bulk data for Open States, you'll need to do this manually (for now.) Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `pull_open_states/bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
-
-### Create Data Used in Website
-
-After downloading the bulk data, you want to populate the final_data folder, which is
-what is used for the website databases. To do so, run these programs in the following order.
-1. pull_open_states/aggregate_openstates.py
-2. pull_open_states/clean_name_column.py
-3. pull_IL_sunshine/Illinois_Sunshine_donations_pull.py
-4. pull_IL_sunshine/donations_by_sponsor.py
-5. pull_IL_sunshine/merge_and_output.py
-
-**Internal note: do we want one script that just does all of this for us??**
-
-### Setting up Jupyter in VS Code
+### Setting up Jupyter in VS Code [DELETE THIS]
 
 1. Run `uv sync` in the root directory to ensure that the ipykernel package is installed.
 2. Install the Jupyter VS Code extension (this will let you work with notebooks natively in VS Code)
