@@ -68,7 +68,7 @@ The APIs for Open States and Illinois Sunshine have some significant rate limit 
 
 ### Adding Bulk Data
 
-If you'd like to add bulk data for Open States, you'll need to do this manually (for now.) Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `exploration/bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `explore.py` "data get" methods rely on this.
+If you'd like to add bulk data for Open States, you'll need to do this manually (for now.) Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `pull_open_states/bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
 
 ### Create Data Used in Website
 
