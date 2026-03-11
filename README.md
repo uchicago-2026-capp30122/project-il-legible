@@ -15,6 +15,7 @@ Data Sources:
 - Illinois Sunshine (https://illinoissunshine.org/)
 
 A screenshot of a page on the website and a quick video walk-through are included below.
+
 ![alt text](images/image.png)
 
 Project video: [a link to your project video] TO DO
