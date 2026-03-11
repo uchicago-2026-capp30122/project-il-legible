@@ -25,11 +25,6 @@ Project video: [a link to your project video] TO DO
 
 You will first need to manually add bulk data from Open States. Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `data_pull_and_clean\pull_open_states\bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
 
-### Create Data Used in Website
-
-After downloading the bulk data, you want to populate the final_data folder, which is
-what is used for the website databases. To do so, run `bash create_datasets.sh` from the command line.
-
 ### Web Framework
 
 For this project, we'll be using the Flask web framework. This tool allows us to keep and maintain and lightweight database, spin up a web server, serve HTML/CSS files to a browser, and more. Read more about it [here](https://flask.palletsprojects.com/en/stable/#user-s-guide).
