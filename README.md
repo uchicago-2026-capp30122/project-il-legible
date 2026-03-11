@@ -1,5 +1,5 @@
 # Project IL-legible
-See the webite in action at https://www.project-il-legible.com/
+See the website in action at https://www.project-il-legible.com/
 
 ## About
 Project IL-legible attempts to analyze and understand the intersection of bill sponsorship and financial contributions to legislatures of the Illinois State General Assembly. We pull and join data from different data sources to accomplish this, in addition to reporting on the more interesting findings that we've been able to uncover. Our primary goal is to make Illinois legislation data more accessible and readable for a wider audience.
