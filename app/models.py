@@ -8,7 +8,9 @@ class Sponsor(db.Model):
     __tablename__ = "sponsors"
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(50), unique=True)
-    organization_classification: so.Mapped[Optional[str]] = so.mapped_column(sa.String(20))
+    organization_classification: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(20)
+    )
     donation_count_all: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     donation_count_L3: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     total_all: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
@@ -27,21 +29,25 @@ class Sponsor(db.Model):
     pct_bills_passed: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
     first_donation_year: so.Mapped[Optional[str]] = so.mapped_column(sa.String(10))
     effectiveness_score: so.Mapped[Optional[float]] = so.mapped_column(sa.Float)
-    bills: so.WriteOnlyMapped[Optional['Bill']] = so.relationship(back_populates='sponsor')    
+    bills: so.WriteOnlyMapped[Optional["Bill"]] = so.relationship(
+        back_populates="sponsor"
+    )
 
     def to_dict(self):
-        return {field.name:getattr(self, field.name) for field in self.__table__.c}
+        return {field.name: getattr(self, field.name) for field in self.__table__.c}
 
     def __repr__(self):
-        return '<Sponsor {}>'.format(self.name)
-    
+        return "<Sponsor {}>".format(self.name)
+
 
 class Bill(db.Model):
     __tablename__ = "bills"
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     identifier: so.Mapped[str] = so.mapped_column(sa.String(20))
-    session_identifier: so.Mapped[Optional[str]] =  so.mapped_column(sa.String(20))
-    organization_classification: so.Mapped[Optional[str]] =  so.mapped_column(sa.String(20))
+    session_identifier: so.Mapped[Optional[str]] = so.mapped_column(sa.String(20))
+    organization_classification: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(20)
+    )
     first_action: so.Mapped[Optional[str]] = so.mapped_column(sa.Date)
     num_sponsors: so.Mapped[Optional[int]] = so.mapped_column(sa.Integer)
     became_law: so.Mapped[Optional[bool]] = so.mapped_column(sa.Boolean)
@@ -50,13 +56,13 @@ class Bill(db.Model):
     passed_first_chamber: so.Mapped[Optional[bool]] = so.mapped_column(sa.Boolean)
     passed_full_legislature: so.Mapped[Optional[bool]] = so.mapped_column(sa.Boolean)
 
-    sponsor_id: so.Mapped[Optional[int]] = so.mapped_column(sa.ForeignKey(Sponsor.id), index=True)
-    sponsor: so.Mapped[Sponsor] = so.relationship(back_populates='bills')
-
+    sponsor_id: so.Mapped[Optional[int]] = so.mapped_column(
+        sa.ForeignKey(Sponsor.id), index=True
+    )
+    sponsor: so.Mapped[Sponsor] = so.relationship(back_populates="bills")
 
     def to_dict(self):
-        return {field.name:getattr(self, field.name) for field in self.__table__.c}
-
+        return {field.name: getattr(self, field.name) for field in self.__table__.c}
 
     def __repr__(self):
-        return '<Bill {}>'.format(self.identifier)
+        return "<Bill {}>".format(self.identifier)
