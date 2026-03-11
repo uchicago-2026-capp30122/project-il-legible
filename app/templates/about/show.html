@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-3">
+    <h3 class="display-3"> About Project IL-legible </h3>
+</div>
+<div class="row">
+    <h4>Project Overview</h4>
+        <p>While legislative data is publicly available, it can often be difficult to interpret and inaccessible without technical expertise. Project IL-legible attempts to make the legislative data of the Illinois General Assembly easier to understand while exploring the relationship between bill sponsorship and campaign contributions received by Illinois legislators. By combining legislation data with campaign finance records, this project provides visualizations and summary metrics that show how bill sponsors differ in their legislative activity and the demographics of their campaign donations. Project IL-legible allows users to interact with several aspects of legislative activity in Illinois, including:</p>
+        <ul>
+            <li>Which legislators sponsor the most bills</li>
+            <li>Differences in legislative effectiveness across sponsors</li>
+            <li>Campaign donation statistics across sponsors</li>
+            <li>How often bills successfully move through the legislative process</li>
+        </ul>
+        </p>
+    <h4>Our Team</h4>
+        <div class="column ">
+            <img id="brock" src="/static/img/XX"/>
+            <p>Brock</p>
+            <button type="button" class="btn" data-toggle="popover" title="bio_brock" data-content="I am Brock">Bio</button>
+        </div>
+        <div class="column ">
+            <img id="brock" src="/static/img/XX"/>
+            <p>Elie</p>
+            <button type="button" class="btn" data-toggle="popover" title="bio_brock" data-content="I am Brock">Bio</button>
+        </div>
+        <div class="column ">
+            <img id="brock" src="/static/img/XX"/>
+            <p>Luke</p>
+            <button type="button" class="btn" data-toggle="popover" title="bio_brock" data-content="I am Brock">Bio</button>
+        </div>
+        <div class="column ">
+            <img id="brock" src="/static/img/XX"/>
+            <p>Max</p>
+            <button type="button" class="btn" data-toggle="popover" title="bio_brock" data-content="I am Brock">Bio</button>
+        </div>
+    <h4>Data Sources</h4>
+        <p>Project IL-legible joins legislative data with campaign finance data from two public sources:</p>  
+        <ul>
+            <li>Open States, a public database that aggregates and standardizes state legislative information across the United States</li>
+            <li>Illinois Sunshine, a transparency platform that collects and organizes information on political contributions in Illinois going back to 1994</li>
+        </ul> 
+    <h4>Data Processing and Methodology</h4>
+        <h6>Collecting Legislative Data</h6>
+            <p>Bill and sponsorship data were obtained through the Open States API and bulk datasets for the 102nd and 103rd legislative sessions. Here we identified legislators who served as primary sponsors on at least one bill during these sessions.</p>
+        <h6>Collecting Campaign Finance Data</h6>
+            <p>Campaign donation data were obtained from Illinois Sunshine by web-scraping the donations to political committees associated with each primary sponsor.</p>
+        <h6>Linking Datasets</h6>
+            <p>Legislators were matched across datasets using cleaned names of the sponsors, manually verifying matches where necessary.</p>
+        <h6>Data Analysis</h6>
+            <p>After merging the datasets, we calculated several metrics for each legislator to analyze patterns in legislative activity and campaign donations. These variables form the basis for the visualizations and summary metrics presented on this site.</p>
+        <h6>Limitations</h6>
+            <p>Several limitations should be noted:</p>
+            <ul>
+                <li>Campaign donations are reported to political committees, which may support multiple activities beyond individual legislators</li>
+                <li>Some donation types (such as entity versus individual donors) are difficult to classify automatically</li>
+                <li>Legislative success depends on many factors beyond sponsorship</li>
+            </ul>
+            <p>As a result, the findings presented on this site should be viewed as descriptive analysis rather than causal claims about legislative behavior.</p>
+</div>
+
+{% endblock %}
