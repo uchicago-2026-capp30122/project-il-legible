@@ -71,6 +71,6 @@ def test_final_effectiveness_order(sample_legislator_data):
         "legislator_high",
         "legislator_medium",
         "legislator_low",
-        "legislator_none"
+        "legislator_none",
     ]
     assert list(sorted_result["name"]) == expected_order
