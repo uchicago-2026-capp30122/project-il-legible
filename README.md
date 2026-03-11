@@ -30,7 +30,9 @@ There are a few steps to take to get the app up and running on your machine. Onc
 
 ### Adding Bulk Data
 
-You will first need to manually add bulk data from Open States. Go to https://open.pluralpolicy.com/data/, find the relevant data set for the IL session you're looking for, download, and unpack it. The result should be a set of .csv files under a directory structure that looks like `IL/[# session]`. At this point, you may merge these files with the `data_pull_and_clean\pull_open_states\bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
+You will first need to manually add bulk data from Open States. Go to https://open.pluralpolicy.com/data/session-csv/, find the relevant data set for the IL session you're looking for, download, and unpack it. This project uses the **`Illinois 102nd Regular Session`** and **`Illinois 103rd Regular Session`** files.
+
+The result should be a set of `.csv` files under a directory structure that looks like `IL/[# session]`. Each session directory should contain all of the associated `.csv` files. At this point, you may merge these files with the `data_pull_and_clean\pull_open_states\bulk_data` directory in the repo - just make sure the directory structure is maintained, since the `get_bulk_data.py` "data get" methods rely on this.
 
 
 ### Initializing the Database
