@@ -75,7 +75,7 @@ def remove_null_donations(df: pd.DataFrame) -> pd.DataFrame:
 
 def safe_divide(numerator, denominator):
     """
-    Return numerator / denominator or fill_value if denominator is 0.
+    Return numerator / denominator or NA if denominator is 0.
     """
     if denominator > 0:
         return numerator / denominator 
