@@ -73,6 +73,14 @@ def remove_null_donations(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def safe_divide(numerator, denominator):
+    """
+    Return numerator / denominator or fill_value if denominator is 0.
+    """
+    if denominator > 0:
+        return numerator / denominator 
+    else:
+        return pd.NA
 
 def calculate_summary_stats(
     df: pd.DataFrame, name: str
@@ -103,10 +111,10 @@ def calculate_summary_stats(
     row["total_L3"] = df.loc[df["last_3_years"], "amount"].sum()
 
     # Large donations
-    row["pct_c_above_all"] = (df["amount"] > LARGE_DONATION).sum() / total_len
-    row["pct_c_above_L3"] = (
+    row["pct_c_above_all"] = safe_divide((df["amount"] > LARGE_DONATION).sum(), total_len)   
+    row["pct_c_above_L3"] = safe_divide((
         df["last_3_years"] & (df["amount"] > LARGE_DONATION)
-    ).sum() / L3_len
+    ).sum(), L3_len)
 
     # Average donation sizes
     row["avg_donation_all"] = df["amount"].mean()
@@ -119,14 +127,16 @@ def calculate_summary_stats(
         & (df["last_name"].str.contains(ENTITY_KEYWORDS, case=False))
     )
 
+    # Entity vs Individual
     row["amt_allcond_all"] = df.loc[entity_mask, "amount"].sum()
     row["amt_allcond_L3"] = df.loc[entity_mask & df["last_3_years"], "amount"].sum()
-    row["pct_c_allcond_all"] = entity_mask.sum() / total_len
-    row["pct_c_allcond_L3"] = (entity_mask & df["last_3_years"]).sum() / L3_len
+    
+    row["pct_c_allcond_all"] = safe_divide(entity_mask.sum(), total_len)
+    row["pct_c_allcond_L3"] = safe_divide((entity_mask & df["last_3_years"]).sum(), L3_len)
 
     # In-state (Illinois) vs. out-of-state donations
-    row["pct_c_IL_all"] = (df["state"] == "IL").sum() / total_len
-    row["pct_c_IL_L3"] = (df["last_3_years"] & (df["state"] == "IL")).sum() / L3_len
+    row["pct_c_IL_all"] = safe_divide((df["state"] == "IL").sum(), total_len)
+    row["pct_c_IL_L3"] = safe_divide((df["last_3_years"] & (df["state"] == "IL")).sum(), L3_len)
 
     # 16. first_donation_year
     row["first_donation_year"] = int(pd.to_datetime(df["received_date"]).min().year)
