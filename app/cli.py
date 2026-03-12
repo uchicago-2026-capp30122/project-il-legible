@@ -3,7 +3,7 @@ from app.database import seeds
 from app import db as database
 import click
 
-bp = Blueprint('cli', __name__, cli_group=None)
+bp = Blueprint("cli", __name__, cli_group=None)
 
 
 @bp.cli.group()

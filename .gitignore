@@ -66,7 +66,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+instance/app.db
 .webassets-cache
 
 # Scrapy stuff:
@@ -222,8 +222,12 @@ __marimo__/
 # IL-legible
 *.csv
 donations/
-exploration/bulk_data/*
-pull_open_states/intermediate_data/
+data_pull_and_clean/pull_open_states/bulk_data/IL/*
+!data_pull_and_clean/pull_open_states/bulk_data/IL/.gitkeep
+data_pull_and_clean/pull_open_states/intermediate_data/*
+data_pull_and_clean/pull_IL_sunshine/intermediate_data/*
+
+logs/*
 
 # Flask
 *.pyc
