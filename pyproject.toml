@@ -12,7 +12,6 @@ dependencies = [
     "dotenv>=0.9.9",
     "flask>=3.1.2",
     "flask-migrate>=4.1.0",
-    "flask-scss>=0.5",
     "flask-sqlalchemy>=3.1.1",
     "flask-wtf>=1.2.2",
     "gunicorn>=25.1.0",
