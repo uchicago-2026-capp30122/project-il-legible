@@ -223,6 +223,7 @@ __marimo__/
 *.csv
 donations/
 data_pull_and_clean/pull_open_states/bulk_data/IL/*
+!data_pull_and_clean/pull_open_states/bulk_data/IL/.gitkeep
 data_pull_and_clean/pull_open_states/intermediate_data/*
 data_pull_and_clean/pull_IL_sunshine/intermediate_data/*
 
